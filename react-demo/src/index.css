@@ -1,0 +1,7 @@
+/* src/index.css */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: linear-gradient(to bottom, #98fcb1, #d0f3a3); /* ví dụ màu nền */
+  min-height: 100vh;
+}
