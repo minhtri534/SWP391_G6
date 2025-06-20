@@ -36,13 +36,15 @@ CREATE TABLE coach_info (
 );
 GO
 
+
 CREATE TABLE post (
-  postId INT PRIMARY KEY,
-  userId INT,
-  content TEXT,
-  create_date DATE,
+  postId INT IDENTITY(1,1) PRIMARY KEY,  
+  userId INT NOT NULL,
+  content TEXT NOT NULL,
+  create_date DATETIME NOT NULL,         
   FOREIGN KEY (userId) REFERENCES users(userId)
 );
+
 GO
 
 CREATE TABLE comment (
@@ -234,3 +236,13 @@ VALUES
 (3, 'Coach'),
 (4, 'Admin');
 GO
+
+INSERT INTO users (userId, userName, age, gender, phoneNum, password, roleId, status, joinDate)
+VALUES 
+(1, 'Nguyen Van A', 25, 'Male', '0901000001', 'guest123', 1, 'Active', '2025-06-01'), -- Khách
+(2, 'Tran Van B', 28, 'Female', '0901000002', 'member123', 2, 'Active', '2025-06-02'), -- Thành Viên
+(3, 'Pham Thi C', 35, 'Male', '0901000003', 'coach123', 3, 'Active', '2025-06-03'), -- Hu?n Luy?n Viên
+(4, 'Do cao D', 30, 'Other', '0901000004', 'admin123', 4, 'Active', '2025-06-04'); -- Qu?n tr? viên
+GO
+
+
