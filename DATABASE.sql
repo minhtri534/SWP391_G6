@@ -226,3 +226,11 @@ CREATE TABLE booking_consultation (
   FOREIGN KEY (coachId) REFERENCES coach_info(coachId)
 );
 GO
+
+INSERT INTO role (roleId, roleName)
+VALUES 
+(1, 'Guest'),
+(2, 'Member'),
+(3, 'Coach'),
+(4, 'Admin');
+GO
