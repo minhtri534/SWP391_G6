@@ -48,7 +48,7 @@ CREATE TABLE post (
 GO
 
 CREATE TABLE comment (
-  commentId INT PRIMARY KEY,
+  commentId INT IDENTITY(1,1) PRIMARY KEY,
   postId INT,
   userId INT,
   content TEXT,
@@ -59,7 +59,7 @@ CREATE TABLE comment (
 GO
 
 CREATE TABLE report (
-  reportId INT PRIMARY KEY,
+  reportId INT IDENTITY(1,1) PRIMARY KEY,
   content TEXT,
   postId INT,
   userId INT,
@@ -94,7 +94,7 @@ CREATE TABLE badge (
 GO
 
 CREATE TABLE plan_milestone (
-  milestoneId INT PRIMARY KEY,
+  milestoneId INT IDENTITY(1,1) PRIMARY KEY,
   planId INT,
   badgeId INT,
   title VARCHAR(100),
@@ -106,7 +106,7 @@ CREATE TABLE plan_milestone (
 GO
 
 CREATE TABLE daily_progress (
-  progressId INT PRIMARY KEY,
+  progressId INT IDENTITY(1,1) PRIMARY KEY,
   milestoneId INT,
   note TEXT,
   no_smoking BIT,
@@ -117,7 +117,7 @@ CREATE TABLE daily_progress (
 GO
 
 CREATE TABLE smoking_status (
-  statusId INT PRIMARY KEY,
+  statusId INT IDENTITY(1,1) PRIMARY KEY,
   userId INT,
   time_period VARCHAR(50),
   milestoneId INT,
@@ -143,7 +143,7 @@ CREATE TABLE coach_plan_badge (
 GO
 
 CREATE TABLE notification (
-  notificationId INT PRIMARY KEY,
+  notificationId INT IDENTITY(1,1) PRIMARY KEY,
   userId INT,
   relatedLogId INT NULL,
   relatedMilestoneId INT NULL,
@@ -157,7 +157,7 @@ CREATE TABLE notification (
 GO
 
 CREATE TABLE feedback (
-  feedbackId INT PRIMARY KEY,
+  feedbackId INT IDENTITY(1,1) PRIMARY KEY,
   userId INT,
   coachId INT,
   planId INT,
