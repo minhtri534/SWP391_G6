@@ -29,19 +29,19 @@ namespace InteligyBackend.Services
         }
 
 #       pragma warning disable CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
-        public async Task<PostDto?> GetPostByIdAsync(int id)
+        public async Task<List<PostDto>?> GetPostByIdAsync(int id)
         #pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         {
-            var post = await _repo.GetByIdAsync(id);
-            if (post == null) return null;
-
-            return new PostDto
+            var post = await _repo.GetByUserIdAsync(id);
+#pragma warning disable CS8604 // Possible null reference argument.
+            return post.Select(post => new PostDto
             {
                 PostId = post.PostId,
                 UserId = post.UserId,
                 Content = post.Content,
                 Create_date = post.Create_date
-            };
+            }).ToList();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         public async Task<PostDto> CreatePostAsync(CreatePostDto dto)

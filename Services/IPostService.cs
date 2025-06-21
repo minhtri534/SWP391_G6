@@ -5,7 +5,7 @@ namespace InteligyBackend.Services
     public interface IPostService
     {
         Task<IEnumerable<PostDto>> GetAllPostsAsync();
-        Task<PostDto> GetPostByIdAsync(int id);
+        Task<List<PostDto>?> GetPostByIdAsync(int id);
         Task<PostDto> CreatePostAsync(CreatePostDto dto);
         Task UpdatePostAsync(int id, UpdatePostDto dto);
         Task DeletePostAsync(int id);

@@ -18,11 +18,15 @@ namespace InteligyBackend.Repositories
             return await _context.Posts.Include(p => p.User).ToListAsync();
         }
 
-        public async Task<Post> GetByIdAsync(int id)
+        public async Task<Post?> GetByIdAsync(int id)
         {
-            #pragma warning disable CS8603 // Possible null reference return.
-            return await _context.Posts.Include(p => p.User).FirstOrDefaultAsync(p => p.PostId == id);
-            #pragma warning restore CS8603 // Possible null reference return.
+            return await _context.Posts.FirstOrDefaultAsync(p => p.PostId == id);
+        }
+
+
+        public async Task<List<Post>?> GetByUserIdAsync(int id)
+        {
+            return await _context.Posts.Where(p => p.UserId == id).Include(p => p.User).ToListAsync();
         }
 
         public async Task<Post> CreateAsync(Post post)
