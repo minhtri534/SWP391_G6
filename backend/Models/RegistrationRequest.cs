@@ -1,7 +1,4 @@
-﻿using backend.Entities;
-
-
-namespace backend.Models
+﻿namespace backend.Models
 {
     public class RegistrationRequest
     {

@@ -1,6 +1,5 @@
 ﻿using backend.Data;
 using backend.Models;
-using backend.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,12 +16,14 @@ namespace backend.Controllers
             _context = context;
         }
 
+
         // POST: api/auth/register
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequest user)
         {
+            // 1. Kiểm tra username đã tồn tại chưa
             var existingUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.UserName == user.UserName); 
+                .FirstOrDefaultAsync(u => u.userName == user.UserName); // ⚠️ userName → UserName
 
             if (existingUser != null)
             {
@@ -33,71 +34,30 @@ namespace backend.Controllers
                 });
             }
 
-            var role = await _context.Roles.FindAsync(2);
-            if (role == null)
+            // 2. Tạo entity mới
+            var newUser = new Registration
             {
-                return BadRequest(new
-                {
-                    success = false,
-                    message = "Role ID 2 not found in database."
-                });
-            }
-
-            var newUser = new User
-            {
-                UserName = user.UserName,
-                Password = user.Password,
-                PhoneNum = user.PhoneNum,
-                Age = user.Age,
-                Gender = user.Gender,
-                Status = "Active",
-                RoleId = 2,
-                JoinDate = DateTime.Now,
-                Role = role,
-                Posts = new List<Post>(),     // required
-                Comments = new List<Comment>() // required
+                userName = user.UserName,
+                password = user.Password
+                // Bổ sung các thuộc tính khác nếu cần
             };
 
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
+            // 3. Trả về phản hồi sau khi lưu thành công
             return Ok(new
             {
                 success = true,
                 message = "User registered successfully.",
                 user = new
                 {
-                    newUser.UserId,
-                    newUser.UserName
+                    newUser.userId,
+                    newUser.userName
                 }
             });
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
-        {
-            if (string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))
-            {
-                return BadRequest("Username and password are required.");
-            }
-
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.UserName == request.UserName && u.Password == request.Password);
-
-            if (user == null)
-            {
-                return Unauthorized("Invalid username or password.");
-            }
-
-            var response = new LoginResponse
-            {
-                Message = "Login successful",
-                UserId = user.UserId,
-                RoleId = user.RoleId,
-                UserName = user.UserName
-            };
-
-            return Ok(response);
-        }
     }
 }
+               
