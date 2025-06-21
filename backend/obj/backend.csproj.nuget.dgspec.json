@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Uni stuff\\SWP\\SWP391_G6\\backend\\backend.csproj": {}
+    "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\backend.csproj": {}
   },
   "projects": {
-    "D:\\Uni stuff\\SWP\\SWP391_G6\\backend\\backend.csproj": {
+    "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Uni stuff\\SWP\\SWP391_G6\\backend\\backend.csproj",
+        "projectUniqueName": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\backend.csproj",
         "projectName": "backend",
-        "projectPath": "D:\\Uni stuff\\SWP\\SWP391_G6\\backend\\backend.csproj",
-        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\Uni stuff\\SWP\\SWP391_G6\\backend\\obj\\",
+        "projectPath": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\backend.csproj",
+        "packagesPath": "C:\\Users\\ghubh\\.nuget\\packages\\",
+        "outputPath": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ghubh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -68,24 +74,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.16, 8.0.16]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[8.0.16, 8.0.16]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.16, 8.0.16]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.16, 8.0.16]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"

@@ -1,4 +1,5 @@
-﻿using backend.Data;
+﻿using Azure.Core;
+using backend.Data;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ namespace backend.Controllers
         {
             // 1. Kiểm tra username đã tồn tại chưa
             var existingUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.userName == user.UserName); // ⚠️ userName → UserName
+                .FirstOrDefaultAsync(u => u.userName == user.UserName); 
 
             if (existingUser != null)
             {
@@ -38,8 +39,14 @@ namespace backend.Controllers
             var newUser = new Registration
             {
                 userName = user.UserName,
-                password = user.Password
-                // Bổ sung các thuộc tính khác nếu cần
+                password = user.Password,
+                phoneNum = user.PhoneNum,
+                age = user.Age,
+                gender = user.Gender,         
+                status = "Active",              
+                roleId = 2,                     
+                joinDate = DateTime.Now
+               
             };
 
             _context.Users.Add(newUser);
@@ -57,6 +64,34 @@ namespace backend.Controllers
                 }
             });
         }
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))
+            {
+                return BadRequest("Username and password are required.");
+            }
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.userName == request.UserName && u.password == request.Password);
+
+            if (user == null)
+            {
+                return Unauthorized("Invalid username or password.");
+            }
+
+            var response = new LoginResponse
+            {
+                Message = "Login successful",
+                UserId = user.userId,
+                RoleId = user.roleId,
+                UserName = user.userName
+            };
+
+            return Ok(response);
+        }
+
+
 
     }
 }
