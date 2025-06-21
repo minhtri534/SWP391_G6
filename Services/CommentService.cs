@@ -16,7 +16,7 @@ namespace InteligyBackend.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<CommentDto>> GetAllAsync()
+        public async Task<IEnumerable<CommentDto>> GetAllCommentAsync()
         {
             var comments = await _repository.GetAllAsync();
             return comments.Select(c => new CommentDto
@@ -29,7 +29,7 @@ namespace InteligyBackend.Services
             });
         }
 
-        public async Task<CommentDto?> GetByIdAsync(int id)
+        public async Task<CommentDto?> GetCommentByIdAsync(int id)
         {
             var comment = await _repository.GetByIdAsync(id);
             if (comment == null) return null;
@@ -44,7 +44,7 @@ namespace InteligyBackend.Services
             };
         }
 
-        public async Task<CommentDto> CreateAsync(CreateCommentDto dto)
+        public async Task<CommentDto> CreateCommentAsync(CreateCommentDto dto)
         {
             var user = await _context.Users.FindAsync(dto.UserId);
             var post = await _context.Posts.FindAsync(dto.PostId);
@@ -73,7 +73,7 @@ namespace InteligyBackend.Services
             };
         }
 
-        public async Task UpdateAsync(int id, UpdateCommentDto dto)
+        public async Task UpdateCommentAsync(int id, UpdateCommentDto dto)
         {
             var comment = await _repository.GetByIdAsync(id);
             if (comment == null) return;
@@ -82,7 +82,7 @@ namespace InteligyBackend.Services
             await _repository.UpdateAsync(comment);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteCommentAsync(int id)
         {
             var comment = await _repository.GetByIdAsync(id);
             if (comment == null) return;

@@ -30,7 +30,7 @@ namespace InteligyBackend.Services
 
 #       pragma warning disable CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         public async Task<PostDto?> GetPostByIdAsync(int id)
-#pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
+        #pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         {
             var post = await _repo.GetByIdAsync(id);
             if (post == null) return null;
@@ -46,12 +46,12 @@ namespace InteligyBackend.Services
 
         public async Task<PostDto> CreatePostAsync(CreatePostDto dto)
         {
-            // ✅ Ensure User exists (required property)
+            //Ensure User exists (required property)
             var user = await _context.Users.FindAsync(dto.UserId);
             if (user == null)
                 throw new Exception("User not found.");
 
-            // ✅ Initialize required properties: User and Comments
+            //Initialize required properties: User and Comments
             var post = new Post
             {
                 UserId = dto.UserId,
@@ -89,7 +89,7 @@ namespace InteligyBackend.Services
             await _repo.DeleteAsync(post);
         }
 
-                public async Task<ServiceAccessResult> CanUserPostAsync(int userId)
+        public async Task<ServiceAccessResult> CanUserPostAsync(int userId)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return ServiceAccessResult.NotFound("User not found");

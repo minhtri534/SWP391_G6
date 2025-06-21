@@ -9,8 +9,6 @@ namespace InteligyBackend.Services
         Task<PostDto> CreatePostAsync(CreatePostDto dto);
         Task UpdatePostAsync(int id, UpdatePostDto dto);
         Task DeletePostAsync(int id);
-
-        // ✅ Add these two methods to fix the error
         Task<ServiceAccessResult> CanUserPostAsync(int userId);
         Task<ServiceAccessResult> CanUserModifyPostAsync(int postId);
     }

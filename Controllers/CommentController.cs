@@ -18,14 +18,14 @@ namespace InteligyBackend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var comments = await _service.GetAllAsync();
+            var comments = await _service.GetAllCommentAsync();
             return Ok(comments);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var comment = await _service.GetByIdAsync(id);
+            var comment = await _service.GetCommentByIdAsync(id);
             if (comment == null) return NotFound();
             return Ok(comment);
         }
@@ -36,7 +36,7 @@ namespace InteligyBackend.Controllers
             var result = await _service.CanUserCommentAsync(dto.UserId);
             if (!result.Allowed) return result.ErrorResult;
 
-            var comment = await _service.CreateAsync(dto);
+            var comment = await _service.CreateCommentAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = comment.CommentId }, comment);
         }
 
@@ -46,7 +46,7 @@ namespace InteligyBackend.Controllers
             var result = await _service.CanUserModifyCommentAsync(id);
             if (!result.Allowed) return result.ErrorResult;
 
-            await _service.UpdateAsync(id, dto);
+            await _service.UpdateCommentAsync(id, dto);
             return NoContent();
         }
 
@@ -56,7 +56,7 @@ namespace InteligyBackend.Controllers
             var result = await _service.CanUserModifyCommentAsync(id);
             if (!result.Allowed) return result.ErrorResult;
 
-            await _service.DeleteAsync(id);
+            await _service.DeleteCommentAsync(id);
             return NoContent();
         }
     }

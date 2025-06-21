@@ -11,7 +11,6 @@ namespace InteligyBackend.Entities
         public int RoleId { get; set; }
         public required string Status { get; set; }
         public DateTime JoinDate { get; set; }
-
         public required Role Role { get; set; }  // Navigation property
         public required ICollection<Post> Posts { get; set; }
         public required ICollection<Comment> Comments { get; set; }

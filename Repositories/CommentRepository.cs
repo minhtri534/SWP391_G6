@@ -19,9 +19,9 @@ namespace InteligyBackend.Repositories
 
        public async Task<Comment> GetByIdAsync(int id)
         {
-#pragma warning disable CS8603 // Possible null reference return.
+        #pragma warning disable CS8603 // Possible null reference return.
             return await _context.Comments.FindAsync(id);
-#pragma warning restore CS8603 // Possible null reference return.
+        #pragma warning restore CS8603 // Possible null reference return.
         }
 
         public async Task AddAsync(Comment comment)

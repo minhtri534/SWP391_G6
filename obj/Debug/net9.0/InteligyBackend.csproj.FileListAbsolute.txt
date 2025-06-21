@@ -149,6 +149,7 @@ C:\Users\HP\InteligyBackend\obj\Debug\net9.0\InteligyBackend.AssemblyInfo.cs
 C:\Users\HP\InteligyBackend\obj\Debug\net9.0\InteligyBackend.csproj.CoreCompileInputs.cache
 C:\Users\HP\InteligyBackend\obj\Debug\net9.0\InteligyBackend.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\HP\InteligyBackend\obj\Debug\net9.0\InteligyBackend.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\HP\InteligyBackend\obj\Debug\net9.0\InteligyBackend.sourcelink.json
 C:\Users\HP\InteligyBackend\obj\Debug\net9.0\rjimswa.dswa.cache.json
 C:\Users\HP\InteligyBackend\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\HP\InteligyBackend\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
