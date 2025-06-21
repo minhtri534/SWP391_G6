@@ -22,9 +22,7 @@ namespace InteligyBackend.Data
             modelBuilder.Entity<Post>().ToTable("post").HasKey(p => p.PostId);
             modelBuilder.Entity<Comment>().ToTable("comment").HasKey(c => c.CommentId);
             modelBuilder.Entity<Role>().ToTable("role").HasKey(r => r.RoleId);
-            modelBuilder.Entity<User>().HasOne(u => u.Role)
-                .WithMany(r => r.Users)
-                .HasForeignKey(u => u.RoleId);
+            modelBuilder.Entity<User>().HasOne(u => u.Role).WithMany(r => r.Users).HasForeignKey(u => u.RoleId);
         }
     }
 }
