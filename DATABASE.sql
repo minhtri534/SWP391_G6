@@ -1,4 +1,3 @@
-
 CREATE DATABASE SWP391;
 GO
 
@@ -6,45 +5,43 @@ USE SWP391;
 GO
 
 CREATE TABLE role (
-  roleId INT PRIMARY KEY,
-  roleName VARCHAR(100)
+  roleId INT IDENTITY(1,1) PRIMARY KEY,
+  roleName NVARCHAR(100) NOT NULL
 );
 GO
 
 CREATE TABLE users (
-  userId INT PRIMARY KEY,
-  userName VARCHAR(100),
-  age INT,
-  gender VARCHAR(10),
-  phoneNum VARCHAR(20),
-  password VARCHAR(100),
-  roleId INT,
-  status VARCHAR(50),
-  joinDate DATE,
+  userId INT IDENTITY(1,1) PRIMARY KEY,
+  userName NVARCHAR(100) NOT NULL,
+  age INT NOT NULL,
+  gender NVARCHAR(10) NOT NULL,
+  phoneNum NVARCHAR(20) NOT NULL,
+  password NVARCHAR(100) NOT NULL,
+  roleId INT NOT NULL,
+  status NVARCHAR(50) DEFAULT 'Active',
+  joinDate DATE DEFAULT GETDATE(),
   FOREIGN KEY (roleId) REFERENCES role(roleId)
 );
 GO
 
 CREATE TABLE coach_info (
-  coachId INT PRIMARY KEY,
-  userId INT,
-  phoneNum VARCHAR(20),
+  coachId INT IDENTITY(1,1) PRIMARY KEY,
+  userId INT NOT NULL,
+  phoneNum NVARCHAR(20),
   experience INT,
-  available_time VARCHAR(100),
-  specialty VARCHAR(100),
+  available_time NVARCHAR(100),
+  specialty NVARCHAR(100),
   FOREIGN KEY (userId) REFERENCES users(userId)
 );
 GO
 
-
 CREATE TABLE post (
-  postId INT IDENTITY(1,1) PRIMARY KEY,  
+  postId INT IDENTITY(1,1) PRIMARY KEY,
   userId INT NOT NULL,
   content TEXT NOT NULL,
-  create_date DATETIME NOT NULL,         
+  create_date DATETIME DEFAULT GETDATE(),
   FOREIGN KEY (userId) REFERENCES users(userId)
 );
-
 GO
 
 CREATE TABLE comment (
@@ -52,7 +49,7 @@ CREATE TABLE comment (
   postId INT,
   userId INT,
   content TEXT,
-  created_date DATE,
+  created_date DATE DEFAULT GETDATE(),
   FOREIGN KEY (postId) REFERENCES post(postId),
   FOREIGN KEY (userId) REFERENCES users(userId)
 );
@@ -64,7 +61,7 @@ CREATE TABLE report (
   postId INT,
   userId INT,
   commentId INT,
-  create_day DATE,
+  create_day DATE DEFAULT GETDATE(),
   FOREIGN KEY (postId) REFERENCES post(postId),
   FOREIGN KEY (userId) REFERENCES users(userId),
   FOREIGN KEY (commentId) REFERENCES comment(commentId)
@@ -72,9 +69,9 @@ CREATE TABLE report (
 GO
 
 CREATE TABLE quit_plan (
-  planId INT PRIMARY KEY,
-  userId INT,
-  coachId INT,
+  planId INT IDENTITY(1,1) PRIMARY KEY,
+  userId INT NOT NULL,
+  coachId INT NOT NULL,
   statusId INT,
   reason TEXT,
   start_date DATE,
@@ -85,10 +82,10 @@ CREATE TABLE quit_plan (
 GO
 
 CREATE TABLE badge (
-  badgeId INT PRIMARY KEY,
-  badgeName VARCHAR(100),
+  badgeId INT IDENTITY(1,1) PRIMARY KEY,
+  badgeName NVARCHAR(100),
   description TEXT,
-  condition_type VARCHAR(50),
+  condition_type NVARCHAR(50),
   value INT
 );
 GO
@@ -97,7 +94,7 @@ CREATE TABLE plan_milestone (
   milestoneId INT IDENTITY(1,1) PRIMARY KEY,
   planId INT,
   badgeId INT,
-  title VARCHAR(100),
+  title NVARCHAR(100),
   description TEXT,
   target_date DATE,
   FOREIGN KEY (planId) REFERENCES quit_plan(planId),
@@ -111,7 +108,7 @@ CREATE TABLE daily_progress (
   note TEXT,
   no_smoking BIT,
   symptoms TEXT,
-  date DATE,
+  date DATE DEFAULT GETDATE(),
   FOREIGN KEY (milestoneId) REFERENCES plan_milestone(milestoneId)
 );
 GO
@@ -119,10 +116,10 @@ GO
 CREATE TABLE smoking_status (
   statusId INT IDENTITY(1,1) PRIMARY KEY,
   userId INT,
-  time_period VARCHAR(50),
+  time_period NVARCHAR(50),
   milestoneId INT,
   amount_per_day INT,
-  frequency VARCHAR(50),
+  frequency NVARCHAR(50),
   price_per_pack DECIMAL(10, 2),
   description TEXT,
   FOREIGN KEY (userId) REFERENCES users(userId),
@@ -148,8 +145,8 @@ CREATE TABLE notification (
   relatedLogId INT NULL,
   relatedMilestoneId INT NULL,
   message TEXT,
-  send_date DATE,
-  type VARCHAR(50),
+  send_date DATE DEFAULT GETDATE(),
+  type NVARCHAR(50),
   FOREIGN KEY (userId) REFERENCES users(userId),
   FOREIGN KEY (relatedLogId) REFERENCES daily_progress(progressId),
   FOREIGN KEY (relatedMilestoneId) REFERENCES plan_milestone(milestoneId)
@@ -163,7 +160,7 @@ CREATE TABLE feedback (
   planId INT,
   content TEXT,
   rating INT,
-  time_created DATE,
+  time_created DATE DEFAULT GETDATE(),
   FOREIGN KEY (userId) REFERENCES users(userId),
   FOREIGN KEY (coachId) REFERENCES coach_info(coachId),
   FOREIGN KEY (planId) REFERENCES quit_plan(planId)
@@ -171,8 +168,8 @@ CREATE TABLE feedback (
 GO
 
 CREATE TABLE membership (
-  membershipId INT PRIMARY KEY,
-  membershipName VARCHAR(100),
+  membershipId INT IDENTITY(1,1) PRIMARY KEY,
+  membershipName NVARCHAR(100),
   price DECIMAL(10, 2),
   duration INT
 );
@@ -190,59 +187,58 @@ CREATE TABLE user_memberships (
 GO
 
 CREATE TABLE payment (
-  paymentId INT PRIMARY KEY,
+  paymentId INT IDENTITY(1,1) PRIMARY KEY,
   userId_fk INT,
   membershipId_fk INT,
   amount DECIMAL(10, 2),
-  pay_date DATE,
-  method VARCHAR(50),
-  type VARCHAR(50),
-  status VARCHAR(50),
+  pay_date DATE DEFAULT GETDATE(),
+  method NVARCHAR(50),
+  type NVARCHAR(50),
+  status NVARCHAR(50),
   FOREIGN KEY (userId_fk, membershipId_fk) REFERENCES user_memberships(userId, membershipId)
-
 );
 GO
 
 CREATE TABLE chat_log (
-  chatId INT PRIMARY KEY,
+  chatId INT IDENTITY(1,1) PRIMARY KEY,
   userId INT,
   coachId INT,
   content TEXT,
-  type VARCHAR(50),
-  status VARCHAR(50),
-  chat_date DATE,
-  sender VARCHAR(50),
+  type NVARCHAR(50),
+  status NVARCHAR(50),
+  chat_date DATE DEFAULT GETDATE(),
+  sender NVARCHAR(50),
   FOREIGN KEY (userId) REFERENCES users(userId),
   FOREIGN KEY (coachId) REFERENCES coach_info(coachId)
 );
 GO
 
 CREATE TABLE booking_consultation (
-  bookingId INT PRIMARY KEY,
+  bookingId INT IDENTITY(1,1) PRIMARY KEY,
   userId INT,
   coachId INT,
   date DATE,
-  type VARCHAR(50),
-  status VARCHAR(50),
+  type NVARCHAR(50),
+  status NVARCHAR(50),
   FOREIGN KEY (userId) REFERENCES users(userId),
   FOREIGN KEY (coachId) REFERENCES coach_info(coachId)
 );
 GO
 
-INSERT INTO role (roleId, roleName)
+-- Insert mặc định role
+INSERT INTO role (roleName)
 VALUES 
-(1, 'Guest'),
-(2, 'Member'),
-(3, 'Coach'),
-(4, 'Admin');
+('Guest'), 
+('Member'), 
+('Coach'), 
+('Admin');
 GO
 
-INSERT INTO users (userId, userName, age, gender, phoneNum, password, roleId, status, joinDate)
+-- Insert user (không cần truyền userId vì đã có IDENTITY)
+INSERT INTO users (userName, age, gender, phoneNum, password, roleId, status, joinDate)
 VALUES 
-(1, 'Nguyen Van A', 25, 'Male', '0901000001', 'guest123', 1, 'Active', '2025-06-01'), -- Kh�ch
-(2, 'Tran Van B', 28, 'Female', '0901000002', 'member123', 2, 'Active', '2025-06-02'), -- Th�nh Vi�n
-(3, 'Pham Thi C', 35, 'Male', '0901000003', 'coach123', 3, 'Active', '2025-06-03'), -- Hu?n Luy?n Vi�n
-(4, 'Do cao D', 30, 'Other', '0901000004', 'admin123', 4, 'Active', '2025-06-04'); -- Qu?n tr? vi�n
+('Nguyen Van A', 25, 'Male', '0901000001', 'guest123', 1, 'Active', '2025-06-01'),
+('Tran Van B', 28, 'Female', '0901000002', 'member123', 2, 'Active', '2025-06-02'),
+('Pham Thi C', 35, 'Male', '0901000003', 'coach123', 3, 'Active', '2025-06-03'),
+('Do Cao D', 30, 'Other', '0901000004', 'admin123', 4, 'Active', '2025-06-04');
 GO
-
-
