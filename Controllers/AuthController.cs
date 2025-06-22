@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using backend.Data;
+﻿using backend.Data;
 using backend.Models;
 using backend.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +17,6 @@ namespace backend.Controllers
             _context = context;
         }
 
-
         // POST: api/auth/register
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequest user)
@@ -36,7 +34,18 @@ namespace backend.Controllers
                 });
             }
 
-            // 2. Tạo entity mới
+            // 2. Tìm role trong DB (phải tồn tại roleId = 2)
+            var role = await _context.Roles.FindAsync(2);
+            if (role == null)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Role ID 2 not found in database."
+                });
+            }
+
+            // 3. Tạo entity mới với đầy đủ dữ liệu required
             var newUser = new Registration
             {
                 userName = user.UserName,
@@ -47,18 +56,14 @@ namespace backend.Controllers
                 status = "Active",
                 roleId = 2,
                 joinDate = DateTime.Now,
-
-                // Thêm các giá trị required còn thiếu:
-                Role = await _context.Roles.FindAsync(2) ?? throw new Exception("Role not found"),
-                Posts = new List<Post>(),
-                Comments = new List<Comment>()
+                Role = role,
+                Posts = new List<Post>(),     // required
+                Comments = new List<Comment>() // required
             };
-
 
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            // 3. Trả về phản hồi sau khi lưu thành công
             return Ok(new
             {
                 success = true,
@@ -70,6 +75,8 @@ namespace backend.Controllers
                 }
             });
         }
+
+        // POST: api/auth/login
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
@@ -96,9 +103,5 @@ namespace backend.Controllers
 
             return Ok(response);
         }
-
-
-
     }
 }
-               
