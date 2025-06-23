@@ -3,6 +3,7 @@ import AdminSidebar from "../../components/AdminSidebar";
 import AdminTopbar from "../../components/AdminTopbar";
 import Pagination from "../../components/Pagination";
 import { Lock, Pencil, Trash2 } from "lucide-react";
+import AccountModal from "../../components/AccountModal";
 
 function ManageAccounts() {
 	// Fake data
@@ -189,12 +190,16 @@ function ManageAccounts() {
 		},
 	];
 
+	//For pagination
 	const [currentPage, setCurrentPage] = useState(1);
 	const pageSize = 8;
 	const totalPages = Math.ceil(users.length / pageSize);
-
 	const startIndex = (currentPage - 1) * pageSize;
 	const pageUser = users.slice(startIndex, startIndex + pageSize);
+
+	//For popup modal
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [selectedAccount, setSelectedAccount] = useState(null);
 
 	return (
 		<div className="flex h-screen">
@@ -205,10 +210,13 @@ function ManageAccounts() {
 					{/* Header*/}
 					<div className="flex justify-between items-center">
 						<h1 className="text-2xl font-semibold">Manage Accounts</h1>
-						<button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Create Account</button>
+						<button onClick={() => setIsModalOpen(true)} className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+							Create Account
+						</button>
 					</div>
 
 					{/* Filter */}
+					<div></div>
 
 					{/* Bảng người dùng */}
 					<div className="bg-white rounded-xl shadow-md overflow-x-auto">
@@ -244,7 +252,12 @@ function ManageAccounts() {
 											<td className="px-6 py-3">{user.joinDate}</td>
 											<td className="px-6 py-3">
 												<div className="flex justify-end gap-2">
-													<button className="flex items-center gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 transition">
+													<button
+														className="flex items-center gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 transition"
+														onClick={() => {
+															setIsModalOpen(true);
+															setSelectedAccount(user);
+														}}>
 														<Pencil className="w-4 h-4" />
 														Update
 													</button>
@@ -264,7 +277,19 @@ function ManageAccounts() {
 							</tbody>
 						</table>
 					</div>
+
+					{/* Pagination */}
 					{users.length > 0 && <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => setCurrentPage(page)} />}
+
+					{/* Account popup modal */}
+					<AccountModal
+						isOpen={isModalOpen}
+						onClose={() => {
+							setIsModalOpen(false);
+							setSelectedAccount(null);
+						}}
+						initialValues={selectedAccount}
+					/>
 				</div>
 			</div>
 		</div>
