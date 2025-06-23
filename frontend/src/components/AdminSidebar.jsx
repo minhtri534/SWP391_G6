@@ -1,14 +1,15 @@
+import { Award, CircleUser, LayoutDashboard, MessageSquareText } from "lucide-react";
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 
 function AdminSidebar() {
 	const navItems = [
-		{ name: "Dashboard", path: "/Admin/Dashboard" },
-		{ name: "Accounts", path: "/Admin/ManageAccounts" },
-		{ name: "Badges", path: "/Admin/ManageBadges" },
-		{ name: "Report & Feedback", path: "/Admin/ManageReport" },
-		{ name: "Income", path: "/admin/income" },
-		{ name: "Promote", path: "/admin/promote" },
+		{ name: "Dashboard", icon: <LayoutDashboard />, path: "/Admin/Dashboard" },
+		{ name: "Accounts", icon: <CircleUser />, path: "/Admin/ManageAccounts" },
+		{ name: "Badges", icon: <Award />, path: "/Admin/ManageBadges" },
+		{ name: "Report & Feedback", icon: <MessageSquareText />, path: "/Admin/ManageReport" },
+		// { name: "Income", path: "/admin/income" },
+		// { name: "Promote", path: "/admin/promote" },
 	];
 
 	return (
@@ -26,6 +27,7 @@ function AdminSidebar() {
 						<NavLink
 							to={item.path}
 							className={({ isActive }) => `block px-4 py-2 rounded-lg transition-colors duration-200 ${isActive ? "bg-green-100 text-green-700 font-semibold" : "text-gray-700 hover:bg-gray-100"}`}>
+							{item.icon}
 							{item.name}
 						</NavLink>
 					</li>

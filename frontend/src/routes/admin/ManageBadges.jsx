@@ -8,7 +8,6 @@ function ManageBadges() {
 			<AdminSidebar />
 			<div className="flex-1 flex flex-col">
 				<AdminTopbar />
-				Manage Badges
 			</div>
 		</div>
 	);
