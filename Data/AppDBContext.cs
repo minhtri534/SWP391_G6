@@ -18,6 +18,7 @@ namespace backend.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Notification> Notifications  { get; set; }
+        public DbSet<DailyProgress> DailyProgresses { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,9 +29,10 @@ namespace backend.Data
             modelBuilder.Entity<Post>().ToTable("post").HasKey(p => p.PostId);
             modelBuilder.Entity<Comment>().ToTable("comment").HasKey(c => c.CommentId);
             modelBuilder.Entity<Role>().ToTable("role").HasKey(r => r.RoleId);
-            modelBuilder.Entity<Registration>().HasOne(u => u.Role ).WithMany(r => r.Users).HasForeignKey(u => u.roleId);
+            modelBuilder.Entity<Registration>().HasOne(u => u.Role).WithMany(r => r.Users).HasForeignKey(u => u.roleId);
             modelBuilder.Entity<Report>().ToTable("report").HasKey(r => r.ReportId);
             modelBuilder.Entity<Notification>().ToTable("notification").HasKey(n => n.NotificationId);
+            modelBuilder.Entity<DailyProgress>().ToTable("daily_progress").HasKey(dp => dp.progressId);
         }
     }
 }
