@@ -4,6 +4,7 @@ import React from "react";
 import * as Yup from "yup";
 
 function AccountModal({ isOpen, onClose, initialValues }) {
+	// Input field validation schemes
 	const validation = Yup.object({
 		userName: Yup.string().required("Username is required"),
 		age: Yup.number().required("Age is required").min(0, "Age cannot be negative").max(150, "This age is invalid"),
@@ -15,10 +16,20 @@ function AccountModal({ isOpen, onClose, initialValues }) {
 		status: Yup.string().required("Please choose account status"),
 	});
 
+	// Decide create or update action
 	const isUpdating = Boolean(initialValues);
 
+	// Form control
 	const formik = useFormik({
-		initialValues: {},
+		initialValues: initialValues || {
+			userName: "",
+			age: 0,
+			gender: "",
+			phoneNum: "",
+			password: "",
+			roleId: null,
+			status: "",
+		},
 		onSubmit: async (values) => {
 			try {
 				console.log(values);
@@ -35,6 +46,7 @@ function AccountModal({ isOpen, onClose, initialValues }) {
 	});
 
 	if (!isOpen) return null;
+
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/50">
 			<div className="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
@@ -49,13 +61,21 @@ function AccountModal({ isOpen, onClose, initialValues }) {
 					<div className="grid grid-cols-2 gap-4">
 						<div>
 							<label className="block text-sm font-medium text-gray-700">Username</label>
-							<input type="text" name="userName" value={formik.values.userName} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full border p-2 rounded" />
+							<input
+								type="text"
+								name="userName"
+								placeholder="Enter username..."
+								value={formik.values.userName}
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								className="w-full border p-2 rounded"
+							/>
 							{formik.touched.userName && formik.errors.userName && <div className="text-red-500 text-sm mt-1">{formik.errors.userName}</div>}
 						</div>
 
 						<div>
 							<label className="block text-sm font-medium text-gray-700">Age</label>
-							<input type="number" name="age" value={formik.values.age} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full border p-2 rounded" />
+							<input type="number" name="age" placeholder="Enter age..." value={formik.values.age} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full border p-2 rounded" />
 							{formik.touched.age && formik.errors.age && <div className="text-red-500 text-sm mt-1">{formik.errors.age}</div>}
 						</div>
 
@@ -71,13 +91,29 @@ function AccountModal({ isOpen, onClose, initialValues }) {
 
 						<div>
 							<label className="block text-sm font-medium text-gray-700">Phone Number</label>
-							<input type="tel" name="phoneNum" value={formik.values.phoneNum} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full border p-2 rounded" />
+							<input
+								type="tel"
+								name="phoneNum"
+								placeholder="Enter phone number..."
+								value={formik.values.phoneNum}
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								className="w-full border p-2 rounded"
+							/>
 							{formik.touched.phoneNum && formik.errors.phoneNum && <div className="text-red-500 text-sm mt-1">{formik.errors.phoneNum}</div>}
 						</div>
 
 						<div>
 							<label className="block text-sm font-medium text-gray-700">Password</label>
-							<input name="password" type="password" value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full border p-2 rounded" />
+							<input
+								name="password"
+								type="password"
+								placeholder="Enter password..."
+								value={formik.values.password}
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								className="w-full border p-2 rounded"
+							/>
 							{formik.touched.password && formik.errors.password && <div className="text-red-500 text-sm mt-1">{formik.errors.password}</div>}
 						</div>
 
@@ -113,7 +149,7 @@ function AccountModal({ isOpen, onClose, initialValues }) {
 							Cancel
 						</button>
 						<button type="submit" disabled={formik.isSubmitting} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-							{initialValues ? "Update" : "Create"}
+							{initialValues ? (formik.isSubmitting ? "Updating..." : "Update") : formik.isSubmitting ? "Creating..." : "Create"}
 						</button>
 					</div>
 				</form>
