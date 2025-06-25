@@ -13,7 +13,7 @@ function AdminSidebar() {
 	];
 
 	return (
-		<aside className="w-60 bg-white p-4 border-r min-h-screen">
+		<aside className="w-60 fixed top-0 left-0 h-screen bg-white p-4 border-r z-20">
 			<Link to={`/`}>
 				<div className="text-xl font-semibold mb-6">
 					<span className="text-orange-500">Quit</span>

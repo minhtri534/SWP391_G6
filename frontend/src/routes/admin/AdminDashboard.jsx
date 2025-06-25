@@ -4,11 +4,15 @@ import AdminTopbar from "../../components/AdminTopbar";
 
 function AdminDashboard() {
 	return (
-		<div className="flex h-screen">
+		<div className="flex">
 			<AdminSidebar />
-			<div className="flex-1 flex flex-col overflow-y-auto">
+			<div className="ml-60 flex-1 flex flex-col h-screen overflow-hidden">
 				<AdminTopbar />
-				<div className="p-6 space-y-6 max-w-screen-2xl">
+				<div
+					className="flex-1 overflow-y-auto p-6 space-y-6"
+					style={{
+						background: "linear-gradient(to bottom, #98fcb1, #d0f3a3)",
+					}}>
 					{/* Header */}
 					<div className="flex justify-between items-center">
 						<h1 className="text-2xl font-semibold">Dashboard</h1>
