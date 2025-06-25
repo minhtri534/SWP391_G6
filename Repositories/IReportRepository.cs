@@ -12,6 +12,7 @@ namespace backend.Repositories
         Task DeletePostAsync(int postId);
         Task DeleteCommentAsync(int commentId);
         Task AddReportAsync(Report report);
+        Task DeleteReportAsync(int ReportId);
 
 
     }

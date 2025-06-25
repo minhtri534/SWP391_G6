@@ -33,7 +33,7 @@ namespace backend.Services
         #pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         {
             var post = await _repo.GetByUserIdAsync(id);
-#pragma warning disable CS8604 // Possible null reference argument.
+            #pragma warning disable CS8604 // Possible null reference argument.
             return post.Select(post => new PostDto
             {
                 PostId = post.PostId,
@@ -41,7 +41,7 @@ namespace backend.Services
                 Content = post.Content,
                 Create_date = post.Create_date
             }).ToList();
-#pragma warning restore CS8604 // Possible null reference argument.
+            #pragma warning restore CS8604 // Possible null reference argument.
         }
 
         public async Task<PostDto> CreatePostAsync(CreatePostDto dto)

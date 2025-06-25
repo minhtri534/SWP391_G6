@@ -53,6 +53,16 @@ namespace backend.Repositories
             }
         }
 
+        public async Task DeleteReportAsync(int ReportId)
+        {
+            var report = await _context.Reports.FindAsync(ReportId);
+            if (report != null)
+            {
+                _context.Reports.Remove(report);
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public async Task AddReportAsync(Report report)
         {
             await _context.Reports.AddAsync(report);

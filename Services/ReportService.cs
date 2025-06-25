@@ -17,13 +17,20 @@ namespace backend.Services
             _context = context;
         }
 
-        // EPIC 9: Tạo báo cáo
-        public async Task<ServiceAccessResult> CreateReportAsync(CreateReportDto dto)
+        public async Task<ServiceAccessResult> CreateReportAsync(CreateReportDto dto, int userId)
         {
             if ((dto.PostId == null && dto.CommentId == null) || (dto.PostId != null && dto.CommentId != null))
             {
                 return ServiceAccessResult.Forbid("Report must be either for a post or a comment, not both.");
             }
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return ServiceAccessResult.NotFound("User not found");
+
+            if (user.roleId != 2 && user.roleId != 3)
+                return ServiceAccessResult.Forbid("Only admin can perform this action.");
+
 
             var report = new Report
             {
@@ -69,9 +76,16 @@ namespace backend.Services
             };
         }
 
-        // EPIC 10
-        public async Task<ServiceAccessResult> DeletePostAsync(int postId)
+        public async Task<ServiceAccessResult> DeletePostAsync(int postId, int userId)
         {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return ServiceAccessResult.NotFound("User not found");
+
+            if (user.roleId != 4)
+                return ServiceAccessResult.Forbid("Only admin can perform this action.");
+
+
             var report = await _repository.GetReportByIdAsync(postId);
             if (report?.Post == null)
                 return ServiceAccessResult.NotFound("Post not found in report");
@@ -80,8 +94,16 @@ namespace backend.Services
             return ServiceAccessResult.Ok();
         }
 
-        public async Task<ServiceAccessResult> DeleteCommentAsync(int commentId)
+        public async Task<ServiceAccessResult> DeleteCommentAsync(int commentId, int userId)
         {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return ServiceAccessResult.NotFound("User not found");
+
+            if (user.roleId != 4)
+                return ServiceAccessResult.Forbid("Only admin can perform this action.");
+
+
             var report = await _repository.GetReportByIdAsync(commentId);
             if (report?.Comment == null)
                 return ServiceAccessResult.NotFound("Comment not found in report");
@@ -89,5 +111,22 @@ namespace backend.Services
             await _repository.DeleteCommentAsync(commentId);
             return ServiceAccessResult.Ok();
         }
+        public async Task<ServiceAccessResult> DeleteReportAsync(int ReportId, int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return ServiceAccessResult.NotFound("User not found");
+
+            if (user.roleId != 4)
+                return ServiceAccessResult.Forbid("Only admin can perform this action.");
+
+
+            var report = await _repository.GetReportByIdAsync(ReportId);
+            if (report == null)
+                return ServiceAccessResult.NotFound("Report not found in report");
+
+            await _repository.DeleteReportAsync(ReportId);
+            return ServiceAccessResult.Ok();
+        }        
     }
 }

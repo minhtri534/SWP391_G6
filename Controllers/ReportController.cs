@@ -16,7 +16,6 @@ namespace backend.Controllers
             _reportService = reportService;
         }
 
-        // 🟢 API: Lấy tất cả báo cáo vi phạm
         [HttpGet]
         public async Task<IActionResult> GetAllReports()
         {
@@ -24,7 +23,6 @@ namespace backend.Controllers
             return Ok(reports);
         }
 
-        // 🟡 API: Xem chi tiết 1 báo cáo theo reportId
         [HttpGet("{id}")]
         public async Task<IActionResult> GetReportById(int id)
         {
@@ -35,37 +33,45 @@ namespace backend.Controllers
             return Ok(report);
         }
 
-        // 🔴 API: Admin xóa bài viết vi phạm
         [HttpDelete("post/{postId}")]
-        public async Task<IActionResult> DeletePost(int postId)
+        public async Task<IActionResult> DeletePost(int postId, [FromQuery] int userId)
         {
-            var result = await _reportService.DeletePostAsync(postId);
+            var result = await _reportService.DeletePostAsync(postId, userId);
             if (!result.Allowed)
                 return result.ErrorResult;
 
             return Ok("Post deleted successfully");
         }
 
-        // 🔴 API: Admin xóa bình luận vi phạm
         [HttpDelete("comment/{commentId}")]
-        public async Task<IActionResult> DeleteComment(int commentId)
+        public async Task<IActionResult> DeleteComment(int commentId, [FromQuery] int userId)
         {
-            var result = await _reportService.DeleteCommentAsync(commentId);
+            var result = await _reportService.DeleteCommentAsync(commentId, userId);
             if (!result.Allowed)
                 return result.ErrorResult;
 
             return Ok("Comment deleted successfully");
         }
 
-        // 🟢 API: Thành viên/HLV gửi báo cáo vi phạm
         [HttpPost]
-        public async Task<IActionResult> CreateReport([FromBody] CreateReportDto dto)
+        public async Task<IActionResult> CreateReport([FromBody] CreateReportDto dto, [FromQuery] int userId)
         {
-            var result = await _reportService.CreateReportAsync(dto);
+            var result = await _reportService.CreateReportAsync(dto, userId);
             if (!result.Allowed)
                 return result.ErrorResult;
 
             return Ok("Report submitted successfully");
         }
+        
+        [HttpDelete("report/{ReportId}")]
+        public async Task<IActionResult> DeleteReport(int ReportId, [FromQuery] int userId)
+        {
+            var result = await _reportService.DeleteReportAsync(ReportId, userId);
+            if (!result.Allowed)
+                return result.ErrorResult;
+
+            return Ok("Report deleted successfully");
+        }
+
     }
 }
