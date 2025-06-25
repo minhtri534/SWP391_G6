@@ -12,7 +12,7 @@ CREATE TABLE role (
 GO
 
 CREATE TABLE users (
-  userId INT PRIMARY KEY,
+  userId INT IDENTITY(1,1) PRIMARY KEY,
   userName VARCHAR(100),
   age INT,
   gender VARCHAR(10),
@@ -107,12 +107,12 @@ GO
 
 CREATE TABLE daily_progress (
   progressId INT IDENTITY(1,1) PRIMARY KEY,
-  milestoneId INT,
+  userId INT,                           
   note TEXT,
   no_smoking BIT,
   symptoms TEXT,
   date DATE,
-  FOREIGN KEY (milestoneId) REFERENCES plan_milestone(milestoneId)
+  FOREIGN KEY (userId) REFERENCES users(userId) 
 );
 GO
 
@@ -253,12 +253,12 @@ VALUES
 (4, 'Admin');
 GO
 
-INSERT INTO users (userId, userName, age, gender, phoneNum, password, roleId, status, joinDate)
+INSERT INTO users (userName, age, gender, phoneNum, password, roleId, status, joinDate)
 VALUES 
-(1, 'Nguyen Van A', 25, 'Male', '0901000001', 'guest123', 1, 'Active', '2025-06-01'),
-(2, 'Tran Van B', 28, 'Female', '0901000002', 'member123', 2, 'Active', '2025-06-02'),
-(3, 'Pham Thi C', 35, 'Male', '0901000003', 'coach123', 3, 'Active', '2025-06-03'),
-(4, 'Do cao D', 30, 'Other', '0901000004', 'admin123', 4, 'Active', '2025-06-04');
+('Nguyen Van A', 25, 'Male', '0901000001', 'guest123', 1, 'Active', '2025-06-01'),
+('Tran Van B', 28, 'Female', '0901000002', 'member123', 2, 'Active', '2025-06-02'),
+('Pham Thi C', 35, 'Male', '0901000003', 'coach123', 3, 'Active', '2025-06-03'),
+('Do cao D', 30, 'Other', '0901000004', 'admin123', 4, 'Active', '2025-06-04');
 GO
 
 
