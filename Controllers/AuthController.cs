@@ -21,7 +21,6 @@ namespace backend.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequest user)
         {
-            // 1. Kiểm tra username đã tồn tại chưa
             var existingUser = await _context.Users
                 .FirstOrDefaultAsync(u => u.userName == user.UserName); 
 
@@ -34,7 +33,6 @@ namespace backend.Controllers
                 });
             }
 
-            // 2. Tìm role trong DB (phải tồn tại roleId = 2)
             var role = await _context.Roles.FindAsync(2);
             if (role == null)
             {
@@ -45,7 +43,6 @@ namespace backend.Controllers
                 });
             }
 
-            // 3. Tạo entity mới với đầy đủ dữ liệu required
             var newUser = new Registration
             {
                 userName = user.UserName,
@@ -76,7 +73,6 @@ namespace backend.Controllers
             });
         }
 
-        // POST: api/auth/login
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {

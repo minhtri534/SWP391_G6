@@ -5,12 +5,12 @@ using backend.Entities;
 
 namespace backend.Models
 {
-    [Table("users")] // nếu bảng trong SQL là users
+    [Table("users")] 
     public class Registration
     {
         [Key]
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // để SQL tự sinh số
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
         public int userId { get; set; }
 
         public required string userName { get; set; }
@@ -22,7 +22,7 @@ namespace backend.Models
         public int roleId { get; set; }
         public DateTime joinDate { get; set; }
 
-        public required Role Role { get; set; }  // Navigation property
+        public required Role Role { get; set; }  
         public required ICollection<Post> Posts { get; set; }
         public required ICollection<Comment> Comments { get; set; }
         

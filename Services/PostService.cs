@@ -48,12 +48,10 @@ namespace backend.Services
 
         public async Task<PostDto> CreatePostAsync(CreatePostDto dto)
         {
-            //Ensure User exists (required property)
             var user = await _context.Users.FindAsync(dto.UserId);
             if (user == null)
                 throw new Exception("User not found.");
 
-            //Initialize required properties: User and Comments
             var post = new Post
             {
                 UserId = dto.UserId,

@@ -9,13 +9,10 @@ namespace backend.Entities
     {
         [Key]
         public int ReportId { get; set; }
-
         public required string Content { get; set; }
-
         public int? PostId { get; set; }
         public int? UserId { get; set; }
         public int? CommentId { get; set; }
-
         [Column("create_day")]
         public DateTime CreateDay { get; set; } = DateTime.Today;
         public Post? Post { get; set; }
