@@ -19,6 +19,10 @@ namespace backend.Controllers
         public async Task<IActionResult> GetAll()
         {
             var posts = await _service.GetAllPostsAsync();
+            if (posts == null)
+            {
+                return NotFound("Post not found");                          
+            }
             return Ok(posts);
         }
 

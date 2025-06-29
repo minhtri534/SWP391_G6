@@ -23,6 +23,7 @@ namespace backend.Services
             {
                 PostId = p.PostId,
                 UserId = p.UserId,
+                Title = p.Title,
                 Content = p.Content,
                 Create_date = p.Create_date
             });
@@ -38,6 +39,7 @@ namespace backend.Services
             {
                 PostId = post.PostId,
                 UserId = post.UserId,
+                Title = post.Title,
                 Content = post.Content,
                 Create_date = post.Create_date
             }).ToList();
@@ -55,6 +57,7 @@ namespace backend.Services
             var post = new Post
             {
                 UserId = dto.UserId,
+                Title = dto.Title,
                 Content = dto.Content,
                 Create_date = DateTime.UtcNow.Date,
                 User = user,
@@ -67,6 +70,7 @@ namespace backend.Services
             {
                 PostId = result.PostId,
                 UserId = result.UserId,
+                Title = result.Title,
                 Content = result.Content,
                 Create_date = result.Create_date
             };

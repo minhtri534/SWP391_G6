@@ -19,6 +19,9 @@ namespace backend.Data
         public DbSet<Report> Reports { get; set; }
         public DbSet<Notification> Notifications  { get; set; }
         public DbSet<DailyProgress> DailyProgresses { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<CoachInfo> CoachInfos { get; set; }
+        public DbSet<QuitPlan> QuitPlans { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,6 +36,9 @@ namespace backend.Data
             modelBuilder.Entity<Report>().ToTable("report").HasKey(r => r.ReportId);
             modelBuilder.Entity<Notification>().ToTable("notification").HasKey(n => n.NotificationId);
             modelBuilder.Entity<DailyProgress>().ToTable("daily_progress").HasKey(dp => dp.progressId);
+            modelBuilder.Entity<Feedback>().ToTable("feedback").HasKey(f => f.FeedbackId);
+            modelBuilder.Entity<CoachInfo>().ToTable("coach_info").HasKey(c => c.CoachId);
+            modelBuilder.Entity<QuitPlan>().ToTable("quit_plan").HasKey(q => q.PlanId);
         }
     }
 }
