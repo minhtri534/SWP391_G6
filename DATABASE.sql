@@ -40,6 +40,7 @@ GO
 CREATE TABLE post (
   postId INT IDENTITY(1,1) PRIMARY KEY,  
   userId INT NOT NULL,
+  title TEXT NOT NULL,
   content TEXT NOT NULL,
   create_date DATETIME NOT NULL,         
   FOREIGN KEY (userId) REFERENCES users(userId)
@@ -259,6 +260,10 @@ VALUES
 ('Tran Van B', 28, 'Female', '0901000002', 'member123', 2, 'Active', '2025-06-02'),
 ('Pham Thi C', 35, 'Male', '0901000003', 'coach123', 3, 'Active', '2025-06-03'),
 ('Do cao D', 30, 'Other', '0901000004', 'admin123', 4, 'Active', '2025-06-04');
+GO
+
+INSERT INTO coach_info (coachId, userId, phoneNum, experience, available_time, specialty)
+VALUES (1, 3, '0901000003', 5, 'Weekdays 9am-5pm', 'Smoking Cessation');
 GO
 
 
