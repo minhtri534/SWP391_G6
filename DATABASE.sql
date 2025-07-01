@@ -245,6 +245,17 @@ CREATE TABLE transaction_money (
 );
 GO
 
+CREATE TABLE user_badge (
+  userId INT,
+  badgeId INT,
+  date_awarded DATE,
+  PRIMARY KEY (userId, badgeId),
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (badgeId) REFERENCES badge(badgeId)
+);
+GO
+
+
 
 INSERT INTO role (roleId, roleName)
 VALUES 
