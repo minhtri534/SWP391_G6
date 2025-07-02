@@ -26,6 +26,9 @@ namespace backend.Data
     public DbSet<Role> Roles { get; set; }
     public DbSet<CoachInfo> CoachInfos { get; set; }
     public DbSet<Post> Posts { get; set; }
+    public DbSet<Registration> Users { get; set; }
+    public DbSet<Badge> Badges { get; set; }
+    public DbSet<CoachPlanBadge> CoachPlanBadges { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,7 +48,6 @@ namespace backend.Data
       modelBuilder.Entity<QuitPlan>().ToTable("quit_plan").HasKey(q => q.PlanId);
     }
   }
-
-
 }
+
 
