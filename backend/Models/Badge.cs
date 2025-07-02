@@ -1,0 +1,16 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace backend.Models
+{
+    [Table("badge")]
+    public class Badge
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int BadgeId { get; set; }
+
+        public string? BadgeName { get; set; }
+        public string? Description { get; set; }
+        public string? Condition_Type { get; set; }
+        public int Value { get; set; }
+    }
+}
