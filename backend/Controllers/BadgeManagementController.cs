@@ -108,7 +108,7 @@ namespace backend.Controllers
                 .Join(_context.Badges.Select(a => new {BadgeId = a.BadgeId, BadgeName = a.BadgeName}), 
                 c => c.BadgeId, 
                 d => d.BadgeId, 
-                (c, d) => new {BadgeName = d}).Select(a => a.BadgeName)
+                (c, d) => new {BadgeName = d})
                 .GroupBy(a => a.BadgeName)
                 .Select(b => new {BadgeName = b.Key, Count = b.Count()});
 
