@@ -1,10 +1,7 @@
-using Azure.Core;
 using backend.Data;
 using backend.Models;
-using FsCheck.Experimental;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Controllers
@@ -53,6 +50,7 @@ namespace backend.Controllers
             {
                 var results = await _context.ChatLog
                     .Where(a => a.UserId == request.UserId && a.CoachId == request.CoachId)
+                    .OrderByDescending(a => a.Chat_Date)
                     .ToListAsync();
 
                 if (results.IsNullOrEmpty())
