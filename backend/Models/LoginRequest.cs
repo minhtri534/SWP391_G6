@@ -1,9 +1,13 @@
-﻿namespace backend.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace backend.Models
 {
     public class LoginRequest
     {
-        public string UserName { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-    }
+        [Required (ErrorMessage ="You must enter your Username")]
+        public string Username { get; set; }
 
+        [Required (ErrorMessage = "You must enter your password")]
+        public string Password { get; set; }
+    }
 }
