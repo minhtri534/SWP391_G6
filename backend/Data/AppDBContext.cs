@@ -19,8 +19,8 @@ namespace backend.Data
     public DbSet<Badge> Badges { get; set; }
     public DbSet<CoachPlanBadge> CoachPlanBadges { get; set; }
     public DbSet<Notification> Notifications { get; set; }
-        
+    public DbSet<User> Users { get; set; }
     }
-        public DbSet<User> Users { get; set; }
+        
     }
 }
