@@ -84,8 +84,8 @@ function Home() {
 
         {/* Articles */}
         <section className="articles">
-          <h2 style={{ color: "black", fontSize: "15px", marginBottom: "30px", textAlign: "center", marginLeft: "1%" }}>
-            <b>📚 ARTICLES & TOOLS</b>
+          <h2 style={{ color: "black", fontSize: "15px", marginBottom: "30px", textAlign: "center", marginLeft: "44%" }}>
+            📚 ARTICLES & TOOLS
           </h2>
           <div className="article-grid" style={{
             display: "grid",
