@@ -1,19 +1,17 @@
-import { Award, CircleUser, LayoutDashboard, LogOut, MessageSquareText, User } from "lucide-react";
+import { BellDot, Calendar, LayoutDashboard, LogOut, MessageSquareMore, User, Users } from "lucide-react";
 import React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
-function AdminSidebar() {
+function CoachSidebar() {
 	const navigate = useNavigate();
-
 	const navItems = [
-		{ name: "Dashboard", icon: <LayoutDashboard />, path: "/Admin/Dashboard" },
-		{ name: "Accounts", icon: <CircleUser />, path: "/Admin/ManageAccounts" },
-		{ name: "Badges", icon: <Award />, path: "/Admin/ManageBadges" },
-		{ name: "Report & Feedback", icon: <MessageSquareText />, path: "/Admin/ManageReport" },
-		// { name: "Income", path: "/admin/income" },
-		// { name: "Promote", path: "/admin/promote" },
+		{ name: "Dashboard", icon: <LayoutDashboard />, path: "/Coach/Home" },
+		{ name: "Member", icon: <Users />, path: "/Coach/Member" },
+		{ name: "Notification", icon: <BellDot />, path: "/Coach/Notification" },
+		{ name: "Feedback", icon: <MessageSquareMore />, path: "/Coach/Feedback" },
 	];
 
+	//remove user token and navigate to Login page
 	const handleLogout = () => {
 		//Remove token
 		//...
@@ -24,14 +22,14 @@ function AdminSidebar() {
 	return (
 		<aside className="w-60 fixed top-0 left-0 h-screen bg-white p-4 border-r z-20 flex flex-col justify-between">
 			<div>
-				<Link to={`/Admin/Dashboard`}>
+				<Link to={`/Coach/Home`}>
 					<div className="mb-6">
 						<div className="text-xl font-semibold flex items-baseline">
 							<span className="text-orange-500">Quit</span>
 							<span className="text-green-600">Smoking</span>
 							<div className="flex flex-col leading-none">
 								<span className="text-gray-500">.com</span>
-								<span className="text-xs text-green-500 ml-0.5">Admin</span>
+								<span className="text-xs text-green-500 ml-0.5">Coach</span>
 							</div>
 						</div>
 					</div>
@@ -73,4 +71,4 @@ function AdminSidebar() {
 	);
 }
 
-export default AdminSidebar;
+export default CoachSidebar;

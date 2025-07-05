@@ -2,6 +2,8 @@ import { useFormik } from "formik";
 import { X } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
+import { addUser, updateUser } from "../api/Users";
+import { toast } from "react-toastify";
 
 function AccountModal({ isOpen, onClose, initialValues }) {
 	// Input field validation schemes
@@ -21,6 +23,7 @@ function AccountModal({ isOpen, onClose, initialValues }) {
 
 	// Form control
 	const formik = useFormik({
+		enableReinitialize: true,
 		initialValues: initialValues || {
 			userName: "",
 			age: 0,
@@ -35,11 +38,17 @@ function AccountModal({ isOpen, onClose, initialValues }) {
 				console.log(values);
 				if (isUpdating) {
 					// Do updating account
+					await updateUser(values);
+					toast.success("Account updated successfully!");
 				} else {
 					// Do creating account
+					await addUser(values);
+					toast.success("Account created successfully!");
 				}
+				onClose();
 			} catch (error) {
-				console.log(error);
+				console.error(error);
+				toast.error(error?.response?.data?.message || error.message || "Something went wrong.");
 			}
 		},
 		validationSchema: validation,
@@ -120,7 +129,7 @@ function AccountModal({ isOpen, onClose, initialValues }) {
 						<div>
 							<label className="block text-sm font-medium text-gray-700">Role</label>
 							<select name="roleId" value={formik.values.roleId} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full border p-2 rounded">
-								<option>Select role</option>
+								<option value={""}>Select role</option>
 								<option value={1}>Admin</option>
 								<option value={2}>Member</option>
 								<option value={3}>Coach</option>
@@ -131,7 +140,7 @@ function AccountModal({ isOpen, onClose, initialValues }) {
 						<div>
 							<label className="block text-sm font-medium text-gray-700">Status</label>
 							<select name="status" value={formik.values.status} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full border p-2 rounded">
-								<option>Select status</option>
+								<option value={""}>Select status</option>
 								<option value="Active">Active</option>
 								<option value="Inactive">Inactive</option>
 								<option value="Locked">Locked</option>

@@ -1,7 +1,7 @@
 import { Bell, CircleUserRound } from "lucide-react";
 import React from "react";
 
-function AdminTopbar({ title }) {
+function CoachTopbar({ title }) {
 	return (
 		<div className="flex justify-between items-center p-4 bg-green-300">
 			<h1 className="text-2xl font-semibold">{title}</h1>
@@ -13,4 +13,4 @@ function AdminTopbar({ title }) {
 	);
 }
 
-export default AdminTopbar;
+export default CoachTopbar;

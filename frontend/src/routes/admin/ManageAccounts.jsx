@@ -4,10 +4,13 @@ import AdminTopbar from "../../components/AdminTopbar";
 import Pagination from "../../components/Pagination";
 import { Lock, Pencil, Trash2 } from "lucide-react";
 import AccountModal from "../../components/AccountModal";
+import { deleteUser, getUsers } from "../../api/Users";
+import { toast } from "react-toastify";
+import DeleteConfirmation from "../../components/DeleteConfirmation";
 
 function ManageAccounts() {
 	// Fake data
-	const users = [
+	const [users, setUsers] = useState([
 		{
 			userId: 1,
 			userName: "alice",
@@ -68,7 +71,24 @@ function ManageAccounts() {
 			joinDate: "2023-04-10",
 			badgeId: 2,
 		},
-	];
+	]);
+
+	// Get member list
+	useEffect(() => {
+		const fetchUsers = async () => {
+			try {
+				const data = await getUsers();
+				//some filtering if needed
+				//...
+				setUsers(data);
+			} catch (error) {
+				console.error(error);
+				toast.error(error?.response?.data?.message || error.message || "Failed to load members.");
+			}
+		};
+
+		fetchUsers();
+	}, []);
 
 	//For filter and sort
 	const [searchName, setSearchName] = useState("");
@@ -119,29 +139,33 @@ function ManageAccounts() {
 		setCurrentPage(1);
 	}, [searchName, filterGender, filterRole, filterStatus, sortOption]);
 
+	// if currentPage > totalPages after deletion, bring it back in range
+	useEffect(() => {
+		if (currentPage > totalPages) {
+			setCurrentPage(totalPages);
+		}
+	}, [users, totalPages, currentPage]);
+
 	//For popup modal
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
 	const [selectedAccount, setSelectedAccount] = useState(null);
+	const [selectedDeleteAccount, setSelectedDeleteAccount] = useState(null);
 
 	return (
 		<div className="flex">
 			<AdminSidebar />
 			<div className="ml-60 flex-1 flex flex-col h-screen overflow-hidden">
-				<AdminTopbar />
+				<AdminTopbar title={"Accounts Manager"} />
 				<div
 					className="flex-1 overflow-y-auto p-6 space-y-6"
 					style={{
 						background: "linear-gradient(to bottom, #98fcb1, #d0f3a3)",
 					}}>
 					{/* Header*/}
-					<div className="flex justify-between items-center">
-						<h1 className="text-2xl font-semibold">Manage Accounts</h1>
-						<button onClick={() => setIsModalOpen(true)} className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 hover:cursor-pointer transition">
-							Create Account
-						</button>
-					</div>
+					<div className="flex justify-between items-center"></div>
 
-					{/* Filter */}
+					{/* Filter and sort */}
 					<div className="bg-green-50 p-4 rounded-lg shadow flex flex-wrap gap-4">
 						<input type="text" placeholder="Search username..." className="border rounded px-3 py-2 w-48" value={searchName} onChange={(e) => setSearchName(e.target.value)} />
 
@@ -173,6 +197,9 @@ function ManageAccounts() {
 							<option value="joinAsc">Join Date ascending</option>
 							<option value="joinDesc">Join Date descending</option>
 						</select>
+						<button onClick={() => setIsModalOpen(true)} className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 hover:cursor-pointer transition">
+							Create Account
+						</button>
 					</div>
 
 					{/* Account table */}
@@ -194,13 +221,13 @@ function ManageAccounts() {
 								{users.length === 0 ? (
 									<tr>
 										<td colSpan="8" className="text-center text-lg px-6 py-4 text-red-500">
-											No users found.
+											No users retrieved. Check your network or database.
 										</td>
 									</tr>
 								) : pageUser.length === 0 ? (
 									<tr>
 										<td colSpan="8" className="text-center text-lg px-6 py-4 text-red-500">
-											No users found.
+											No users matched your search or filters.
 										</td>
 									</tr>
 								) : (
@@ -228,7 +255,12 @@ function ManageAccounts() {
 														<Lock className="w-4 h-4" />
 														Lock
 													</button>
-													<button className="flex items-center gap-1 px-3 py-1 border rounded text-red-600 border-red-600 hover:bg-red-50 hover:cursor-pointer transition">
+													<button
+														className="flex items-center gap-1 px-3 py-1 border rounded text-red-600 border-red-600 hover:bg-red-50 hover:cursor-pointer transition"
+														onClick={() => {
+															setSelectedDeleteAccount({ userId: user.userId, userName: user.userName });
+															setIsConfirmDeleteOpen(true);
+														}}>
 														<Trash2 className="w-4 h-4" />
 														Delete
 													</button>
@@ -253,6 +285,30 @@ function ManageAccounts() {
 							setSelectedAccount(null);
 						}}
 						initialValues={selectedAccount}
+					/>
+
+					{/* Delete Confirmation popup modal */}
+					<DeleteConfirmation
+						isOpen={isConfirmDeleteOpen}
+						onCancel={() => {
+							setSelectedDeleteAccount(null);
+							setIsConfirmDeleteOpen(false);
+						}}
+						message={selectedDeleteAccount ? `Do you want to remove account ${selectedDeleteAccount.userName}?` : ""}
+						onConfirm={async () => {
+							try {
+								await deleteUser(selectedDeleteAccount.userId);
+								toast.success("Remove account successfully!!!");
+								// Update user list
+								setUsers((prev) => prev.filter((u) => u.userId !== selectedDeleteAccount.userId));
+							} catch (error) {
+								console.error(error);
+								toast.error(error?.response?.data?.message || error.message || "Failed to remove account.");
+							} finally {
+								setIsConfirmDeleteOpen(false);
+								setSelectedDeleteAccount(null);
+							}
+						}}
 					/>
 				</div>
 			</div>

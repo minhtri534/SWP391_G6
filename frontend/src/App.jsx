@@ -12,6 +12,10 @@ import AdminDashboard from "./routes/admin/AdminDashboard";
 import ManageAccounts from "./routes/admin/ManageAccounts";
 import ManageBadges from "./routes/admin/ManageBadges";
 import ManageReport from "./routes/admin/ManageReport";
+import CoachHome from "./routes/coach/CoachHome";
+import CoachingMember from "./routes/coach/CoachingMember";
+import CoachFeedback from "./routes/coach/CoachFeedback";
+import CoachNotification from "./routes/coach/CoachNotification";
 
 function App() {
 	return (
@@ -31,12 +35,14 @@ function App() {
 					<Route path="/Admin/ManageReport" element={<ManageReport />} />
 
 					{/* Coach routing. Need to have role COACH to use */}
-					<Route path="/Coach/Home" />
-					<Route path="/Coach/Feedback" />
+					<Route path="/Coach/Home" element={<CoachHome />} />
+					<Route path="/Coach/Member" element={<CoachingMember />} />
+					<Route path="/Coach/Notification" element={<CoachNotification />} />
+					<Route path="/Coach/Feedback" element={<CoachFeedback />} />
 				</Routes>
 
 				{/* Toast hiển thị thông báo ở góc dưới bên phải */}
-				<ToastContainer position="bottom-right" autoClose={10000} />
+				<ToastContainer position="bottom-right" autoClose={3000} />
 			</>
 		</Router>
 	);
