@@ -1,5 +1,6 @@
-﻿using backend.Models; // namespace chứa các model C#
+﻿using backend.Data;
 using Microsoft.EntityFrameworkCore;
+using backend.Entities;
 
 namespace backend.Data
 {
@@ -20,4 +21,6 @@ namespace backend.Data
     public DbSet<Notification> Notifications { get; set; }
         
     }
+        public DbSet<User> Users { get; set; }
+    }
 }

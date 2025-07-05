@@ -1,13 +1,15 @@
-﻿using Azure.Core;
-using backend.Data;
+﻿using backend.Data;
+using backend.Entities;
 using backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace backend.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -17,82 +19,57 @@ namespace backend.Controllers
             _context = context;
         }
 
-
-        // POST: api/auth/register
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegistrationRequest user)
+        public IActionResult Register([FromBody] RegisterRequest request)
         {
-            // 1. Kiểm tra username đã tồn tại chưa
-            var existingUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.userName == user.UserName); 
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            var existingUser = _context.Users.FirstOrDefault(u => u.userName == request.Username);
             if (existingUser != null)
-            {
-                return BadRequest(new
-                {
-                    success = false,
-                    message = "Username already exists."
-                });
-            }
+                return Conflict("This Username has been Registered");
 
-            // 2. Tạo entity mới
-            var newUser = new Registration
+            if (request.Password != request.ConfirmPassword)
+                return BadRequest("Password and Confirm Password do not match.");
+
+            var user = new User
             {
-                userName = user.UserName,
-                password = user.Password,
-                phoneNum = user.PhoneNum,
-                age = user.Age,
-                gender = user.Gender,         
-                status = "Active",              
-                roleId = 2,                     
+
+                userName = request.Username,
+                age = 18,
+                gender = "Male",
+                phoneNum = request.PhoneNum,
+                password = request.Password,
+                roleId = 2,
+                status = "Active",
                 joinDate = DateTime.Now
-               
+
+
             };
 
-            _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
+            _context.Users.Add(user);
+            _context.SaveChanges();
 
-            // 3. Trả về phản hồi sau khi lưu thành công
-            return Ok(new
-            {
-                success = true,
-                message = "User registered successfully.",
-                user = new
-                {
-                    newUser.userId,
-                    newUser.userName
-                }
-            });
+            return Ok("Register successfully");
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public IActionResult Login([FromBody] LoginRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = _context.Users.FirstOrDefault(u => u.userName == request.Username);
+
+            if (user == null || user.password != request.Password)
+                return Unauthorized("Login failed");
+
+            return Ok(new
             {
-                return BadRequest("Username and password are required.");
-            }
-
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.userName == request.UserName && u.password == request.Password);
-
-            if (user == null)
-            {
-                return Unauthorized("Invalid username or password.");
-            }
-
-            var response = new LoginResponse
-            {
-                Message = "Login successful",
-                UserId = user.userId,
-                RoleId = user.roleId,
-                UserName = user.userName
-            };
-
-            return Ok(response);
+                message = "Login successfully",
+                roleId = user.roleId
+            });
         }
-
 
 
     }
 }
-               
