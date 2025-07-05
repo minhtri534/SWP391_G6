@@ -1,23 +1,31 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Membership() {
+	const navigate = useNavigate();
+
+	const handleUpgrade = (plan) => {
+		navigate("/payment", { state: { membershipId: plan } });
+	};
+
 	return (
 		<div
 			style={{
 				fontFamily: "Poppins, sans-serif",
-				background: "linear-gradient(to bottom, #a8f5a2, #ddfcb2)", // màu nền giữ nguyên
+				background: "linear-gradient(to bottom, #a8f5a2, #ddfcb2)",
 				minHeight: "100vh",
 				paddingBottom: "40px",
-			}}>
+			}}
+		>
 			{/* Logo */}
 			<header
 				style={{
 					padding: "20px 40px",
 					display: "flex",
 					alignItems: "center",
-				}}>
-				<Link to="/" style={{ textDecoration: "none" }}>
+				}}
+			>
+				<Link to="/home" style={{ textDecoration: "none" }}>
 					<h1 style={{ margin: 0 }}>
 						<span style={{ color: "orange" }}>Quit</span>
 						<span style={{ color: "green" }}>Smoking.com</span>
@@ -26,8 +34,12 @@ function Membership() {
 			</header>
 
 			<section style={{ textAlign: "center", padding: "20px" }}>
-				<h2 style={{ fontSize: "36px", fontWeight: "bold", marginBottom: "10px", color: "#2e7d32" }}>Choose Your Membership Plan</h2>
-				<p style={{ fontSize: "16px", color: "#333", marginBottom: "40px" }}>Find the right plan to help you quit smoking and stay on track.</p>
+				<h2 style={{ fontSize: "36px", fontWeight: "bold", marginBottom: "10px", color: "#2e7d32" }}>
+					Choose Your Membership Plan
+				</h2>
+				<p style={{ fontSize: "16px", color: "#333", marginBottom: "40px" }}>
+					Find the right plan to help you quit smoking and stay on track.
+				</p>
 
 				<div
 					style={{
@@ -36,22 +48,44 @@ function Membership() {
 						flexWrap: "wrap",
 						gap: "30px",
 						padding: "0 20px",
-					}}>
+					}}
+				>
 					{/* Basic Plan */}
-					<PlanCard title="Basic" price="$9.99" features={["Limited Tracking", "Community Access"]} color="#81c784" buttonColor="#388e3c" />
+					<PlanCard
+						title="Basic"
+						price="$9.99"
+						features={["Limited Tracking", "Community Access"]}
+						color="#81c784"
+						buttonColor="#388e3c"
+						onUpgrade={() => handleUpgrade(1)}
+					/>
 
 					{/* Standard Plan */}
-					<PlanCard title="Standard" price="$19.99/mo" features={["Full Tracking", "Personal Coach", "Daily Tips"]} color="#64b5f6" buttonColor="#1976d2" />
+					<PlanCard
+						title="Standard"
+						price="$19.99/mo"
+						features={["Full Tracking", "Personal Coach", "Daily Tips"]}
+						color="#64b5f6"
+						buttonColor="#1976d2"
+						onUpgrade={() => handleUpgrade(2)}
+					/>
 
 					{/* Premium Plan */}
-					<PlanCard title="Premium" price="$219.99/mo" features={["All Features", "24/7 Support", "1-on-1 Counseling", "Progress Reports"]} color="#ffb74d" buttonColor="#f57c00" />
+					<PlanCard
+						title="Premium"
+						price="$219.99/mo"
+						features={["All Features", "24/7 Support", "1-on-1 Counseling", "Progress Reports"]}
+						color="#ffb74d"
+						buttonColor="#f57c00"
+						onUpgrade={() => handleUpgrade(3)}
+					/>
 				</div>
 			</section>
 		</div>
 	);
 }
 
-function PlanCard({ title, price, features, color, buttonColor }) {
+function PlanCard({ title, price, features, color, buttonColor, onUpgrade }) {
 	return (
 		<div
 			style={{
@@ -66,8 +100,9 @@ function PlanCard({ title, price, features, color, buttonColor }) {
 				flexDirection: "column",
 				alignItems: "center",
 				justifyContent: "space-between",
-				height: "100%", // để mọi card bằng chiều cao
-			}}>
+				height: "100%",
+			}}
+		>
 			<div style={{ textAlign: "center" }}>
 				<h3 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "10px" }}>{title}</h3>
 				<p style={{ fontSize: "20px", marginBottom: "20px", color: "#333" }}>{price}</p>
@@ -79,8 +114,9 @@ function PlanCard({ title, price, features, color, buttonColor }) {
 					padding: 0,
 					marginBottom: "20px",
 					textAlign: "left",
-					minHeight: "120px", // đảm bảo đủ chỗ cho các dòng feature
-				}}>
+					minHeight: "120px",
+				}}
+			>
 				{features.map((feature, index) => (
 					<li key={index} style={{ marginBottom: "10px" }}>
 						✅ {feature}
@@ -99,7 +135,9 @@ function PlanCard({ title, price, features, color, buttonColor }) {
 					fontWeight: "bold",
 					cursor: "pointer",
 					marginTop: "auto",
-				}}>
+				}}
+				onClick={onUpgrade}
+			>
 				Upgrade
 			</button>
 		</div>

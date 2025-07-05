@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import BookingCoach from "./BookingCoach";
+import SmokingSelfReport from "./SmokingSelfReport";
 
 import Home from "./Home";
 import Login from "./Login";
@@ -26,6 +28,8 @@ function App() {
 					<Route path="/login" element={<Login />} />
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/membership" element={<Membership />} />
+					<Route path="/coaching" element={<BookingCoach />} />
+					<Route path="/report" element={<SmokingSelfReport />} />
 					<Route path="/home" element={<LoggedInHome user={{ name: "Minh Tri" }} />} />
 
 					{/* Admin routing. Need to have role ADMIN to use */}
