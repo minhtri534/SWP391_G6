@@ -12,7 +12,7 @@ CREATE TABLE role (
 GO
 
 CREATE TABLE users (
-  userId INT IDENTITY(1,1) PRIMARY KEY,
+  userId INT PRIMARY KEY,
   userName VARCHAR(100),
   age INT,
   gender VARCHAR(10),
@@ -40,7 +40,6 @@ GO
 CREATE TABLE post (
   postId INT IDENTITY(1,1) PRIMARY KEY,  
   userId INT NOT NULL,
-  title TEXT NOT NULL,
   content TEXT NOT NULL,
   create_date DATETIME NOT NULL,         
   FOREIGN KEY (userId) REFERENCES users(userId)
@@ -108,12 +107,12 @@ GO
 
 CREATE TABLE daily_progress (
   progressId INT IDENTITY(1,1) PRIMARY KEY,
-  userId INT,                           
+  milestoneId INT,
   note TEXT,
   no_smoking BIT,
   symptoms TEXT,
   date DATE,
-  FOREIGN KEY (userId) REFERENCES users(userId) 
+  FOREIGN KEY (milestoneId) REFERENCES plan_milestone(milestoneId)
 );
 GO
 
@@ -245,17 +244,6 @@ CREATE TABLE transaction_money (
 );
 GO
 
-CREATE TABLE user_badge (
-  userId INT,
-  badgeId INT,
-  date_awarded DATE,
-  PRIMARY KEY (userId, badgeId),
-  FOREIGN KEY (userId) REFERENCES users(userId),
-  FOREIGN KEY (badgeId) REFERENCES badge(badgeId)
-);
-GO
-
-
 
 INSERT INTO role (roleId, roleName)
 VALUES 
@@ -265,16 +253,12 @@ VALUES
 (4, 'Admin');
 GO
 
-INSERT INTO users (userName, age, gender, phoneNum, password, roleId, status, joinDate)
+INSERT INTO users (userId, userName, age, gender, phoneNum, password, roleId, status, joinDate)
 VALUES 
-('Nguyen Van A', 25, 'Male', '0901000001', 'guest123', 1, 'Active', '2025-06-01'),
-('Tran Van B', 28, 'Female', '0901000002', 'member123', 2, 'Active', '2025-06-02'),
-('Pham Thi C', 35, 'Male', '0901000003', 'coach123', 3, 'Active', '2025-06-03'),
-('Do cao D', 30, 'Other', '0901000004', 'admin123', 4, 'Active', '2025-06-04');
-GO
-
-INSERT INTO coach_info (coachId, userId, phoneNum, experience, available_time, specialty)
-VALUES (1, 3, '0901000003', 5, 'Weekdays 9am-5pm', 'Smoking Cessation');
+(1, 'Nguyen Van A', 25, 'Male', '0901000001', 'guest123', 1, 'Active', '2025-06-01'),
+(2, 'Tran Van B', 28, 'Female', '0901000002', 'member123', 2, 'Active', '2025-06-02'),
+(3, 'Pham Thi C', 35, 'Male', '0901000003', 'coach123', 3, 'Active', '2025-06-03'),
+(4, 'Do cao D', 30, 'Other', '0901000004', 'admin123', 4, 'Active', '2025-06-04');
 GO
 
 

@@ -1,12 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\backend",
-    "\\backend\\Data",
-    "\\backend\\Entities",
-    "\\backend\\Models",
-    "\\backend\\Properties",
-    "\\backend\\Repositories"
+    "\\backend"
   ],
+  "SelectedNode": "\\DATABASE.sql",
   "PreviewInSolutionExplorer": false
 }
