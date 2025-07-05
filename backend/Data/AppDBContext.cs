@@ -1,4 +1,4 @@
-﻿using backend.Models; // namespace chứa các model C#
+﻿using backend.Entity; // namespace chứa các model C#
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Data
