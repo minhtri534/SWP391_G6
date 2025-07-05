@@ -41,27 +41,33 @@ namespace backend.Controllers
             });
         }
 
-        //UPDATE PROFILE//
         [HttpPut("UpdateProfile/{userId}")]
-            public IActionResult UpdateProfile(int userId, [FromBody] UpdateProfileRequest request)
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+        public IActionResult UpdateProfile(int userId, [FromBody] UpdateProfileRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                var user = _context.Users.FirstOrDefault(u => u.userId == userId);
-                if (user == null)
-                    return NotFound("User not found");
+            var user = _context.Users.FirstOrDefault(u => u.userId == userId);
+            if (user == null)
+                return NotFound("User not found");
 
-                user.age = request.Age;
-                user.gender = request.Gender;
+            if (request.Age < 0 || request.Age > 120)
+                return BadRequest("Age is invalid");
 
-                _context.SaveChanges();
+            if (request.Gender == null || (request.Gender != "Male" && request.Gender != "Female" && request.Gender != "Other"))
+                return BadRequest("Gender must be 'Male' , 'Female'");
 
-                return Ok("Profile updated successfully");
-            }
+            user.age = request.Age;
+            user.gender = request.Gender.ToString();
+
+            _context.SaveChanges();
+
+            return Ok("Profile updated successfully");
+        }
+
 
         //DELETE ACCOUNT//
-            [HttpDelete("DeleteAccount/{userId}")]
+        [HttpDelete("DeleteAccount/{userId}")]
             public IActionResult DeleteAccount(int userId)
             {
                 var user = _context.Users.FirstOrDefault(u => u.userId == userId);

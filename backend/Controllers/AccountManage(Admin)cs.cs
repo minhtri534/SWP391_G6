@@ -20,6 +20,9 @@ namespace backend.Controllers
         {
             _context = context;
         }
+
+        //LOCK ACCOUNT//
+
         [HttpPut("LockAccount/{userId}")]
         public IActionResult LockAccount(int userId)
         {
@@ -34,6 +37,8 @@ namespace backend.Controllers
             return Ok("The account has been locked");
         }
 
+        //UNLOCK ACCOUNT//
+
         [HttpPut("UnlockAccount/{userId}")]
         public IActionResult UnlockAccount(int userId)
         {
@@ -47,6 +52,54 @@ namespace backend.Controllers
             _context.SaveChanges();
 
             return Ok("The account has been unlocked");
+        }
+
+
+        //CREATE COACH ACCOUNT//
+
+        [HttpPost("CreateCoachAcc")]
+        //[Authorize(Roles = "Admin")]  
+        public IActionResult CreateCoach([FromBody] RegisterRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var existingUser = _context.Users.FirstOrDefault(u => u.userName == request.Username);
+            if (existingUser != null)
+                return Conflict("This Username has been Registered");
+
+            if (request.Password != request.ConfirmPassword)
+                return BadRequest("Password and Confirm Password do not match.");
+
+            var coachUser = new User
+            {
+                userName = request.Username,
+                phoneNum = request.PhoneNum,
+                password = request.Password, 
+                roleId = 3,  
+                status = "Active",
+                joinDate = DateTime.Now
+            };
+
+            _context.Users.Add(coachUser);
+            _context.SaveChanges();
+
+            return Ok("Coach account created successfully");
+        }
+
+
+        //DELETE ACCOUNT//
+        [HttpDelete("DeleteAccount/{userId}")]
+        public IActionResult DeleteAccount(int userId)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.userId == userId);
+            if (user == null)
+                return NotFound("User not exist");
+
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+
+            return Ok("Delete Account Successfully");
         }
 
     }

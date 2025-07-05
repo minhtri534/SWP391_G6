@@ -15,12 +15,12 @@ public class User
     public string userName { get; set; }
 
 	
-    public int age { get; set; }
+    public int age { get; set; } = default(int);
 
-	
-	public string gender { get; set; }
 
-	[Required]
+    public string gender { get; set; } = String.Empty;
+
+    [Required]
 	[MaxLength(10)]
 	[RegularExpression(@"^0\d{9}$", ErrorMessage = "Phone number must start with 0 and contain exactly 10 digits.")]
 	public string phoneNum { get; set; }

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration.UserSecrets;
 namespace backend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -36,8 +36,6 @@ namespace backend.Controllers
             {
 
                 userName = request.Username,
-                age = 18,
-                gender = "Male",
                 phoneNum = request.PhoneNum,
                 password = request.Password,
                 roleId = 2,
