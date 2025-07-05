@@ -17,7 +17,7 @@ function Membership() {
 					display: "flex",
 					alignItems: "center",
 				}}>
-				<Link to="/" style={{ textDecoration: "none" }}>
+				<Link to="/home" style={{ textDecoration: "none" }}>
 					<h1 style={{ margin: 0 }}>
 						<span style={{ color: "orange" }}>Quit</span>
 						<span style={{ color: "green" }}>Smoking.com</span>
