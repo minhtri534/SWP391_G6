@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS SWP391;
+GO
 
 CREATE DATABASE SWP391;
 GO
@@ -26,7 +28,7 @@ CREATE TABLE users (
 GO
 
 CREATE TABLE coach_info (
-  coachId INT PRIMARY KEY,
+  coachId INT IDENTITY(1,1) PRIMARY KEY,
   userId INT,
   phoneNum VARCHAR(20),
   experience INT,
@@ -36,6 +38,68 @@ CREATE TABLE coach_info (
 );
 GO
 
+CREATE TABLE badge (
+  badgeId INT IDENTITY(1,1) PRIMARY KEY,
+  badgeName VARCHAR(100),
+  description TEXT,
+  condition_type VARCHAR(50),
+  value INT
+);
+GO
+
+CREATE TABLE plan_milestone (
+  milestoneId INT IDENTITY(1,1) PRIMARY KEY,
+  planId INT NULL,
+  badgeId INT,
+  title VARCHAR(100),
+  description TEXT,
+  target_date DATE,
+  FOREIGN KEY (badgeId) REFERENCES badge(badgeId)
+);
+GO
+
+CREATE TABLE smoking_status (
+  statusId INT IDENTITY(1,1) PRIMARY KEY,
+  userId INT,
+  milestoneId INT,
+  time_period VARCHAR(50),
+  amount_per_day INT,
+  frequency VARCHAR(50),
+  price_per_pack DECIMAL(10, 2),
+  description TEXT,
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (milestoneId) REFERENCES plan_milestone(milestoneId)
+);
+GO
+
+CREATE TABLE quit_plan (
+  planId INT IDENTITY(1,1) PRIMARY KEY,
+  userId INT,
+  coachId INT,
+  statusId INT,
+  reason TEXT,
+  start_date DATE,
+  goal_date DATE,
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (coachId) REFERENCES coach_info(coachId),
+  FOREIGN KEY (statusId) REFERENCES smoking_status(statusId)
+);
+GO
+
+ALTER TABLE plan_milestone
+ADD FOREIGN KEY (planId) REFERENCES quit_plan(planId);
+GO
+
+CREATE TABLE daily_progress (
+  progressId INT IDENTITY(1,1) PRIMARY KEY,
+  userId INT,
+  note TEXT,
+  no_smoking BIT,
+  symptoms TEXT,
+  date DATE,
+  FOREIGN KEY (userId) REFERENCES users(userId)
+);
+GO
 
 CREATE TABLE post (
   postId INT IDENTITY(1,1) PRIMARY KEY,  
@@ -45,7 +109,6 @@ CREATE TABLE post (
   create_date DATETIME NOT NULL,         
   FOREIGN KEY (userId) REFERENCES users(userId)
 );
-
 GO
 
 CREATE TABLE comment (
@@ -69,65 +132,6 @@ CREATE TABLE report (
   FOREIGN KEY (postId) REFERENCES post(postId),
   FOREIGN KEY (userId) REFERENCES users(userId),
   FOREIGN KEY (commentId) REFERENCES comment(commentId)
-);
-GO
-
-CREATE TABLE quit_plan (
-  planId INT PRIMARY KEY,
-  userId INT,
-  coachId INT,
-  statusId INT,
-  reason TEXT,
-  start_date DATE,
-  goal_date DATE,
-  FOREIGN KEY (userId) REFERENCES users(userId),
-  FOREIGN KEY (coachId) REFERENCES coach_info(coachId)
-);
-GO
-
-CREATE TABLE badge (
-  badgeId INT PRIMARY KEY,
-  badgeName VARCHAR(100),
-  description TEXT,
-  condition_type VARCHAR(50),
-  value INT
-);
-GO
-
-CREATE TABLE plan_milestone (
-  milestoneId INT IDENTITY(1,1) PRIMARY KEY,
-  planId INT,
-  badgeId INT,
-  title VARCHAR(100),
-  description TEXT,
-  target_date DATE,
-  FOREIGN KEY (planId) REFERENCES quit_plan(planId),
-  FOREIGN KEY (badgeId) REFERENCES badge(badgeId)
-);
-GO
-
-CREATE TABLE daily_progress (
-  progressId INT IDENTITY(1,1) PRIMARY KEY,
-  userId INT,                           
-  note TEXT,
-  no_smoking BIT,
-  symptoms TEXT,
-  date DATE,
-  FOREIGN KEY (userId) REFERENCES users(userId) 
-);
-GO
-
-CREATE TABLE smoking_status (
-  statusId INT IDENTITY(1,1) PRIMARY KEY,
-  userId INT,
-  time_period VARCHAR(50),
-  milestoneId INT,
-  amount_per_day INT,
-  frequency VARCHAR(50),
-  price_per_pack DECIMAL(10, 2),
-  description TEXT,
-  FOREIGN KEY (userId) REFERENCES users(userId),
-  FOREIGN KEY (milestoneId) REFERENCES plan_milestone(milestoneId)
 );
 GO
 
@@ -172,7 +176,7 @@ CREATE TABLE feedback (
 GO
 
 CREATE TABLE membership (
-  membershipId INT PRIMARY KEY,
+  membershipId INT IDENTITY(1,1) PRIMARY KEY,
   membershipName VARCHAR(100),
   price DECIMAL(10, 2),
   duration INT
@@ -191,7 +195,7 @@ CREATE TABLE user_memberships (
 GO
 
 CREATE TABLE payment (
-  paymentId INT PRIMARY KEY,
+  paymentId INT IDENTITY(1,1) PRIMARY KEY,
   userId_fk INT,
   membershipId_fk INT,
   amount DECIMAL(10, 2),
@@ -200,12 +204,11 @@ CREATE TABLE payment (
   type VARCHAR(50),
   status VARCHAR(50),
   FOREIGN KEY (userId_fk, membershipId_fk) REFERENCES user_memberships(userId, membershipId)
-
 );
 GO
 
 CREATE TABLE chat_log (
-  chatId INT PRIMARY KEY,
+  chatId INT IDENTITY(1,1) PRIMARY KEY,
   userId INT,
   coachId INT,
   content TEXT,
@@ -219,7 +222,7 @@ CREATE TABLE chat_log (
 GO
 
 CREATE TABLE booking_consultation (
-  bookingId INT PRIMARY KEY,
+  bookingId INT IDENTITY(1,1) PRIMARY KEY,
   userId INT,
   coachId INT,
   date DATE,
@@ -231,14 +234,14 @@ CREATE TABLE booking_consultation (
 GO
 
 CREATE TABLE transaction_money (
-  transactionId INT PRIMARY KEY,
-  memberId INT,           
-  coachId INT,           
-  planId INT,             
-  amount DECIMAL(10, 2),  
-  status VARCHAR(50),     
-  method VARCHAR(50),    
-  transaction_date DATE, 
+  transactionId INT IDENTITY(1,1) PRIMARY KEY,
+  memberId INT,
+  coachId INT,
+  planId INT,
+  amount DECIMAL(10, 2),
+  status VARCHAR(50),
+  method VARCHAR(50),
+  transaction_date DATE,
   FOREIGN KEY (memberId) REFERENCES users(userId),
   FOREIGN KEY (coachId) REFERENCES coach_info(coachId),
   FOREIGN KEY (planId) REFERENCES quit_plan(planId)
@@ -273,8 +276,8 @@ VALUES
 ('Do cao D', 30, 'Other', '0901000004', 'admin123', 4, 'Active', '2025-06-04');
 GO
 
-INSERT INTO coach_info (coachId, userId, phoneNum, experience, available_time, specialty)
-VALUES (1, 3, '0901000003', 5, 'Weekdays 9am-5pm', 'Smoking Cessation');
+INSERT INTO coach_info (userId, phoneNum, experience, available_time, specialty)
+VALUES (3, '0901000003', 5, 'Weekdays 9am-5pm', 'Smoking Cessation');
 GO
 
 
