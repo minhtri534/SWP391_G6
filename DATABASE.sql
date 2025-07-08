@@ -74,9 +74,9 @@ GO
 
 CREATE TABLE quit_plan (
   planId INT IDENTITY(1,1) PRIMARY KEY,
-  userId INT,
-  coachId INT,
-  statusId INT,
+  userId INT NULL,       
+  coachId INT NULL,     
+  statusId INT NULL,     
   reason TEXT,
   start_date DATE,
   goal_date DATE,
@@ -85,6 +85,7 @@ CREATE TABLE quit_plan (
   FOREIGN KEY (statusId) REFERENCES smoking_status(statusId)
 );
 GO
+
 
 ALTER TABLE plan_milestone
 ADD FOREIGN KEY (planId) REFERENCES quit_plan(planId);
@@ -268,16 +269,137 @@ VALUES
 (4, 'Admin');
 GO
 
+-- USERS
 INSERT INTO users (userName, age, gender, phoneNum, password, roleId, status, joinDate)
 VALUES 
 ('Nguyen Van A', 25, 'Male', '0901000001', 'guest123', 1, 'Active', '2025-06-01'),
 ('Tran Van B', 28, 'Female', '0901000002', 'member123', 2, 'Active', '2025-06-02'),
 ('Pham Thi C', 35, 'Male', '0901000003', 'coach123', 3, 'Active', '2025-06-03'),
-('Do cao D', 30, 'Other', '0901000004', 'admin123', 4, 'Active', '2025-06-04');
+('Do Cao D', 30, 'Other', '0901000004', 'admin123', 4, 'Active', '2025-06-04');
 GO
 
+-- COACH
 INSERT INTO coach_info (userId, phoneNum, experience, available_time, specialty)
-VALUES (3, '0901000003', 5, 'Weekdays 9am-5pm', 'Smoking Cessation');
+VALUES 
+(3, '0901000003', 5, 'Weekdays 9am-5pm', 'Smoking Cessation');
 GO
 
+-- BADGES
+INSERT INTO badge (badgeName, description, condition_type, value)
+VALUES 
+('First Day Smoke-Free', 'Completed first day without smoking', 'DayStreak', 1),
+('One Week Hero', 'Stayed smoke-free for a week', 'DayStreak', 7);
+GO
+
+
+INSERT INTO smoking_status (userId, milestoneId, time_period, amount_per_day, frequency, price_per_pack, description)
+VALUES 
+(2, NULL, 'Morning', 5, 'Daily', 20.5, 'Heavy smoker in morning'),
+(2, NULL, 'Evening', 3, 'Daily', 18.0, 'Light smoker in evening'),
+(3, NULL, 'Whole Day', 10, 'Hourly', 22.5, 'Chain smoker'),
+(2, NULL, 'Weekend', 4, 'Weekly', 19.9, 'Only smokes socially');
+GO
+
+INSERT INTO quit_plan (userId, coachId, statusId, reason, start_date, goal_date)
+VALUES
+(NULL, NULL, 1, 'Health improvement', '2025-07-01', '2025-08-01'),
+(NULL, NULL, 2, 'Family concern', '2025-07-02', '2025-08-15'),
+(NULL, NULL, 3, 'Financial savings', '2025-07-03', '2025-09-01'),
+(NULL, NULL, 4, 'Doctor recommendation', '2025-07-04', '2025-09-15');
+GO
+
+
+INSERT INTO plan_milestone (planId, badgeId, title, description, target_date)
+VALUES
+(1, 1, 'Day 1 Milestone', 'Complete first day without smoking', '2025-07-02'),
+(1, 2, 'Week 1 Goal', 'Remain smoke-free for one week', '2025-07-08'),
+(2, 1, 'Initial Milestone', 'Survive the first day', '2025-07-03'),
+(3, 2, '7-Day Challenge', 'Seven smoke-free days', '2025-07-10'),
+(4, 1, 'Doctor’s First Goal', 'Start smoke-free life', '2025-07-05');
+GO
+
+INSERT INTO daily_progress (userId, note, no_smoking, symptoms, date)
+VALUES
+(2, 'Feeling good, minor cravings', 1, 'Mild headache', '2025-07-01'),
+(2, 'Craving after lunch', 0, 'Moderate craving', '2025-07-02');
+GO
+
+INSERT INTO feedback (userId, coachId, planId, content, rating, time_created)
+VALUES
+(2, 1, 1, 'Coach was very supportive.', 5, '2025-07-02'),
+(3, 1, 4, 'Need more guidance on cravings.', 3, '2025-07-03');
+GO
+
+INSERT INTO membership (membershipName, price, duration)
+VALUES
+('Standard Plan', 49.99, 30),
+('Premium Plan', 89.99, 60);
+GO
+
+INSERT INTO user_memberships (userId, membershipId, start_date, end_date)
+VALUES
+(2, 1, '2025-07-01', '2025-07-31'),
+(3, 2, '2025-07-01', '2025-08-30');
+GO
+
+INSERT INTO payment (userId_fk, membershipId_fk, amount, pay_date, method, type, status)
+VALUES
+(2, 1, 49.99, '2025-07-01', 'Credit Card', 'One-time', 'Completed'),
+(3, 2, 89.99, '2025-07-01', 'PayPal', 'Recurring', 'Completed');
+GO
+
+INSERT INTO user_badge (userId, badgeId, date_awarded)
+VALUES
+(2, 1, '2025-07-02'),
+(2, 2, '2025-07-08');
+GO
+
+INSERT INTO chat_log (userId, coachId, content, type, status, chat_date, sender)
+VALUES
+(2, 1, 'Hi Coach, I need help!', 'Text', 'Sent', '2025-07-02', 'Member'),
+(1, 1, 'Sure, let’s schedule a call.', 'Text', 'Replied', '2025-07-02', 'Coach');
+GO
+
+INSERT INTO booking_consultation (userId, coachId, date, type, status)
+VALUES
+(2, 1, '2025-07-05', 'Call', 'Confirmed'),
+(3, 1, '2025-07-06', 'In-person', 'Pending');
+GO
+
+INSERT INTO post (userId, title, content, create_date)
+VALUES
+(2, 'My Quit Journey', 'Today is my first day trying to quit smoking!', '2025-07-01'),
+(3, 'Tips Needed', 'Having a hard time resisting the urge. Any tips?', '2025-07-02');
+GO
+
+INSERT INTO comment (postId, userId, content, created_date)
+VALUES
+(1, 3, 'Stay strong! You can do this!', '2025-07-01'),
+(2, 2, 'Try chewing gum or drinking water when cravings hit.', '2025-07-02');
+GO
+
+INSERT INTO report (content, postId, userId, commentId, create_day)
+VALUES
+('This post contains misleading information.', 2, 2, NULL, '2025-07-03'),
+('Comment seems offensive.', NULL, 3, 1, '2025-07-03');
+GO
+
+INSERT INTO coach_plan_badge (coachId, badgeId, planId, date_get)
+VALUES
+(1, 1, 1, '2025-07-03'),
+(1, 2, 2, '2025-07-09');
+GO
+
+INSERT INTO notification (userId, relatedLogId, relatedMilestoneId, message, send_date, type)
+VALUES
+(2, 1, 1, 'Congratulations! You completed your first smoke-free day.', '2025-07-02', 'Milestone'),
+(2, NULL, NULL, 'Reminder: Your consultation is tomorrow.', '2025-07-04', 'Reminder');
+GO
+
+
+INSERT INTO transaction_money (memberId, coachId, planId, amount, status, method, transaction_date)
+VALUES
+(2, 1, 1, 29.99, 'Completed', 'Bank Transfer', '2025-07-02'),
+(3, 1, 4, 49.99, 'Pending', 'Credit Card', '2025-07-03');
+GO
 
