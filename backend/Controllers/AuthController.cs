@@ -22,7 +22,7 @@ namespace backend.Controllers
         public async Task<IActionResult> Register([FromBody] RegistrationRequest user)
         {
             var existingUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.userName == user.UserName); 
+                .FirstOrDefaultAsync(u => u.UserName == user.UserName); 
 
             if (existingUser != null)
             {
@@ -43,16 +43,16 @@ namespace backend.Controllers
                 });
             }
 
-            var newUser = new Registration
+            var newUser = new User
             {
-                userName = user.UserName,
-                password = user.Password,
-                phoneNum = user.PhoneNum,
-                age = user.Age,
-                gender = user.Gender,
-                status = "Active",
-                roleId = 2,
-                joinDate = DateTime.Now,
+                UserName = user.UserName,
+                Password = user.Password,
+                PhoneNum = user.PhoneNum,
+                Age = user.Age,
+                Gender = user.Gender,
+                Status = "Active",
+                RoleId = 2,
+                JoinDate = DateTime.Now,
                 Role = role,
                 Posts = new List<Post>(),     // required
                 Comments = new List<Comment>() // required
@@ -67,8 +67,8 @@ namespace backend.Controllers
                 message = "User registered successfully.",
                 user = new
                 {
-                    newUser.userId,
-                    newUser.userName
+                    newUser.UserId,
+                    newUser.UserName
                 }
             });
         }
@@ -82,7 +82,7 @@ namespace backend.Controllers
             }
 
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.userName == request.UserName && u.password == request.Password);
+                .FirstOrDefaultAsync(u => u.UserName == request.UserName && u.Password == request.Password);
 
             if (user == null)
             {
@@ -92,9 +92,9 @@ namespace backend.Controllers
             var response = new LoginResponse
             {
                 Message = "Login successful",
-                UserId = user.userId,
-                RoleId = user.roleId,
-                UserName = user.userName
+                UserId = user.UserId,
+                RoleId = user.RoleId,
+                UserName = user.UserName
             };
 
             return Ok(response);

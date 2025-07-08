@@ -17,6 +17,6 @@ namespace backend.Entities
         public DateTime CreateDay { get; set; } = DateTime.Today;
         public Post? Post { get; set; }
         public Comment? Comment { get; set; }
-        public Registration? User { get; set; }
+        public User? User { get; set; }
     }
 }

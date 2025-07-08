@@ -19,7 +19,7 @@ namespace backend.Entities
         public string? Specialty { get; set; }
 
         [ForeignKey("UserId")]
-        public Registration? User { get; set; }
+        public User? User { get; set; }
 
         public ICollection<Feedback>? Feedbacks { get; set; }
     }

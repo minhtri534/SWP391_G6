@@ -6,7 +6,7 @@ namespace backend.Entities
     {
         public int RoleId { get; set; }
         public required string RoleName { get; set; }
-        public required ICollection<Registration> Users { get; set; }
+        public required ICollection<User> Users { get; set; }
     }
 }
 

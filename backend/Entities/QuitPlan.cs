@@ -16,11 +16,11 @@ namespace backend.Entities
         public int StatusId { get; set; }
 
         public string? Reason { get; set; }
-        public DateTime Start_date { get; set; }
-        public DateTime Goal_date { get; set; }
+        public DateTime Start_Date { get; set; }
+        public DateTime Goal_Date { get; set; }
 
         [ForeignKey("UserId")]
-        public Registration? User { get; set; }
+        public User? User { get; set; }
 
         [ForeignKey("CoachId")]
         public CoachInfo? Coach { get; set; }

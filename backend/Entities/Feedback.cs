@@ -21,12 +21,10 @@ namespace backend.Entities
         public DateTime Time_Created { get; set; }
 
         [ForeignKey("UserId")]
-        public Registration? User { get; set; }
+        public User? User { get; set; }
 
-        // Ta sẽ tạo entity Coach sau
         public CoachInfo? Coach { get; set; }
 
-        // Ta sẽ tạo entity QuitPlan sau
         public QuitPlan? Plan { get; set; }
     }
 }

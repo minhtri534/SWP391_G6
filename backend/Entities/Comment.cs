@@ -9,8 +9,8 @@ namespace backend.Entities
         public int PostId { get; set; }
         public int UserId { get; set; }
         public required string Content { get; set; }
-        public DateTime Created_date { get; set; }
-        public required Registration User { get; set; }
+        public DateTime Created_Date { get; set; }
+        public required User User { get; set; }
         public required Post Post { get; set; }
     }
 }
