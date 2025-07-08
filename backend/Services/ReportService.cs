@@ -28,7 +28,7 @@ namespace backend.Services
             if (user == null)
                 return ServiceAccessResult.NotFound("User not found");
 
-            if (user.roleId != 2 && user.roleId != 3)
+            if (user.RoleId != 2 && user.RoleId != 3)
                 return ServiceAccessResult.Forbid("Only admin can perform this action.");
 
 
@@ -82,7 +82,7 @@ namespace backend.Services
             if (user == null)
                 return ServiceAccessResult.NotFound("User not found");
 
-            if (user.roleId != 4)
+            if (user.RoleId != 4)
                 return ServiceAccessResult.Forbid("Only admin can perform this action.");
 
 
@@ -100,7 +100,7 @@ namespace backend.Services
             if (user == null)
                 return ServiceAccessResult.NotFound("User not found");
 
-            if (user.roleId != 4)
+            if (user.RoleId != 4)
                 return ServiceAccessResult.Forbid("Only admin can perform this action.");
 
 
@@ -117,7 +117,7 @@ namespace backend.Services
             if (user == null)
                 return ServiceAccessResult.NotFound("User not found");
 
-            if (user.roleId != 4)
+            if (user.RoleId != 4)
                 return ServiceAccessResult.Forbid("Only admin can perform this action.");
 
 

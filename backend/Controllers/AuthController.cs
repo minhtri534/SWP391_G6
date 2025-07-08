@@ -1,15 +1,13 @@
 ﻿using backend.Data;
-using backend.Entities;
 using backend.Models;
-using Microsoft.AspNetCore.Authorization;
+using backend.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace backend.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -19,55 +17,87 @@ namespace backend.Controllers
             _context = context;
         }
 
+        // POST: api/auth/register
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] RegistrationRequest user)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var existingUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.UserName == user.UserName); 
 
-            var existingUser = _context.Users.FirstOrDefault(u => u.UserName == request.Username);
             if (existingUser != null)
-                return Conflict("This Username has been Registered");
-
-            if (request.Password != request.ConfirmPassword)
-                return BadRequest("Password and Confirm Password do not match.");
-
-            var user = new User
             {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Username already exists."
+                });
+            }
 
-                UserName = request.Username,
-                PhoneNum = request.PhoneNum,
-                Password = request.Password,
-                RoleId = 2,
+            var role = await _context.Roles.FindAsync(2);
+            if (role == null)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Role ID 2 not found in database."
+                });
+            }
+
+            var newUser = new User
+            {
+                UserName = user.UserName,
+                Password = user.Password,
+                PhoneNum = user.PhoneNum,
+                Age = user.Age,
+                Gender = user.Gender,
                 Status = "Active",
-                JoinDate = DateTime.Now
-
-
+                RoleId = 2,
+                JoinDate = DateTime.Now,
+                Role = role,
+                Posts = new List<Post>(),     // required
+                Comments = new List<Comment>() // required
             };
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
-
-            return Ok("Register successfully");
-        }
-        [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest  request)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var user = _context.Users.FirstOrDefault(u => u.UserName == request.Username);
-
-            if (user == null || user.Password != request.Password)
-                return Unauthorized("Login failed");
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
 
             return Ok(new
             {
-                message = "Login successfully",
-                RoleId = user.RoleId
+                success = true,
+                message = "User registered successfully.",
+                user = new
+                {
+                    newUser.UserId,
+                    newUser.UserName
+                }
             });
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))
+            {
+                return BadRequest("Username and password are required.");
+            }
 
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.UserName == request.UserName && u.Password == request.Password);
+
+            if (user == null)
+            {
+                return Unauthorized("Invalid username or password.");
+            }
+
+            var response = new LoginResponse
+            {
+                Message = "Login successful",
+                UserId = user.UserId,
+                RoleId = user.RoleId,
+                UserName = user.UserName
+            };
+
+            return Ok(response);
+        }
     }
 }

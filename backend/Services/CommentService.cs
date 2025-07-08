@@ -25,7 +25,7 @@ namespace backend.Services
                 PostId = c.PostId,
                 UserId = c.UserId,
                 Content = c.Content,
-                Created_date = c.Created_date
+                Created_Date = c.Created_Date
             });
         }
 
@@ -40,7 +40,7 @@ namespace backend.Services
                 PostId = comment.PostId,
                 UserId = comment.UserId,
                 Content = comment.Content,
-                Created_date = comment.Created_date
+                Created_Date = comment.Created_Date
             };
         }
 
@@ -56,7 +56,7 @@ namespace backend.Services
                 PostId = dto.PostId,
                 UserId = dto.UserId,
                 Content = dto.Content,
-                Created_date = DateTime.UtcNow,
+                Created_Date = DateTime.UtcNow,
                 User = user,
                 Post = post
             };
@@ -69,7 +69,7 @@ namespace backend.Services
                 PostId = comment.PostId,
                 UserId = comment.UserId,
                 Content = comment.Content,
-                Created_date = comment.Created_date
+                Created_Date = comment.Created_Date
             };
         }
 
@@ -94,7 +94,7 @@ namespace backend.Services
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return ServiceAccessResult.NotFound("User not found");
-            if (user.roleId != 2 && user.roleId != 3)
+            if (user.RoleId != 2 && user.RoleId != 3)
                 return ServiceAccessResult.Forbid("Only members or coaches can comment.");
             return ServiceAccessResult.Ok();
         }
@@ -106,7 +106,7 @@ namespace backend.Services
 
             var user = await _context.Users.FindAsync(comment.UserId);
             if (user == null) return ServiceAccessResult.NotFound("User not found");
-            if (user.roleId != 2 && user.roleId != 3)
+            if (user.RoleId != 2 && user.RoleId != 3)
                 return ServiceAccessResult.Forbid("Only members or coaches can modify comments.");
             return ServiceAccessResult.Ok();
         }

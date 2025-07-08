@@ -25,7 +25,7 @@ namespace backend.Services
                 UserId = p.UserId,
                 Title = p.Title,
                 Content = p.Content,
-                Create_date = p.Create_date
+                Create_Date = p.Create_Date
             });
         }
 
@@ -41,7 +41,7 @@ namespace backend.Services
                 UserId = post.UserId,
                 Title = post.Title,
                 Content = post.Content,
-                Create_date = post.Create_date
+                Create_Date = post.Create_Date 
             }).ToList();
             #pragma warning restore CS8604 // Possible null reference argument.
         }
@@ -57,7 +57,7 @@ namespace backend.Services
                 UserId = dto.UserId,
                 Title = dto.Title,
                 Content = dto.Content,
-                Create_date = DateTime.UtcNow.Date,
+                Create_Date = DateTime.UtcNow.Date,
                 User = user,
                 Comments = new List<Comment>()
             };
@@ -70,7 +70,7 @@ namespace backend.Services
                 UserId = result.UserId,
                 Title = result.Title,
                 Content = result.Content,
-                Create_date = result.Create_date
+                Create_Date = result.Create_Date
             };
         }
 
@@ -95,7 +95,7 @@ namespace backend.Services
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null) return ServiceAccessResult.NotFound("User not found");
-            if (user.roleId != 2 && user.roleId != 3)
+            if (user.RoleId != 2 && user.RoleId != 3)
                 return ServiceAccessResult.Forbid("Only members or coaches can post.");
             return ServiceAccessResult.Ok();
         }
@@ -107,7 +107,7 @@ namespace backend.Services
 
             var user = await _context.Users.FindAsync(post.UserId);
             if (user == null) return ServiceAccessResult.NotFound("User not found");
-            if (user.roleId != 2 && user.roleId != 3)
+            if (user.RoleId != 2 && user.RoleId != 3)
                 return ServiceAccessResult.Forbid("Only members or coaches can modify posts.");
             return ServiceAccessResult.Ok();
         }

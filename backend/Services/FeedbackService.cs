@@ -24,7 +24,7 @@ namespace backend.Services
                 if (requester == null)
                     return new List<FeedbackDto>();
 
-                bool isAdmin = requester.roleId == 4;
+                bool isAdmin = requester.RoleId == 4;
 
                 if (!isAdmin && !userId.HasValue && !coachId.HasValue && !planId.HasValue)
                 {
@@ -73,7 +73,7 @@ namespace backend.Services
         public async Task<ServiceAccessResult> CreateFeedbackAsync(CreateFeedbackDto dto)
         {
             var user = await _context.Users.FindAsync(dto.UserId);
-            if (user == null || user.roleId != 2)
+            if (user == null || user.RoleId != 2)
                 return ServiceAccessResult.Forbid("Only members can create feedback.");
 
             if (dto.CoachId == null && dto.PlanId == null)
@@ -121,7 +121,7 @@ namespace backend.Services
             if (user == null)
                 return ServiceAccessResult.Forbid("User not found");
 
-            if (feedback.UserId != userId && user.roleId != 4)
+            if (feedback.UserId != userId && user.RoleId != 4)
                 return ServiceAccessResult.Forbid("You can only delete your own feedback.");
 
             await _repository.DeleteAsync(feedback);
