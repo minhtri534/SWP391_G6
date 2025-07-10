@@ -16,7 +16,6 @@ namespace backend.Entity
         [Key]
         [ForeignKey("PlanId")]
         public int PlanId { get; set; }
-        //[NotMapped]
-        public Nullable<DateTime> Date_Get { get; set; }
+        public DateTime? Date_Get { get; set; }
     }
 }

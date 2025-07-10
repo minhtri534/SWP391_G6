@@ -4,6 +4,8 @@ using backend.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+// NOTE: convert all usage of coach plan badge table into user badge table
+
 namespace backend.Controllers
 {
     [Route("api/[controller]")]
@@ -72,57 +74,40 @@ namespace backend.Controllers
         [HttpGet("Stats")]
         public async Task<IActionResult> GetTotalNumberOfObtainedBadges()
         {
-            return Ok(await _context.CoachPlanBadges.CountAsync());
+            return Ok(await _context.UserBadges.CountAsync());
         }
 
         [HttpGet("Stats/{id}")]
         public async Task<IActionResult> GetTotalNumberOfObtainedBadgesById(int id)
         {
-            return Ok(await _context.CoachPlanBadges.Where(b => b.BadgeId == id).CountAsync());
+            return Ok(await _context.UserBadges.Where(b => b.BadgeId == id).CountAsync());
         }
 
         [HttpGet("Stats/Ranking")]
         public async Task<IActionResult> GetTopTotalNumberOfObtainedBadges()
         {
-            
-            /*var sql = @$"select top 10 b.badgeName, count(a.badgeId) 
-                from coach_plan_badge a 
-                left outer join badge b on a.badgeId = b.badgeId 
-                group by b.badgeName 
-                order by count(b.badgeName) desc";
-
-            return Ok(_context.CoachPlanBadges.FromSqlRaw(sql).ToListAsync()); */
-            
-
-            /*var query = (from a in _context.CoachPlanBadges
-                         join b in _context.Badges on a.BadgeId equals b.BadgeId into joined
-                         from c in joined
-                         group c by c.BadgeName into grouped
-                         from d in grouped
-                         orderby grouped descending
-                         select new { BadgeName = d.BadgeName, Count = d.BadgeName.Count() });
-            return Ok(query);*/
-
-            var query = _context.CoachPlanBadges
-                .Join(_context.Badges.Select(a => new {BadgeId = a.BadgeId, BadgeName = a.BadgeName}), 
-                c => c.BadgeId, 
-                d => d.BadgeId, 
-                (c, d) => new {BadgeName = d})
+            var query = _context.UserBadges
+                .Join(_context.Badges.Select(a => new { BadgeId = a.BadgeId, BadgeName = a.BadgeName }),
+                c => c.BadgeId,
+                d => d.BadgeId,
+                (c, d) => new { BadgeName = d })
                 .GroupBy(a => a.BadgeName)
-                .Select(b => new {BadgeName = b.Key, Count = b.Count()});
+                .Select(b => new { BadgeId = b.Key.BadgeId, BadgeName = b.Key.BadgeName, Count = b.Count() });
 
             return Ok(query);
         }
 
-        [HttpDelete("Revoke/{planId}/{badgeId}")]
-        public async Task<IActionResult> RevokeBadge(int planId, int badgeId) {
-            var badge = await _context.CoachPlanBadges
-                .Where(a => a.PlanId == planId && a.BadgeId == badgeId)
+        [HttpDelete("Revoke/{userId}/{badgeId}")]
+        public async Task<IActionResult> RevokeBadge(int userId, int badgeId)
+        {
+            var badge = await _context.UserBadges
+                .Where(a => a.UserId == userId && a.BadgeId == badgeId)
                 .FirstOrDefaultAsync();
-            if (badge == null) {
+            if (badge == null)
+            {
                 return NotFound();
             }
-            _context.CoachPlanBadges.Remove(badge);
+            _context.UserBadges.Remove(badge);
             await _context.SaveChangesAsync();
             return Ok();
         }
