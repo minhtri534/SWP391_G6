@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FsCheck;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers
 {
@@ -49,6 +50,23 @@ namespace backend.Controllers
             }
             return Ok(result);
         }
+        [HttpGet("Unearned/{userId}")]
+        public async Task<IActionResult> GetUnearnedBadges(int userId)
+        {
+            var results = await _context.Badges
+                .Where(a => !_context.UserBadges
+                    .Where(a => a.UserId == userId)
+                    .Select(a => a.BadgeId)
+                    .Contains(a.BadgeId))
+                .Select(a => new { BadgeName = a.BadgeName, Description = a.Description })
+                .ToListAsync();
+            if (results.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
+            return Ok(results);
+        }
+
         [HttpPost]
         public async Task<IActionResult> EarnBadge([FromBody] UserBadge badge)
         {
@@ -61,8 +79,30 @@ namespace backend.Controllers
             {
                 return BadRequest();
             }
+            SendBadgeNotification(badge);
             return Ok();
-            
+        }
+
+        private async void SendBadgeNotification(UserBadge badge)
+        {
+            var username = _context.Users
+                .Where(a => a.userId == badge.UserId)
+                .Select(a => a.userName)
+                .ToString();
+
+            var badgeName = _context.Badges
+                .Where(a => a.BadgeId == badge.BadgeId)
+                .Select(a => a.BadgeName)
+                .ToString();
+
+            string message = $"Congratulations, {username}!\nYou just recieved the {badgeName} bagde!\nGood luck on your quitting journey!";
+            var notification = new Notification
+            {
+                UserId = badge.UserId,
+                Message = message,
+                Send_Date = badge.Date_Awarded
+            };
+            await _context.Notifications.AddAsync(notification);
         }
     }
 }

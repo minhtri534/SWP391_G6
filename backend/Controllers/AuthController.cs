@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using backend.Data;
 using backend.Models;
+using backend.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
