@@ -86,8 +86,8 @@ namespace backend.Controllers
         private async void SendBadgeNotification(UserBadge badge)
         {
             var username = _context.Users
-                .Where(a => a.userId == badge.UserId)
-                .Select(a => a.userName)
+                .Where(a => a.UserId == badge.UserId)
+                .Select(a => a.UserName)
                 .ToString();
 
             var badgeName = _context.Badges

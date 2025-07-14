@@ -53,7 +53,7 @@ namespace backend.Controllers
                 b => b.PlanId,
                 c => c.PlanId,
                 (b, c) => new { UserId = b.UserId, Message = b.Message, CoachId = c.CoachId, Send_Date = b.Send_Date })
-                .Join(_context.Users.Select(a => new { UserId = a.userId, Username = a.userName }),
+                .Join(_context.Users.Select(a => new { UserId = a.UserId, Username = a.UserName }),
                 b => b.UserId,
                 c => c.UserId,
                 (b, c) => new { Username = c.Username, Message = b.Message, CoachId = b.CoachId, Send_Date = b.Send_Date })
