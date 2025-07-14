@@ -9,16 +9,16 @@ namespace backend.Entity
         [Key]
         
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // để SQL tự sinh số
-        public int userId { get; set; }
+        public int UserId { get; set; }
 
-        public string userName { get; set; }     
-        public int age { get; set; }     
-        public string gender { get; set; }  
-        public string phoneNum { get; set; }
-        public string password { get; set; }
-        public string status { get; set; }    
-        public int roleId { get; set; }   
-        public DateTime joinDate { get; set; }
+        public string? UserName { get; set; }     
+        public int Age { get; set; }     
+        public string? Gender { get; set; }  
+        public string? PhoneNum { get; set; }
+        public string? Password { get; set; }
+        public string? Status { get; set; }    
+        public int RoleId { get; set; }   
+        public DateTime JoinDate { get; set; }
 
 
     }

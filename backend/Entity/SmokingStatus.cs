@@ -10,7 +10,7 @@ namespace backend.Entity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int StatusId { get; set; }
 
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         public string? Time_Period { get; set; }
         public int MilestoneId { get; set; }
         public int Amount_Per_Day { get; set; }

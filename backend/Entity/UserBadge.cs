@@ -14,6 +14,6 @@ namespace backend.Entity
         [Key]
         [ForeignKey("BadgeId")]
         public int BadgeId { get; set; }
-        public DateTime? Date_Awarded { get; set; }
+        public DateTime Date_Awarded { get; set; }
     }
 }

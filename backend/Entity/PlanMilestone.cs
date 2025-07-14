@@ -10,10 +10,10 @@ namespace backend.Entity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MilestoneId { get; set; }
 
-        public int? PlanId { get; set; }
-        public int? BadgeId { get; set; }
+        public int PlanId { get; set; }
+        public int BadgeId { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
-        public DateTime? Target_Date { get; set; }
+        public DateTime Target_Date { get; set; }
     }
 }
