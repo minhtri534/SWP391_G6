@@ -239,14 +239,17 @@ CREATE TABLE transaction_money (
   memberId INT,
   coachId INT,
   planId INT,
+  bookingId INT, 
   amount DECIMAL(10, 2),
   status VARCHAR(50),
   method VARCHAR(50),
   transaction_date DATE,
   FOREIGN KEY (memberId) REFERENCES users(userId),
   FOREIGN KEY (coachId) REFERENCES coach_info(coachId),
-  FOREIGN KEY (planId) REFERENCES quit_plan(planId)
+  FOREIGN KEY (planId) REFERENCES quit_plan(planId),
+  FOREIGN KEY (bookingId) REFERENCES booking_consultation(bookingId) 
 );
+
 GO
 
 CREATE TABLE user_badge (
