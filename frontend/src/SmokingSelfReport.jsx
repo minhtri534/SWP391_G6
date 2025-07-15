@@ -1,10 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function SmokingSelfReport() {
-  const userName = "Minh Tri";
   const navigate = useNavigate();
+  const userName = localStorage.getItem("userName") || "User";
+  const userId = localStorage.getItem("userId");
+
+  const [form, setForm] = useState({
+    time_period: "",
+    amount_per_day: "",
+    frequency: "",
+    price_per_pack: "",
+    description: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!userId) {
+      alert("You must be logged in.");
+      return;
+    }
+
+    try {
+      await axios.post("http://localhost:5196/api/SmokingStatus", {
+        ...form,
+        userId: userId,
+        milestoneId: 1, // giả định milestone, bạn có thể cho chọn từ dropdown nếu cần
+      });
+
+      alert("Report submitted successfully!");
+      navigate("/home");
+    } catch (error) {
+      alert("Error submitting report.");
+      console.error(error);
+    }
+  };
 
   return (
     <div
@@ -14,7 +52,7 @@ function SmokingSelfReport() {
         minHeight: "100vh",
       }}
     >
-      {/* Header giống LoggedInHome */}
+      {/* Header */}
       <header
         style={{
           display: "flex",
@@ -39,15 +77,8 @@ function SmokingSelfReport() {
         </div>
       </header>
 
-      {/* Form Container */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          padding: "50px 20px",
-        }}
-      >
+      {/* Form */}
+      <div style={{ display: "flex", justifyContent: "center", padding: "50px 20px" }}>
         <div
           style={{
             background: "#fff",
@@ -67,20 +98,43 @@ function SmokingSelfReport() {
               fontWeight: "700",
             }}
           >
-            Smoking Self-Report
+            Smoking Status Report
           </h2>
 
-          <form>
-            <FormGroup label="Full Name (Optional)" placeholder="Enter your name (if any)" />
-            <FormGroup label="Age" placeholder="Enter your age" type="number" />
-            <FormGroup label="Gender" placeholder="e.g. Male / Female / Other" />
-            <FormGroup label="Are you currently smoking?" placeholder="Yes / No" />
-            <FormGroup label="What do you smoke?" placeholder="e.g. Cigarettes, Vape, etc." />
-            <FormGroup label="How many per day?" placeholder="e.g. 5-10" type="number" />
-            <FormGroup label="At what age did you start smoking?" placeholder="e.g. 18" type="number" />
-            <FormGroup label="When do you smoke the most?" placeholder="e.g. After meals, when stressed..." />
-            <FormGroup label="Why do you want to quit smoking?" isTextArea />
-            <FormGroup label="What support would help you quit?" isTextArea />
+          <form onSubmit={handleSubmit}>
+            <FormGroup
+              label="🕒 Time Period (e.g. 1 week, 1 month)"
+              name="time_period"
+              value={form.time_period}
+              onChange={handleChange}
+            />
+            <FormGroup
+              label="🚬 Amount Smoked Per Day"
+              name="amount_per_day"
+              value={form.amount_per_day}
+              onChange={handleChange}
+              type="number"
+            />
+            <FormGroup
+              label="🔁 Smoking Frequency (e.g. Daily, Occasionally)"
+              name="frequency"
+              value={form.frequency}
+              onChange={handleChange}
+            />
+            <FormGroup
+              label="💵 Price Per Pack (USD)"
+              name="price_per_pack"
+              value={form.price_per_pack}
+              onChange={handleChange}
+              type="number"
+            />
+            <FormGroup
+              label="📝 Additional Notes or Description"
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              isTextArea
+            />
 
             <button
               type="submit"
@@ -106,22 +160,18 @@ function SmokingSelfReport() {
   );
 }
 
-function FormGroup({ label, placeholder = "", type = "text", isTextArea = false }) {
+function FormGroup({ label, name, value, onChange, type = "text", isTextArea = false }) {
   return (
     <div style={{ marginBottom: "20px" }}>
-      <label
-        style={{
-          display: "block",
-          marginBottom: "6px",
-          fontWeight: "600",
-          color: "#333",
-        }}
-      >
+      <label style={{ display: "block", marginBottom: "6px", fontWeight: "600", color: "#333" }}>
         {label}
       </label>
       {isTextArea ? (
         <textarea
-          placeholder={placeholder || "Type your response here..."}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder="Type here..."
           style={{
             width: "100%",
             padding: "10px",
@@ -134,8 +184,11 @@ function FormGroup({ label, placeholder = "", type = "text", isTextArea = false 
         />
       ) : (
         <input
+          name={name}
+          value={value}
+          onChange={onChange}
           type={type}
-          placeholder={placeholder}
+          placeholder="Enter here..."
           style={{
             width: "100%",
             padding: "10px",
