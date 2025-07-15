@@ -15,6 +15,10 @@ namespace backend.Data
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<UserMembership> UserMemberships { get; set; }
         public DbSet<PaymentMemberShip> PaymentMemberships { get; set; }
+        public DbSet<CoachInfo> CoachInfos { get; set; }    
+        public DbSet<PlanMilestone> PlanMilestones { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<SmokingStatus> SmokingStatuses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,7 +26,6 @@ namespace backend.Data
 
             modelBuilder.Entity<UserMembership>()
                 .HasKey(um => new { um.UserId, um.MembershipId });
-
         }
 
     }

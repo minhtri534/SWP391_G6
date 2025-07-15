@@ -6,6 +6,7 @@ namespace backend.Entities
     [Table ("plan_milestone")]
     public class PlanMilestone
     {
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MilestoneID { get; set; }
         public int PlanId { get; set; }

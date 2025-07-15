@@ -5,6 +5,7 @@ namespace backend.Entities
     [Table ("smoking_status")]
     public class SmokingStatus
     {
+        [Key]
         public int StatusId { get; set; }
         public int UserId { get; set; }
         public int MilestoneId { get; set; }

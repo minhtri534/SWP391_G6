@@ -26,11 +26,11 @@ namespace backend.Controllers
         [HttpPut("LockAccount/{userId}")]
         public IActionResult LockAccount(int userId)
         {
-            var user = _context.Users.FirstOrDefault(u => u.userId == userId);
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
             if (user == null)
                 return NotFound("User not exist");
 
-            user.status = "Locked";
+            user.Status = "Locked";
 
             _context.SaveChanges();
 
@@ -42,12 +42,12 @@ namespace backend.Controllers
         [HttpPut("UnlockAccount/{userId}")]
         public IActionResult UnlockAccount(int userId)
         {
-            var user = _context.Users.FirstOrDefault(u => u.userId == userId);
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
             if (user == null)
                 return NotFound("User not exist");
 
-            if (user.status == "Locked")
-                user.status = "Unlocked";
+            if (user.Status == "Locked")
+                user.Status = "Unlocked";
 
             _context.SaveChanges();
 
@@ -64,7 +64,7 @@ namespace backend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var existingUser = _context.Users.FirstOrDefault(u => u.userName == request.Username);
+            var existingUser = _context.Users.FirstOrDefault(u => u.UserName == request.Username);
             if (existingUser != null)
                 return Conflict("This Username has been Registered");
 
@@ -73,12 +73,12 @@ namespace backend.Controllers
 
             var coachUser = new User
             {
-                userName = request.Username,
-                phoneNum = request.PhoneNum,
-                password = request.Password, 
-                roleId = 3,  
-                status = "Active",
-                joinDate = DateTime.Now
+                UserName = request.Username,
+                PhoneNum = request.PhoneNum,
+                Password = request.Password, 
+                RoleId = 3,  
+                Status = "Active",
+                JoinDate = DateTime.Now
             };
 
             _context.Users.Add(coachUser);
@@ -92,7 +92,7 @@ namespace backend.Controllers
         [HttpDelete("DeleteAccount/{userId}")]
         public IActionResult DeleteAccount(int userId)
         {
-            var user = _context.Users.FirstOrDefault(u => u.userId == userId);
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
             if (user == null)
                 return NotFound("User not exist");
 

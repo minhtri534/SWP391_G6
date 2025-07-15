@@ -26,18 +26,18 @@ namespace backend.Controllers
         [HttpGet("ViewProfile")]
         public IActionResult GetProfile(int userId)
         {
-            var user = _context.Users.FirstOrDefault(u => u.userId == userId);
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
             if (user == null)
                 return NotFound("User not found");
 
             return Ok(new
             {
-                user.userId,
-                user.userName,
-                user.age,
-                user.gender,
-                user.phoneNum,
-                user.joinDate
+                user.UserId,
+                user.UserName,
+                user.Age,
+                user.Gender,
+                user.PhoneNum,
+                user.JoinDate
             });
         }
 
@@ -47,7 +47,7 @@ namespace backend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = _context.Users.FirstOrDefault(u => u.userId == userId);
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
             if (user == null)
                 return NotFound("User not found");
 
@@ -57,8 +57,9 @@ namespace backend.Controllers
             if (request.Gender == null || (request.Gender != "Male" && request.Gender != "Female" && request.Gender != "Other"))
                 return BadRequest("Gender must be 'Male' , 'Female'");
 
-            user.age = request.Age;
-            user.gender = request.Gender.ToString();
+            user.Age = request.Age;
+            user.Gender = request.Gender.ToString();
+            user.JoinDate = DateTime.UtcNow;
 
             _context.SaveChanges();
 
@@ -70,7 +71,7 @@ namespace backend.Controllers
         [HttpDelete("DeleteAccount/{userId}")]
             public IActionResult DeleteAccount(int userId)
             {
-                var user = _context.Users.FirstOrDefault(u => u.userId == userId);
+                var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
                 if (user == null)
                     return NotFound("User not exist");
 

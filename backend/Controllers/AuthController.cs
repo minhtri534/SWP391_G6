@@ -25,7 +25,7 @@ namespace backend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var existingUser = _context.Users.FirstOrDefault(u => u.userName == request.Username);
+            var existingUser = _context.Users.FirstOrDefault(u => u.UserName == request.Username);
             if (existingUser != null)
                 return Conflict("This Username has been Registered");
 
@@ -35,12 +35,12 @@ namespace backend.Controllers
             var user = new User
             {
 
-                userName = request.Username,
-                phoneNum = request.PhoneNum,
-                password = request.Password,
-                roleId = 2,
-                status = "Active",
-                joinDate = DateTime.Now
+                UserName = request.Username,
+                PhoneNum = request.PhoneNum,
+                Password = request.Password,
+                RoleId = 2,
+                Status = "Active",
+                JoinDate = DateTime.Now
 
 
             };
@@ -56,15 +56,15 @@ namespace backend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = _context.Users.FirstOrDefault(u => u.userName == request.Username);
+            var user = _context.Users.FirstOrDefault(u => u.UserName == request.Username);
 
-            if (user == null || user.password != request.Password)
+            if (user == null || user.Password != request.Password)
                 return Unauthorized("Login failed");
 
             return Ok(new
             {
                 message = "Login successfully",
-                roleId = user.roleId
+                RoleId = user.RoleId
             });
         }
 
