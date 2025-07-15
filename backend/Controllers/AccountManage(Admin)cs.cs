@@ -59,7 +59,7 @@ namespace backend.Controllers
 
         [HttpPost("CreateCoachAcc")]
         //[Authorize(Roles = "Admin")]  
-        public IActionResult CreateCoach([FromBody] RegisterRequest request)
+        public IActionResult CreateCoachAcc([FromBody] CreateCoachAccRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

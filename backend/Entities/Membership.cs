@@ -1,24 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
-
 namespace backend.Entities
 {
-
     [Table("membership")]
     public class Membership
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int membershipId { get; set; } 
+        public int MembershipId { get; set; }
 
+        [Required]
         [MaxLength(100)]
-        public string membershipName { get; set; } 
+        public string MembershipName { get; set; }
 
-        [Column(TypeName = "decimal(10, 2)")]
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal Price { get; set; }
 
-        public decimal price { get; set; } 
+        public int Duration { get; set; }
 
-        public int duration { get; set; }
+        
     }
 }

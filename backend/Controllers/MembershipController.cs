@@ -31,15 +31,15 @@ public class MembershipController : ControllerBase
 
         var membership = new Membership
         {
-            membershipName = request.MembershipName,
-            price = request.Price,
-            duration = request.Duration
+            MembershipName = request.MembershipName,
+            Price = request.Price,
+            Duration = request.Duration
         };
 
         _context.Memberships.Add(membership);
         _context.SaveChanges();
 
-        return Ok(new { message = "Membership plan created successfully", membershipId = membership.membershipId });
+        return Ok(new { message = "Membership plan created successfully", membershipId = membership.MembershipId });
     }
     //UPDATE MEMBERSHIP PLAN//
     [HttpPut("UpdateMembershipPlan/{membershipId}")]
@@ -47,12 +47,12 @@ public class MembershipController : ControllerBase
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        var membership = _context.Memberships.FirstOrDefault(m => m.membershipId == membershipId);
+        var membership = _context.Memberships.FirstOrDefault(m => m.MembershipId == membershipId);
         if (membership == null)
             return NotFound("Membership plan not found");
-        membership.membershipName = request.MembershipName;
-        membership.price = request.Price;
-        membership.duration = request.Duration;
+        membership.MembershipName = request.MembershipName;
+        membership.Price = request.Price;
+        membership.Duration = request.Duration;
         _context.SaveChanges();
         return Ok("Membership plan updated successfully");
     }
@@ -60,7 +60,7 @@ public class MembershipController : ControllerBase
     [HttpDelete("DeleteMembershipPlan/{membershipId}")]
     public IActionResult DeleteMembership(int membershipId, [FromBody] CRUDMembershipRequest request)
     {
-        var membership = _context.Memberships.FirstOrDefault(m => m.membershipId == membershipId);
+        var membership = _context.Memberships.FirstOrDefault(m => m.MembershipId == membershipId);
         if (membership == null)
             return NotFound("Membership plan not found");
         _context.Memberships.Remove(membership);

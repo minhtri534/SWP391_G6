@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace backend.Models;
-public class CreateMembershipRequest
-   
+public class CRUDMembershipRequest
+
 {
     [Required]
     [StringLength(100)]
