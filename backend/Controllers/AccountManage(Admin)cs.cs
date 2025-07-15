@@ -84,6 +84,15 @@ namespace backend.Controllers
             _context.Users.Add(coachUser);
             _context.SaveChanges();
 
+            var CoachInfo = new CoachInfo
+            {
+                UserId = coachUser.UserId,
+                Experience = request.Experience,
+                AvailableTime = request.AvailableTime,
+                Specialty = request.Specialty
+            };
+            _context.CoachInfos.Add(CoachInfo);
+            _context.SaveChanges();
             return Ok("Coach account created successfully");
         }
 

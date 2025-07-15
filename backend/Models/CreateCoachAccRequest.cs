@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Models
 {
@@ -19,7 +20,9 @@ namespace backend.Models
         [MinLength(6)]
         public string ConfirmPassword { get; set; }
 
-
+        public int Experience { get; set; }
+        public string AvailableTime { get; set; }
+        public string Specialty { get; set; }
 
     }
 }

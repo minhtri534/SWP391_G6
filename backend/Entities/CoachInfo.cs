@@ -13,10 +13,11 @@ namespace backend.Entities
         public string PhoneNum { get; set; }
         public int Experience { get; set; }
         [MaxLength(100)]
+        [Column("available_time")]
         public string AvailableTime { get; set; }
         [MaxLength(100)]
-
-        public string Speciality { get; set; }
+        [Column("specialty")]
+        public string Specialty { get; set; }
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }
     }

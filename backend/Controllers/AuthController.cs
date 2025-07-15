@@ -51,7 +51,7 @@ namespace backend.Controllers
             return Ok("Register successfully");
         }
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public IActionResult Login([FromBody] LoginRequest  request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
