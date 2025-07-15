@@ -16,10 +16,10 @@ namespace backend.Models
         [MinLength(6)]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "You must enter password")]
-        [MinLength(6)]
-        public string ConfirmPassword { get; set; }
-
+       
+        [RegularExpression("^(Male|Female|Other)$", ErrorMessage = "Gender must be 'Male' or 'Female' or 'Other'.")]
+        public string Gender { get; set; }
+        public int Age { get; set; }
         public int Experience { get; set; }
         public string AvailableTime { get; set; }
         public string Specialty { get; set; }

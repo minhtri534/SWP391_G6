@@ -68,14 +68,15 @@ namespace backend.Controllers
             if (existingUser != null)
                 return Conflict("This Username has been Registered");
 
-            if (request.Password != request.ConfirmPassword)
-                return BadRequest("Password and Confirm Password do not match.");
+            
 
             var coachUser = new User
             {
                 UserName = request.Username,
                 PhoneNum = request.PhoneNum,
                 Password = request.Password, 
+                Gender = request.Gender,
+                Age = request.Age,
                 RoleId = 3,  
                 Status = "Active",
                 JoinDate = DateTime.Now
@@ -86,6 +87,7 @@ namespace backend.Controllers
 
             var CoachInfo = new CoachInfo
             {
+                PhoneNum = coachUser.PhoneNum,
                 UserId = coachUser.UserId,
                 Experience = request.Experience,
                 AvailableTime = request.AvailableTime,
