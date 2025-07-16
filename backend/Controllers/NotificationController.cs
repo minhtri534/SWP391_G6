@@ -2,11 +2,14 @@ using backend.Data;
 using backend.Models;
 using backend.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "3")]
     public class NotificationController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -19,9 +22,10 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNotification([FromBody] NotificationCreateRequest request)
         {
+            Notification notification;
             try
             {
-                var notification = new Notification
+                notification = new Notification
                 {
                     UserId = request.UserId,
                     RelatedLogId = request.RelatedLogId,
@@ -30,25 +34,24 @@ namespace backend.Controllers
                     Send_Date = request.Send_Date,
                     Type = request.Type
                 };
-
-                await _context.Notifications.AddAsync(notification);
-                await _context.SaveChangesAsync();
-                return Ok();
             }
             catch
             {
                 return BadRequest();
             }
+            await _context.Notifications.AddAsync(notification);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSentNotifications(int id)
         {
             var results = _context.Notifications
-                .Join(_context.PlanMilestones.Select(a => new { MilestoneId = a.MilestoneId, PlanId = a.PlanId , }),
+                .Join(_context.PlanMilestones.Select(a => new { MilestoneId = a.MilestoneId, PlanId = a.PlanId, }),
                 b => b.RelatedMilestoneId,
                 c => c.MilestoneId,
-                (b, c) => new { UserId = b.UserId, Message = b.Message, PlanId = c.PlanId, Send_Date = b.Send_Date})
+                (b, c) => new { UserId = b.UserId, Message = b.Message, PlanId = c.PlanId, Send_Date = b.Send_Date })
                 .Join(_context.QuitPlans.Select(a => new { CoachId = a.CoachId, PlanId = a.PlanId }),
                 b => b.PlanId,
                 c => c.PlanId,
@@ -59,6 +62,11 @@ namespace backend.Controllers
                 (b, c) => new { Username = c.Username, Message = b.Message, CoachId = b.CoachId, Send_Date = b.Send_Date })
                 .Where(a => a.CoachId == id)
                 .Select(a => new { Username = a.Username, Message = a.Message, Send_Date = a.Send_Date });
+
+            if (results.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
 
             return Ok(results);
         }

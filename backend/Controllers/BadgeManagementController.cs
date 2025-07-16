@@ -3,6 +3,7 @@ using backend.Models;
 using backend.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 // NOTE: convert all usage of coach plan badge table into user badge table
 
@@ -10,6 +11,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "4")]
     public class BadgeManagementController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -39,22 +41,23 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<IActionResult> AddBadge([FromBody] BadgeCreateRequest badge)
         {
+            Badge NewBadge;
             try
             {
-                var NewBadge = new Badge
+                NewBadge = new Badge
                 {
                     BadgeName = badge.BadgeName,
                     Description = badge.Description,
                     Condition_Type = badge.Condition_Type,
                     Value = badge.Value
                 };
-                _context.Badges.Add(NewBadge);
-                await _context.SaveChangesAsync();
             }
             catch
             {
                 return BadRequest();
             }
+            _context.Badges.Add(NewBadge);
+            await _context.SaveChangesAsync();
             return Ok();
         }
 

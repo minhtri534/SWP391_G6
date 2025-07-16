@@ -11,6 +11,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "2")]
     public class BookingController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -25,20 +26,19 @@ namespace backend.Controllers
             var username = _context.Users.Select(a => new { UserId = a.UserId, UserName = a.UserName });
             var results = await _context.CoacheInfos
                 .Join(username, a => a.UserId, b => b.UserId,
-                    (a, b) => new {b.UserName, a.PhoneNum, a.Experience, a.AvailableTime})
+                    (a, b) => new { b.UserName, a.PhoneNum, a.Experience, a.AvailableTime })
                 .ToListAsync();
             return Ok(results);
         }
 
         [HttpGet("Coaches/{coachId}")]
-        
         public async Task<IActionResult> GetCoachById(int coachId)
         {
             var username = _context.Users.Select(a => new { UserId = a.UserId, UserName = a.UserName });
             var results = await _context.CoacheInfos
                 .Where(a => a.CoachId == coachId)
                 .Join(username, a => a.UserId, b => b.UserId,
-                    (a, b) => new {b.UserName, a.PhoneNum, a.Experience, a.AvailableTime})
+                    (a, b) => new { b.UserName, a.PhoneNum, a.Experience, a.AvailableTime })
                 .ToListAsync();
             if (results.IsNullOrEmpty())
             {

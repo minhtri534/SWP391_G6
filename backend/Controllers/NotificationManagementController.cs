@@ -3,11 +3,13 @@ using backend.Models;
 using backend.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "4")]
     public class NotificationManagementController : ControllerBase
     {
         private readonly AppDbContext _context;

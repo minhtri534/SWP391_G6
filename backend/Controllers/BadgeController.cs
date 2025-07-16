@@ -11,6 +11,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BadgeController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -29,7 +30,7 @@ namespace backend.Controllers
                     b => b.BadgeId,
                     c => c.BadgeId,
                     (b, c) => new { BadgeName = c.BadgeName, Description = c.Description, Date_Awarded = b.Date_Awarded });
-            if (result.IsNullOrEmpty())
+            if (result == null)
             {
                 return NotFound();
             }
@@ -60,7 +61,7 @@ namespace backend.Controllers
                     .Contains(a.BadgeId))
                 .Select(a => new { BadgeName = a.BadgeName, Description = a.Description })
                 .ToListAsync();
-            if (results.IsNullOrEmpty())
+            if (results == null)
             {
                 return NotFound();
             }
