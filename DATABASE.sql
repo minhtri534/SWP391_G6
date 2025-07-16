@@ -262,6 +262,29 @@ CREATE TABLE user_badge (
 );
 GO
 
+CREATE TABLE coach_package (
+  packageId INT IDENTITY(1,1) PRIMARY KEY,
+  coachId INT,
+  packageName VARCHAR(100),
+  duration_months INT,
+  price DECIMAL(10, 2),
+  description TEXT,
+  FOREIGN KEY (coachId) REFERENCES coach_info(coachId)
+);
+GO
+
+CREATE TABLE user_coach_package (
+  packageBookingId INT IDENTITY(1,1) PRIMARY KEY,
+  userId INT,
+  packageId INT,
+  start_date DATE,
+  end_date DATE,
+  status VARCHAR(50),
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (packageId) REFERENCES coach_package(packageId)
+);
+GO
+
 
 
 INSERT INTO role (roleId, roleName)
@@ -406,3 +429,14 @@ VALUES
 (3, 1, 4, 49.99, 'Pending', 'Credit Card', '2025-07-03');
 GO
 
+INSERT INTO coach_package (coachId, packageName, duration_months, price, description)
+VALUES
+(1, '1-Month Support Pack', 1, 49.99, 'Includes weekly check-ins and chat support'),
+(1, '3-Month Quit Journey', 3, 129.99, 'Full support with bi-weekly coaching calls and milestones tracking');
+GO
+
+INSERT INTO user_coach_package (userId, packageId, start_date, end_date, status)
+VALUES
+(2, 1, '2025-07-01', '2025-07-31', 'Active'),
+(3, 2, '2025-07-05', '2025-10-04', 'Pending');
+GO
