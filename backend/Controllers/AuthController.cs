@@ -1,6 +1,6 @@
 ﻿using backend.Data;
 using backend.Models;
-using backend.Entity;
+using backend.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -41,7 +41,7 @@ namespace backend.Controllers
             }
 
             // 2. Tạo entity mới
-            var newUser = new Registration
+            var newUser = new User
             {
                 UserName = user.UserName,
                 Password = user.Password,

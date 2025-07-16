@@ -1,19 +1,18 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace backend.Entity
+namespace backend.Entities
 {
-    [Table("plan_milestone")]
-    public class PlanMilestone
+    [Table("badge")]
+    public class Badge
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int MilestoneId { get; set; }
-
-        public int PlanId { get; set; }
         public int BadgeId { get; set; }
-        public string? Title { get; set; }
+
+        public string? BadgeName { get; set; }
         public string? Description { get; set; }
-        public DateTime Target_Date { get; set; }
+        public string? Condition_Type { get; set; }
+        public int Value { get; set; }
     }
 }

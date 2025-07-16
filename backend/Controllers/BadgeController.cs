@@ -1,6 +1,6 @@
 using backend.Data;
 using backend.Models;
-using backend.Entity;
+using backend.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FsCheck;
@@ -79,11 +79,11 @@ namespace backend.Controllers
             {
                 return BadRequest();
             }
-            SendBadgeNotification(badge);
+            //SendBadgeNotification(badge);
             return Ok();
         }
 
-        private async void SendBadgeNotification(UserBadge badge)
+        /*private async void SendBadgeNotification(UserBadge badge)
         {
             var username = _context.Users
                 .Where(a => a.UserId == badge.UserId)
@@ -103,6 +103,6 @@ namespace backend.Controllers
                 Send_Date = badge.Date_Awarded
             };
             await _context.Notifications.AddAsync(notification);
-        }
+        }*/
     }
 }

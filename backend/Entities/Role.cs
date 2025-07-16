@@ -8,6 +8,7 @@ namespace backend.Entities
         [Key]
         public int RoleId { get; set; }
         [MaxLength(100)]
-        public string RoleName { get; set; }
+        public string? RoleName { get; set; }
+        public required ICollection<User> Users { get; set; }
     }
 }

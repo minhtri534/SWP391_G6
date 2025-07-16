@@ -1,7 +1,6 @@
 using backend.Data;
-using backend.Entity; // namespace chứa các model C#
+using backend.Entities; // namespace chứa các model C#
 using Microsoft.EntityFrameworkCore;
-using backend.Entities;
 
 namespace backend.Data
 {

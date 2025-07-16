@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend.Entity
+namespace backend.Entities
 {
     [Table("coach_plan_badge")]
     [PrimaryKey(nameof(BadgeId), nameof(PlanId))]

@@ -1,6 +1,6 @@
 using backend.Data;
 using backend.Models;
-using backend.Entity;
+using backend.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -45,7 +45,7 @@ namespace backend.Controllers
         public async Task<IActionResult> GetSentNotifications(int id)
         {
             var results = _context.Notifications
-                .Join(_context.PlanMilestones.Select(a => new { MilestoneId = a.MilestoneId, PlanId = a.PlanId }),
+                .Join(_context.PlanMilestones.Select(a => new { MilestoneId = a.MilestoneId, PlanId = a.PlanId , }),
                 b => b.RelatedMilestoneId,
                 c => c.MilestoneId,
                 (b, c) => new { UserId = b.UserId, Message = b.Message, PlanId = c.PlanId, Send_Date = b.Send_Date})

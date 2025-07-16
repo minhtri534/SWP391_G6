@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace backend.Entity
+namespace backend.Entities
 {
     [Table("booking_consultation")]
     public class BookingConsultation

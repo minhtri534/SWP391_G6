@@ -8,7 +8,7 @@ namespace backend.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int MilestoneID { get; set; }
+        public int MilestoneId { get; set; }
         public int PlanId { get; set; }
         public int BadgeId { get; set; }
         [MaxLength(100)]

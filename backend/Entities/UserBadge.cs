@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend.Entity
+namespace backend.Entities
 {
     [Table("user_badge")]
     [PrimaryKey(nameof(UserId), nameof(BadgeId))]
