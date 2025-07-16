@@ -341,7 +341,7 @@ VALUES
 (1, 2, 'Week 1 Goal', 'Remain smoke-free for one week', '2025-07-08'),
 (2, 1, 'Initial Milestone', 'Survive the first day', '2025-07-03'),
 (3, 2, '7-Day Challenge', 'Seven smoke-free days', '2025-07-10'),
-(4, 1, 'Doctor’s First Goal', 'Start smoke-free life', '2025-07-05');
+(4, 1, 'Doctorï¿½s First Goal', 'Start smoke-free life', '2025-07-05');
 GO
 
 INSERT INTO daily_progress (userId, note, no_smoking, symptoms, date)
@@ -383,7 +383,7 @@ GO
 INSERT INTO chat_log (userId, coachId, content, type, status, chat_date, sender)
 VALUES
 (2, 1, 'Hi Coach, I need help!', 'Text', 'Sent', '2025-07-02', 'Member'),
-(1, 1, 'Sure, let’s schedule a call.', 'Text', 'Replied', '2025-07-02', 'Coach');
+(1, 1, 'Sure, letï¿½s schedule a call.', 'Text', 'Replied', '2025-07-02', 'Coach');
 GO
 
 INSERT INTO booking_consultation (userId, coachId, date, type, status)
