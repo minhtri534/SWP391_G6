@@ -67,7 +67,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
-// ✅ CORS: Cho phép frontend React truy cập
+    
+
+//  CORS: 
 builder.Services.AddCors(options =>
 {
   options.AddPolicy("AllowFrontend",
@@ -97,7 +99,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// ✅ Bật CORS đúng policy
+//  Bật CORS đúng policy
 app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();

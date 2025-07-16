@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration.UserSecrets;
 namespace backend.Controllers
 
 {
-
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class AccountManageAdmin : ControllerBase

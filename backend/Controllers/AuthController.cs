@@ -55,46 +55,32 @@ namespace backend.Controllers
             };
 
             _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
-            // 3. Trả về phản hồi sau khi lưu thành công
+            return Ok("Register successfully");
+        }
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] LoginRequest  request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = _context.Users.FirstOrDefault(u => u.UserName == request.Username);
+
+            if (user == null || user.Password != request.Password)
+                return Unauthorized("Login failed");
+         
             return Ok(new
             {
                 success = true,
                 message = "User registered successfully.",
                 user = new
                 {
-                    newUser.UserId,
-                    newUser.UserName
-                }
+                    user.UserId,
+                    user.UserName
+                },
+                token = GenerateJwtToken(user.UserName, user.RoleId)
             });
-        }
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
-        {
-            if (string.IsNullOrWhiteSpace(request.UserName) || string.IsNullOrWhiteSpace(request.Password))
-            {
-                return BadRequest("Username and password are required.");
-            }
-
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.UserName == request.UserName && u.Password == request.Password);
-
-            if (user == null)
-            {
-                return Unauthorized("Invalid username or password.");
-            }
-
-            /*var response = new LoginResponse
-            {
-                Message = "Login successful",
-                UserId = user.UserId,
-                RoleId = user.RoleId,
-                UserName = user.UserName
-            };*/
-            var response = GenerateJwtToken(user.UserName, user.RoleId);
-
-            return Ok(response);
         }
 
         private string GenerateJwtToken(string username, int role)
