@@ -6,16 +6,19 @@ namespace backend.Entities
     public class SmokingStatus
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int StatusId { get; set; }
         public int UserId { get; set; }
         public int MilestoneId { get; set; }
         [MaxLength (50)]
+        
         public string TimePeriod { get; set; }
         public int AmountPerDay { get; set; }
         [MaxLength (50)]
         public string Frequency { get; set; }
 
         [Column(TypeName = "decimal(10, 2)")]
+        
         public Decimal PricePerPack { get; set; }
         [Column(TypeName = "text")]
         public string Description { get; set; }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.Identity.Client;
 
 namespace backend.Controllers
 {
@@ -60,7 +61,7 @@ namespace backend.Controllers
 
             if (user == null || user.Password != request.Password)
                 return Unauthorized("Login failed");
-
+         
             return Ok(new
             {
                 message = "Login successfully",

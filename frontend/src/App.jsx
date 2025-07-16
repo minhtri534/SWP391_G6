@@ -4,6 +4,13 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BookingCoach from "./BookingCoach";
 import SmokingSelfReport from "./SmokingSelfReport";
+import PlatformFeedback from "./PlatformFeedback";
+import Payment from "./Payment";
+import EditProfile from "./EditProfile";
+import Achievements from "./Achievements";
+import Settings from "./Settings";
+import Forums from "./Forums";
+import QuitPlan from "./QuitPlan";
 
 import Home from "./Home";
 import Login from "./Login";
@@ -27,6 +34,13 @@ function App() {
 					<Route path="/coaching" element={<BookingCoach />} />
 					<Route path="/report" element={<SmokingSelfReport />} />
 					<Route path="/home" element={<LoggedInHome user={{ name: "Minh Tri" }} />} />
+					<Route path="/payment" element={<Payment />} />
+					<Route path="/platform-feedback" element={<PlatformFeedback />} />
+					<Route path="/edit-profile" element={<EditProfile />} />
+					<Route path="/achievements" element={<Achievements />} />
+					<Route path="/settings" element={<Settings />} />
+					<Route path="/forums" element={<Forums />} />
+					<Route path="/quitplan" element={<QuitPlan />} />
 
 					{/* Admin routing. Need to have role ADMIN to use */}
 					<Route path="/Admin/Dashboard" element={<AdminDashboard />} />

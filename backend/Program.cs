@@ -1,18 +1,22 @@
 ﻿using backend.Data;
 using Microsoft.EntityFrameworkCore;
-
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 // Cấu hình DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add services
+//Add server
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// ✅ CORS: Cho phép frontend React truy cập
+    
+
+//  CORS: 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
@@ -31,7 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// ✅ Bật CORS đúng policy
+//  Bật CORS đúng policy
 app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
