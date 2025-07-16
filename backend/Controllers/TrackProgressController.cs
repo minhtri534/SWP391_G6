@@ -19,8 +19,11 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMemberDailyProgress([FromQuery] int userId, [FromQuery] DateTime? date = null)
+        public async Task<IActionResult> GetMemberDailyProgress([FromQuery] int? userId, [FromQuery] DateTime? date = null)
         {
+            if (userId == null) {
+                return BadRequest();
+            }
             if (date == null)
             {
                 var result = _context.DailyProgresses
