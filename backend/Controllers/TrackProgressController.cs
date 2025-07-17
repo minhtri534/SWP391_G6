@@ -4,11 +4,13 @@ using backend.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "3")]
     public class TrackProgressController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -21,7 +23,8 @@ namespace backend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMemberDailyProgress([FromQuery] int? userId, [FromQuery] DateTime? date = null)
         {
-            if (userId == null) {
+            if (userId == null)
+            {
                 return BadRequest();
             }
             if (date == null)

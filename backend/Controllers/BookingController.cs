@@ -11,6 +11,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "2")]
     public class BookingController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -25,20 +26,33 @@ namespace backend.Controllers
             var username = _context.Users.Select(a => new { UserId = a.UserId, UserName = a.UserName });
             var results = await _context.CoacheInfos
                 .Join(username, a => a.UserId, b => b.UserId,
-                    (a, b) => new {b.UserName, a.PhoneNum, a.Experience, a.AvailableTime})
+                    (a, b) => new
+                    {
+                        CoachId = a.CoachId,
+                        UserName = b.UserName,
+                        PhoneNum = a.PhoneNum,
+                        Experience = a.Experience,
+                        AvailableTime = a.AvailableTime
+                    })
                 .ToListAsync();
             return Ok(results);
         }
 
         [HttpGet("Coaches/{coachId}")]
-        
         public async Task<IActionResult> GetCoachById(int coachId)
         {
             var username = _context.Users.Select(a => new { UserId = a.UserId, UserName = a.UserName });
             var results = await _context.CoacheInfos
                 .Where(a => a.CoachId == coachId)
                 .Join(username, a => a.UserId, b => b.UserId,
-                    (a, b) => new {b.UserName, a.PhoneNum, a.Experience, a.AvailableTime})
+                    (a, b) => new
+                    {
+                        CoachId = a.CoachId,
+                        UserName = b.UserName,
+                        PhoneNum = a.PhoneNum,
+                        Experience = a.Experience,
+                        AvailableTime = a.AvailableTime
+                    })
                 .ToListAsync();
             if (results.IsNullOrEmpty())
             {
@@ -50,14 +64,22 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<IActionResult> BookCoach([FromBody] BookingRequest request)
         {
-            var booking = new BookingConsultation
+            BookingConsultation booking;
+            try
             {
-                UserId = request.UserId,
-                CoachId = request.CoachId,
-                Date = request.Date,
-                Type = request.Type,
-                Status = "Pending"
-            };
+                booking = new BookingConsultation
+                {
+                    UserId = request.UserId,
+                    CoachId = request.CoachId,
+                    Date = request.Date,
+                    Type = request.Type,
+                    Status = "Pending"
+                };
+            }
+            catch
+            {
+                return BadRequest();
+            }
             await _context.BookingConsultations.AddAsync(booking);
             await _context.SaveChangesAsync();
             return Ok();

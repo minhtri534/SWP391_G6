@@ -4,11 +4,13 @@ using backend.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "2,3")]
     public class ChatController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -21,9 +23,10 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<IActionResult> SendMessage([FromBody] ChatSendRequest chat)
         {
+            var message = new Chat();
             try
             {
-                var message = new Chat
+                message = new Chat
                 {
                     UserId = chat.UserId,
                     CoachId = chat.CoachId,
@@ -34,14 +37,15 @@ namespace backend.Controllers
                     Sender = chat.Sender
                 };
 
-                await _context.ChatLog.AddAsync(message);
-                await _context.SaveChangesAsync();
-                return Ok();
+
             }
             catch
             {
                 return BadRequest();
             }
+            await _context.ChatLog.AddAsync(message);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpGet]
