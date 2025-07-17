@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 
-// NOTE: convert all usage of coach plan badge table into user badge table
 
 namespace backend.Controllers
 {

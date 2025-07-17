@@ -69,6 +69,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "3,4")]
         public async Task<IActionResult> EarnBadge([FromBody] UserBadge badge)
         {
             try
@@ -80,11 +81,11 @@ namespace backend.Controllers
             {
                 return BadRequest();
             }
-            //SendBadgeNotification(badge);
+            SendBadgeNotification(badge);
             return Ok();
         }
 
-        /*private async void SendBadgeNotification(UserBadge badge)
+        private async void SendBadgeNotification(UserBadge badge)
         {
             var username = _context.Users
                 .Where(a => a.UserId == badge.UserId)
@@ -101,9 +102,10 @@ namespace backend.Controllers
             {
                 UserId = badge.UserId,
                 Message = message,
+                Type = "Milestone",
                 Send_Date = badge.Date_Awarded
             };
             await _context.Notifications.AddAsync(notification);
-        }*/
+        }
     }
 }
