@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Models
 {
-    public class BookingRequest
+    public class BookingPaymentRequest
     {
         public int UserId { get; set; }
-        public int PackageId { get; set; }
-        public DateTime Start_Date { get; set; }
+        public int PackageBookingId { get; set; }
+        public required IFormFile Image { get; set; }
     }
 }

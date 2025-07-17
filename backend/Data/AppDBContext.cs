@@ -20,8 +20,9 @@ namespace backend.Data
         public DbSet<PlanMilestone> PlanMilestones { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<SmokingStatus> SmokingStatuses { get; set; }
-        public DbSet<CoachInfo> CoacheInfos { get; set; }
         public DbSet<BookingConsultation> BookingConsultations { get; set; }
+        public DbSet<CoachPackage> CoachPackages { get; set; }
+        public DbSet<UserCoachPackage> UserCoachPackages { get; set; }
         public DbSet<QuitPlan> QuitPlans { get; set; }
         public DbSet<DailyProgress> DailyProgresses { get; set; }
         public DbSet<Chat> ChatLog { get; set; }
