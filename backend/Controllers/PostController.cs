@@ -1,6 +1,9 @@
 using backend.Models;
 using backend.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
+
 
 namespace backend.Controllers
 {
@@ -34,6 +37,7 @@ namespace backend.Controllers
             return Ok(post);
         }
 
+        [Authorize(Roles = "2,3")] 
         [HttpPost]
         public async Task<IActionResult> Create(CreatePostDto dto)
         {
@@ -44,6 +48,7 @@ namespace backend.Controllers
             return CreatedAtAction(nameof(GetById), new { id = post.PostId }, post);
         }
 
+        [Authorize(Roles = "2,3")] 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdatePostDto dto)
         {
@@ -54,6 +59,7 @@ namespace backend.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "2,3")] 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

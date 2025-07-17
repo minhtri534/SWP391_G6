@@ -40,7 +40,7 @@ namespace backend.Controllers
                 });
             }
 
-           
+            // 2. Tạo entity mới
             var newUser = new User
             {
                 UserName = user.UserName,

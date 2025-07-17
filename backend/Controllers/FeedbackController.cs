@@ -1,11 +1,14 @@
 using backend.Models;
 using backend.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "2,3,4")]    
     public class FeedbackController : ControllerBase
     {
         private readonly IFeedbackService _service;
@@ -15,6 +18,7 @@ namespace backend.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "2,3,4")]
         [HttpGet]
         public async Task<IActionResult> GetFeedbacks([FromQuery] int? userId, [FromQuery] int? coachId)
         {
@@ -22,6 +26,7 @@ namespace backend.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "2,3,4")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -32,6 +37,7 @@ namespace backend.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "2")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateFeedbackDto dto)
         {
@@ -42,6 +48,7 @@ namespace backend.Controllers
             return Ok("Feedback submitted successfully");
         }
 
+        [Authorize(Roles = "2")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateFeedbackDto dto)
         {
@@ -52,6 +59,8 @@ namespace backend.Controllers
             return Ok("Feedback updated successfully");
         }
 
+
+        [Authorize(Roles = "2")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id, [FromQuery] int userId)
         {

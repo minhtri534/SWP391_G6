@@ -2,6 +2,9 @@ using backend.Entities;
 using backend.Models;
 using backend.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
+
 
 namespace backend.Controllers
 {
@@ -16,6 +19,7 @@ namespace backend.Controllers
             _reportService = reportService;
         }
 
+        [Authorize(Roles = "4")]
         [HttpGet]
         public async Task<IActionResult> GetAllReports()
         {
@@ -23,6 +27,7 @@ namespace backend.Controllers
             return Ok(reports);
         }
 
+        [Authorize(Roles = "4")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetReportById(int id)
         {
@@ -33,6 +38,7 @@ namespace backend.Controllers
             return Ok(report);
         }
 
+        [Authorize(Roles = "4")]
         [HttpDelete("post/{postId}")]
         public async Task<IActionResult> DeletePost(int postId, [FromQuery] int userId)
         {
@@ -43,6 +49,7 @@ namespace backend.Controllers
             return Ok("Post deleted successfully");
         }
 
+        [Authorize(Roles = "4")]
         [HttpDelete("comment/{commentId}")]
         public async Task<IActionResult> DeleteComment(int commentId, [FromQuery] int userId)
         {
@@ -53,6 +60,7 @@ namespace backend.Controllers
             return Ok("Comment deleted successfully");
         }
 
+        [Authorize(Roles = "2,3")]
         [HttpPost]
         public async Task<IActionResult> CreateReport([FromBody] CreateReportDto dto, [FromQuery] int userId)
         {
@@ -63,6 +71,7 @@ namespace backend.Controllers
             return Ok("Report submitted successfully");
         }
         
+        [Authorize(Roles = "4")]
         [HttpDelete("report/{ReportId}")]
         public async Task<IActionResult> DeleteReport(int ReportId, [FromQuery] int userId)
         {
