@@ -16,7 +16,7 @@ namespace backend.Entities
         [Column(TypeName = "text")]
         public string Description { get; set; }
         public DateTime TargetDate { get; set; }
-       // [ForeignKey(nameof(BadgeId))]
-       // public Badge Badge { get; set; }
+        [ForeignKey(nameof(BadgeId))]
+       public Badge Badge { get; set; }
     }
 }

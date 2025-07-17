@@ -49,6 +49,7 @@ namespace backend.Data
             modelBuilder.Entity<Feedback>().ToTable("feedback").HasKey(f => f.FeedbackId);
             modelBuilder.Entity<CoachInfo>().ToTable("coach_info").HasKey(c => c.CoachId);
             modelBuilder.Entity<QuitPlan>().ToTable("quit_plan").HasKey(q => q.PlanId);
+            modelBuilder.Entity<UserMembership>().ToTable("user_memberships").HasKey(us => new { us.MembershipId, us.UserId });
         }
     }
 

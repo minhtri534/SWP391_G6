@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration.UserSecrets;
 namespace backend.Controllers
 
 {
-    [Authorize]
+    
     [ApiController]
     [Route("[controller]")]
     public class AccountManageAdmin : ControllerBase
@@ -21,6 +21,25 @@ namespace backend.Controllers
             _context = context;
         }
 
+        //VIEW ALL ACCOUNT
+        [HttpGet("ViewAllAccount")]
+        public IActionResult ViewAllAccount ()
+        {
+          var users  = _context.Users
+                .Select(u => new {
+                    u.UserId,
+                    u.UserName,
+                    u.Age,
+                    u.Gender,
+                    u.PhoneNum,
+                    u.Role,
+                    u.Status,
+                    u.JoinDate
+                })
+            .ToList();
+
+            return Ok(users);
+        }
         //LOCK ACCOUNT//
 
         [HttpPut("LockAccount/{userId}")]
