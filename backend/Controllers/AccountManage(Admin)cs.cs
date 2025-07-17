@@ -21,12 +21,14 @@ namespace backend.Controllers
             _context = context;
         }
 
-        //VIEW ALL ACCOUNT
-        [HttpGet("ViewAllAccount")]
-        public IActionResult ViewAllAccount ()
+        //VIEW ALL USERS//
+        [HttpGet("ViewAllUsers")]
+        public IActionResult ViewAllUsers()
         {
-          var users  = _context.Users
-                .Select(u => new {
+            var users = _context.Users
+
+                .Select(u => new
+                {
                     u.UserId,
                     u.UserName,
                     u.Age,
@@ -34,15 +36,14 @@ namespace backend.Controllers
                     u.PhoneNum,
                     u.Role,
                     u.Status,
-                    u.JoinDate
+                    u.JoinDate,
+                    //LOCK ACCOUNT//
                 })
-            .ToList();
+                .ToList();
 
             return Ok(users);
         }
-        //LOCK ACCOUNT//
-
-        [HttpPut("LockAccount/{userId}")]
+            [HttpPut("LockAccount/{userId}")]
         public IActionResult LockAccount(int userId)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
