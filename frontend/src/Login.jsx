@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useUser } from "./UserContext"; // ✅ Thêm dòng này
 
 function Login() {
   const [form, setForm] = useState({
@@ -11,6 +12,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const { setUser } = useUser(); // ✅ Thêm dòng này
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -31,7 +33,14 @@ function Login() {
       const token = response.data.token;
       const usernameFromServer = response.data.username || form.username;
 
-      // Lưu vào localStorage
+      // ✅ Cập nhật vào context
+      setUser({
+        userId: response.data.userId, // Đảm bảo backend trả về userId
+        username: usernameFromServer,
+        role: response.data.role || "member",
+      });
+
+      // ✅ Lưu vào localStorage nếu cần
       localStorage.setItem("userToken", token);
       localStorage.setItem("userName", usernameFromServer);
 
@@ -53,7 +62,6 @@ function Login() {
         padding: "30px",
       }}
     >
-      {/* Logo Header giống LoggedInHome */}
       <div style={{ marginBottom: "40px", textAlign: "left" }}>
         <Link to="/" style={{ textDecoration: "none" }}>
           <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>
@@ -63,7 +71,6 @@ function Login() {
         </Link>
       </div>
 
-      {/* Login box */}
       <div
         style={{
           maxWidth: "400px",

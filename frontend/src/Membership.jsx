@@ -1,147 +1,185 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
+import {
+  FaUserCircle,
+  FaCrown,
+  FaTag,
+  FaMoneyBillWave,
+  FaShoppingCart,
+} from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
-function Membership() {
-	const navigate = useNavigate();
+const memberships = [
+  {
+    id: 1,
+    name: "Bronze Package",
+    duration: "1 Month",
+    price: "$9.99",
+  },
+  {
+    id: 2,
+    name: "Silver Package",
+    duration: "5 Months",
+    price: "$39.99",
+  },
+  {
+    id: 3,
+    name: "Gold Package",
+    duration: "1 Year",
+    price: "$89.99",
+  },
+];
 
-	const handleUpgrade = (plan) => {
-		navigate("/payment", { state: { membershipId: plan } });
-	};
+const Membership = () => {
+  const userName = localStorage.getItem("userName") || "User";
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef();
+  const navigate = useNavigate();
 
-	return (
-		<div
-			style={{
-				fontFamily: "Poppins, sans-serif",
-				background: "linear-gradient(to bottom, #a8f5a2, #ddfcb2)",
-				minHeight: "100vh",
-				paddingBottom: "40px",
-			}}
-		>
-			{/* Logo */}
-			<header
-				style={{
-					padding: "20px 40px",
-					display: "flex",
-					alignItems: "center",
-				}}
-			>
-				<Link to="/home" style={{ textDecoration: "none" }}>
-					<h1 style={{ margin: 0 }}>
-						<span style={{ color: "orange" }}>Quit</span>
-						<span style={{ color: "green" }}>Smoking.com</span>
-					</h1>
-				</Link>
-			</header>
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-			<section style={{ textAlign: "center", padding: "20px" }}>
-				<h2 style={{ fontSize: "36px", fontWeight: "bold", marginBottom: "10px", color: "#2e7d32" }}>
-					Choose Your Membership Plan
-				</h2>
-				<p style={{ fontSize: "16px", color: "#333", marginBottom: "40px" }}>
-					Find the right plan to help you quit smoking and stay on track.
-				</p>
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
 
-				<div
-					style={{
-						display: "flex",
-						justifyContent: "center",
-						flexWrap: "wrap",
-						gap: "30px",
-						padding: "0 20px",
-					}}
-				>
-					{/* Basic Plan */}
-					<PlanCard
-						title="Basic"
-						price="$9.99"
-						features={["Limited Tracking", "Community Access"]}
-						color="#81c784"
-						buttonColor="#388e3c"
-						onUpgrade={() => handleUpgrade(1)}
-					/>
+  const handleBuy = (packageId) => {
+    navigate(`/payment?packageId=${packageId}`);
+  };
 
-					{/* Standard Plan */}
-					<PlanCard
-						title="Standard"
-						price="$19.99/mo"
-						features={["Full Tracking", "Personal Coach", "Daily Tips"]}
-						color="#64b5f6"
-						buttonColor="#1976d2"
-						onUpgrade={() => handleUpgrade(2)}
-					/>
+  return (
+    <div
+      style={{
+        fontFamily: '"Segoe UI", sans-serif',
+        background: "linear-gradient(to bottom, #a8e063, #56ab2f)",
+        minHeight: "100vh",
+      }}
+    >
+      {/* Header */}
+      <header
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "15px 30px",
+          background: "white",
+          borderBottom: "2px solid #ccc",
+        }}
+      >
+        <Link to="/home" style={{ textDecoration: "none" }}>
+          <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>
+            <span style={{ color: "#f57c00" }}>Quit</span>
+            <span style={{ color: "#69c770" }}>Smoking.com</span>
+          </h1>
+        </Link>
+        <div style={{ position: "relative" }} ref={menuRef}>
+          <div
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              cursor: "pointer",
+              background: "white",
+              padding: "8px 12px",
+              borderRadius: "20px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+              fontWeight: "500",
+            }}
+          >
+            <FaUserCircle size={22} color="#4CAF50" />
+            <span>{userName}</span>
+          </div>
+          {menuOpen && (
+            <ul
+              style={{
+                position: "absolute",
+                top: "110%",
+                right: 0,
+                background: "white",
+                listStyle: "none",
+                padding: "10px 0",
+                boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
+                borderRadius: "8px",
+                zIndex: 999,
+                width: "180px",
+              }}
+            >
+              <MenuItem label="👤 Edit Profile" onClick={() => navigate("/edit-profile")} />
+              <MenuItem label="🏆 View Achievements" onClick={() => navigate("/achievements")} />
+              <MenuItem label="⚙️ Settings" onClick={() => navigate("/settings")} />
+              <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
+              <MenuItem label="🔓 Logout" onClick={handleLogout} />
+            </ul>
+          )}
+        </div>
+      </header>
 
-					{/* Premium Plan */}
-					<PlanCard
-						title="Premium"
-						price="$219.99/mo"
-						features={["All Features", "24/7 Support", "1-on-1 Counseling", "Progress Reports"]}
-						color="#ffb74d"
-						buttonColor="#f57c00"
-						onUpgrade={() => handleUpgrade(3)}
-					/>
-				</div>
-			</section>
-		</div>
-	);
-}
+      {/* Main */}
+      <div className="p-8">
+        <h2 className="text-4xl font-bold text-center text-green-100 mb-10 flex items-center justify-center gap-2">
+          <FaCrown className="text-white" />
+          Membership Packages
+        </h2>
 
-function PlanCard({ title, price, features, color, buttonColor, onUpgrade }) {
-	return (
-		<div
-			style={{
-				backgroundColor: "white",
-				borderRadius: "16px",
-				boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-				padding: "30px 20px",
-				maxWidth: "280px",
-				flex: "1",
-				borderTop: `8px solid ${color}`,
-				display: "flex",
-				flexDirection: "column",
-				alignItems: "center",
-				justifyContent: "space-between",
-				height: "100%",
-			}}
-		>
-			<div style={{ textAlign: "center" }}>
-				<h3 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "10px" }}>{title}</h3>
-				<p style={{ fontSize: "20px", marginBottom: "20px", color: "#333" }}>{price}</p>
-			</div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {memberships.map((m) => (
+            <div
+              key={m.id}
+              className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition"
+            >
+              <h3 className="text-xl font-bold text-green-700 mb-4 flex items-center gap-2">
+                <FaTag />
+                {m.name}
+              </h3>
 
-			<ul
-				style={{
-					listStyle: "none",
-					padding: 0,
-					marginBottom: "20px",
-					textAlign: "left",
-					minHeight: "120px",
-				}}
-			>
-				{features.map((feature, index) => (
-					<li key={index} style={{ marginBottom: "10px" }}>
-						✅ {feature}
-					</li>
-				))}
-			</ul>
+              <p className="text-gray-700 mb-2">
+                <strong>Duration:</strong> {m.duration}
+              </p>
+              <p className="text-gray-700 mb-4 flex items-center gap-2">
+                <FaMoneyBillWave />
+                <strong>Price:</strong> {m.price}
+              </p>
 
-			<button
-				style={{
-					backgroundColor: buttonColor,
-					color: "white",
-					padding: "10px 20px",
-					border: "none",
-					borderRadius: "10px",
-					fontSize: "16px",
-					fontWeight: "bold",
-					cursor: "pointer",
-					marginTop: "auto",
-				}}
-				onClick={onUpgrade}
-			>
-				Upgrade
-			</button>
-		</div>
-	);
+              <button
+                onClick={() => handleBuy(m.id)}
+                className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition text-sm"
+              >
+                <FaShoppingCart />
+                Buy Now
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+function MenuItem({ label, onClick }) {
+  return (
+    <li
+      onClick={onClick}
+      style={{
+        padding: "10px 16px",
+        fontSize: "14px",
+        color: "#333",
+        cursor: "pointer",
+        transition: "background 0.2s",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "#f4f4f4")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+    >
+      {label}
+    </li>
+  );
 }
 
 export default Membership;

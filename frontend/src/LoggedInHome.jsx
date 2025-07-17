@@ -8,6 +8,7 @@ import Report from "./assets/immigration.png";
 import Achievement from "./assets/goal.png";
 import Forums from "./assets/meeting.png";
 import Feedback from "./assets/talking.png";
+import QuitPlan from "./assets/project.png";
 
 function LoggedInHome() {
   const navigate = useNavigate();
@@ -225,9 +226,9 @@ function LoggedInHome() {
               desc: "Share your experience with our system or coaching team. Your insights help us grow and serve you better.",
               img: Feedback,
             }, {
-              title: "📄 Health Tips & Strategies",
+              title: "📄 Start with Quitplan now",
               desc: "Discover expert-backed health tips and lifestyle changes that support your smoke-free transformation.",
-              img: "",
+              img: QuitPlan,
             }].map((item, index) => (
               <div key={index} style={articleCardStyle(false)}>
                 <div style={articleImageStyle}>

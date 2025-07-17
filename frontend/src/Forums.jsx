@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { Dropdown, Avatar } from "antd";
+import { DownOutlined, UserOutlined } from "@ant-design/icons";
 
 const dummyPosts = [
   {
@@ -40,7 +42,7 @@ function Forums() {
         ...posts,
         {
           postId: posts.length + 1,
-          userId: 999, // tạm ID user
+          userId: 999,
           title: newPost.title,
           content: newPost.content,
           create_date: new Date().toISOString().split("T")[0],
@@ -63,43 +65,69 @@ function Forums() {
     setNewComment("");
   };
 
+  const userMenu = {
+    items: [
+      {
+        key: "1",
+        label: <Link to="/profile">Profile</Link>,
+      },
+      {
+        key: "2",
+        label: <Link to="/logout">Logout</Link>,
+      },
+    ],
+  };
+
   return (
     <div
       style={{
         fontFamily: "Segoe UI, sans-serif",
-        background: "linear-gradient(to bottom, #a8e063, #56ab2f)",
+        background: "linear-gradient(to bottom right, #a8e063, #56ab2f)",
         minHeight: "100vh",
-        paddingBottom: "40px",
+        paddingBottom: "60px",
       }}
     >
+      {/* Header giống Membership */}
       <header
         style={{
-          padding: "20px 40px",
-          display: "flex",
-          alignItems: "center",
           backgroundColor: "white",
-          borderBottom: "2px solid #ccc",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "16px 40px",
+          borderBottom: "2px solid #eee",
         }}
       >
         <Link to="/home" style={{ textDecoration: "none" }}>
-          <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>
+          <h1 style={{ margin: 0, fontSize: "22px", fontWeight: "bold" }}>
             <span style={{ color: "#f57c00" }}>Quit</span>
             <span style={{ color: "#69c770" }}>Smoking.com</span>
           </h1>
         </Link>
+
+        <Dropdown menu={userMenu} placement="bottomRight">
+          <div style={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
+            <Avatar icon={<UserOutlined />} style={{ backgroundColor: "#87d068" }} />
+            <span style={{ marginLeft: "8px", marginRight: "4px", fontWeight: "500" }}>
+              Member
+            </span>
+            <DownOutlined />
+          </div>
+        </Dropdown>
       </header>
 
-      <main style={{ padding: "40px 30px", color: "#111" }}>
-        <h2 style={{ textAlign: "center", color: "white", marginBottom: "30px" }}>
+      <main style={{ padding: "40px 80px", color: "#111" }}>
+        <h2 style={{ textAlign: "center", color: "white", marginBottom: "40px" }}>
           💬 Community Forum – Share & Support
         </h2>
 
         <div
           style={{
             backgroundColor: "white",
-            padding: "20px",
+            padding: "24px",
             borderRadius: "12px",
             marginBottom: "30px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
           }}
         >
           <h3>Đăng bài mới</h3>
@@ -121,14 +149,14 @@ function Forums() {
           </button>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           {posts.map((post) => (
             <div
               key={post.postId}
               style={{
                 backgroundColor: "white",
                 borderRadius: "12px",
-                padding: "20px",
+                padding: "24px",
                 boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
               }}
             >
@@ -203,20 +231,6 @@ function Forums() {
           ))}
         </div>
       </main>
-
-      <footer
-        style={{
-          textAlign: "center",
-          padding: "16px",
-          backgroundColor: "#ffffff",
-          fontSize: "14px",
-          borderTop: "1px solid #ddd",
-          color: "#777777",
-          marginTop: "40px",
-        }}
-      >
-        © 2025 QuitSmoking.com. All rights reserved.
-      </footer>
     </div>
   );
 }
