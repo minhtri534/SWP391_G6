@@ -20,6 +20,7 @@ namespace backend.Controllers
             _context = context;
         }
 
+        /*
         [HttpPost]
         [Authorize(Roles = "2")]
         public async Task<IActionResult> SendTransactionBill([FromForm] BookingPaymentRequest request)
@@ -61,5 +62,6 @@ namespace backend.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
+        */
     }
 }

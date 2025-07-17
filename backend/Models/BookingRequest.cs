@@ -6,7 +6,7 @@ namespace backend.Models
     public class BookingRequest
     {
         public int UserId { get; set; }
-        public int PackageBookingId { get; set; }
+        public int PackageId { get; set; }
         public DateTime Start_Date { get; set; }
     }
 }

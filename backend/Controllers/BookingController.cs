@@ -43,66 +43,56 @@ namespace backend.Controllers
             var results = await _context.CoachPackages
                 .Where(a => a.CoachId == coachId)
                 .ToListAsync();
+                
             if (results.IsNullOrEmpty())
             {
                 return NotFound();
             }
             return Ok(results);
         }
-        [HttpGet("{userId}")]
-        public async Task<IActionResult> GetPendingBooking(int userId)
-        {
-            var result = await _context.UserCoachPackages
-                .Where(a => a.UserId == userId && a.Status.Equals("Pending"))
-                .FirstOrDefaultAsync();
-            if (result == null)
-            {
-                return NotFound();
-            }
-            return Ok(result);
-        }
         [HttpPost]
         public async Task<IActionResult> BookCoach([FromBody] BookingRequest request)
         {
             var check = await _context.UserCoachPackages
-                .Where(a => a.UserId == request.UserId && a.PackageBookingId == request.PackageBookingId && a.Status.Equals("Pending"))
+                .Where(a => a.UserId == request.UserId && a.Status.Equals("Active"))
                 .FirstOrDefaultAsync();
 
             if (check != null)
             {
-                return BadRequest();
+                return BadRequest("Has active coach or not found");
             }
 
-            UserCoachPackage booking;
-            try
-            {
-                booking = new UserCoachPackage
-                {
-                    UserId = request.UserId,
-                    PackageBookingId = request.PackageBookingId,
-                    Status = "Pending"
-                };
-            }
-            catch
-            {
-                return BadRequest();
-            }
-            await _context.UserCoachPackages.AddAsync(booking);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
-
-        [HttpDelete("{userId}")]
-        public async Task<IActionResult> CancelBooking(int userId)
-        {
-            var result = await _context.UserCoachPackages
-                .Where(a => a.UserId == userId && a.Status.Equals("Pending"))
+            var role = await _context.Users
+                .Where(a => a.UserId == request.UserId)
                 .FirstOrDefaultAsync();
-            if (result == null)
+
+
+            if (role.RoleId != 2)
             {
-                return BadRequest();
+                return BadRequest($"Only members can book coach");
             }
-            _context.UserCoachPackages.Remove(result);
+
+            var package = await _context.CoachPackages
+                .FindAsync(request.PackageId);
+
+            if (package == null) {
+                return NotFound();
+            }
+
+            var end_date = request.Start_Date.AddMonths(package.Duration_Months);
+
+
+            var booking = new UserCoachPackage
+            {
+                UserId = request.UserId,
+                PackageId = request.PackageId,
+                Start_Date = request.Start_Date,
+                End_Date = end_date,
+                Status = "Active"
+            };
+
+
+            await _context.UserCoachPackages.AddAsync(booking);
             await _context.SaveChangesAsync();
             return Ok();
         }
