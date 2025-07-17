@@ -23,6 +23,7 @@ function CoachingMember() {
 				reason: "Wants to improve health and be a good example for family.",
 				startDate: "2025-07-10",
 				goalDate: "2025-09-01",
+				milestones: [],
 			},
 		},
 		{
@@ -42,24 +43,28 @@ function CoachingMember() {
 				reason: "Doctor recommendation after a health scare.",
 				startDate: "2025-06-15",
 				goalDate: "2025-08-01",
+				milestones: [
+					{ milestoneId: 1, title: "test", description: "test", targetDate: "19/07/2025", badgeId: 1 },
+					{ milestoneId: 2, title: "test2", description: "test", targetDate: "19/07/2025", badgeId: 2 },
+				],
 			},
 		},
 	]);
 
+	const fetchUsers = async () => {
+		try {
+			const data = await getUsers();
+			//some filtering if needed
+			//...
+			setUsers(data);
+		} catch (error) {
+			console.error(error);
+			toast.error(error?.response?.data?.message || error.message || "Failed to load members.");
+		}
+	};
+
 	// Get member list
 	useEffect(() => {
-		const fetchUsers = async () => {
-			try {
-				const data = await getUsers();
-				//some filtering if needed
-				//...
-				setUsers(data);
-			} catch (error) {
-				console.error(error);
-				toast.error(error?.response?.data?.message || error.message || "Failed to load members.");
-			}
-		};
-
 		fetchUsers();
 	}, []);
 
@@ -150,7 +155,7 @@ function CoachingMember() {
 									<th className="text-left px-6 py-3">#</th>
 									<th className="text-left px-6 py-3">Name</th>
 									<th className="text-left px-6 py-3">Gender</th>
-									<th className="text-left px-6 py-3">Plan</th>
+									<th className="text-left px-6 py-3">Plan Time</th>
 									<th className="text-left px-6 py-3">Progress</th>
 									<th className="text-right px-6 py-3">Action</th>
 								</tr>
@@ -176,12 +181,18 @@ function CoachingMember() {
 											<td className="px-6 py-3">{member.gender}</td>
 											<td className="px-6 py-3">
 												{member.quitPlan ? (
-													<button className="flex items-center gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 hover:cursor-pointer transition">View plan</button>
+													<span>
+														{member.quitPlan.startDate} to {member.quitPlan.goalDate}
+													</span>
 												) : (
 													<span className="text-red-400">No plan</span>
 												)}
 											</td>
-											<td className="px-6 py-3">View Progress</td>
+											<td className="px-6 py-3">
+												{member.quitPlan && (
+													<button className="flex items-center gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 hover:cursor-pointer transition">View progress</button>
+												)}
+											</td>
 											<td className="px-6 py-3">
 												<div className="flex justify-end gap-2">
 													{!member.quitPlan && (

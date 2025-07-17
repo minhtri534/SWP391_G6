@@ -1,4 +1,4 @@
-import { Award, CircleUser, LayoutDashboard, LogOut, MessageSquareText, User } from "lucide-react";
+import { Award, CircleDollarSign, CircleUser, LayoutDashboard, LogOut, MessageSquareText, User } from "lucide-react";
 import React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
@@ -10,13 +10,13 @@ function AdminSidebar() {
 		{ name: "Accounts", icon: <CircleUser />, path: "/Admin/ManageAccounts" },
 		{ name: "Badges", icon: <Award />, path: "/Admin/ManageBadges" },
 		{ name: "Report & Feedback", icon: <MessageSquareText />, path: "/Admin/ManageReport" },
-		// { name: "Income", path: "/admin/income" },
+		{ name: "Income", icon: <CircleDollarSign />, path: "/admin/ManageIncome" },
 		// { name: "Promote", path: "/admin/promote" },
 	];
 
 	const handleLogout = () => {
 		//Remove token
-		//...
+		localStorage.clear();
 		//Navigate to login
 		navigate("/Login");
 	};
@@ -63,7 +63,7 @@ function AdminSidebar() {
 					</NavLink>
 				</li>
 				<li>
-					<button onClick={handleLogout} className="w-full flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition">
+					<button onClick={handleLogout} className="w-full flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:cursor-pointer transition">
 						<LogOut className="w-4 h-4 text-gray-700" />
 						Logout
 					</button>

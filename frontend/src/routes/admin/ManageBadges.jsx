@@ -10,41 +10,32 @@ import { deleteBadge, getBadges } from "../../api/Badges";
 
 function ManageBadges() {
 	//Fake Data
-	const [badges, setBadges] = useState([
-		{ badgeId: 1, badgeName: "A Fresh Start", description: "New account joined the program.", conditionType: 1, imageUrl: "https://example.com", value: 1 },
-		{ badgeId: 2, badgeName: "Don't Give Up", description: "1 day without smoking.", conditionType: 1, imageUrl: "https://example.com", value: 2 },
-		{ badgeId: 3, badgeName: "Doing Good", description: "1 week without smoking.", conditionType: 1, imageUrl: "https://example.com", value: 10 },
-		{ badgeId: 4, badgeName: "Completly Give Up Smoking", description: "Complete the smoking cessation program.", conditionType: 2, imageUrl: "https://example.com", value: 100 },
-	]);
+	const [badges, setBadges] = useState([]);
+
+	//Get data function
+	const fetchBadges = async () => {
+		try {
+			const data = await getBadges();
+			//filtering if needed
+			//...
+			setBadges(data);
+		} catch (error) {
+			console.error(error);
+			toast.error(error?.response?.data?.message || error.message || "Failed to load badges.");
+		}
+	};
 
 	useEffect(() => {
-		const fetchBadges = async () => {
-			try {
-				const data = await getBadges();
-				//filtering if needed
-				//...
-				setBadges(data);
-			} catch (error) {
-				console.error(error);
-				toast.error(error?.response?.data?.message || error.message || "Failed to load badges.");
-			}
-		};
-
 		fetchBadges();
 	}, []);
 
 	//For filter and sort
 	const [searchName, setSearchName] = useState("");
 	const [filterCondition, setFilterCondition] = useState("");
-	const [filterValue, setFilterValue] = useState("");
 	const [sortOption, setSortOption] = useState("");
 
 	const filteredList = badges.filter((badge) => {
-		return (
-			badge.badgeName.toLowerCase().includes(searchName.toLowerCase()) &&
-			(filterCondition ? badge.conditionType === parseInt(filterCondition) : true) &&
-			(filterValue ? badge.value === parseFloat(filterValue) : true)
-		);
+		return badge.badgeName.toLowerCase().includes(searchName.toLowerCase()) && (filterCondition ? badge.condition_Type === filterCondition : true);
 	});
 
 	const sortedList = [...filteredList].sort((a, b) => {
@@ -82,14 +73,16 @@ function ManageBadges() {
 					style={{
 						background: "linear-gradient(to bottom, #98fcb1, #d0f3a3)",
 					}}>
+					{console.log(badges)}
 					{/* Filter */}
 					<div className="bg-green-50 p-4 rounded-lg shadow flex flex-wrap gap-4">
 						<input type="text" placeholder="Search badge name..." className="border rounded px-3 py-2 w-48" value={searchName} onChange={(e) => setSearchName(e.target.value)} />
 
 						<select className="border rounded px-3 py-2 w-40" value={filterCondition} onChange={(e) => setFilterCondition(e.target.value)}>
 							<option value="">All Conditions</option>
-							<option value="1">New Member</option>
-							<option value="2">Old Member</option>
+							<option value="NewMember">New Member</option>
+							<option value="DayStreak">Day Streak</option>
+							<option value="GoalComplete">Goal Completion</option>
 						</select>
 
 						<select value={sortOption} onChange={(e) => setSortOption(e.target.value)} className="border rounded px-3 py-2 w-52">
@@ -118,34 +111,35 @@ function ManageBadges() {
 							pageBadges.map((badge) => (
 								<div key={badge.badgeId} className="bg-white rounded-xl shadow-md p-4 flex flex-col justify-between border hover:shadow-lg transition">
 									<div>
-										<div className="w-full aspect-[4/3] bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+										{/* <div className="w-full aspect-[4/3] bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
 											<img src={badge.imageUrl} alt={badge.badgeName} className="h-24 object-contain" />
-										</div>
-
-										<h2 className="text-lg font-semibold">{badge.badgeName}</h2>
-										<p className="text-sm text-gray-600 mt-1">
-											{badge.description} {badge.value}
-										</p>
+										</div> */}
+										<span className="block w-full text-center px-3 py-2 rounded-full text-sm font-semibold bg-red-100 text-gray-800">{badge.badgeName}</span>
+										<h3 className="text-sm">Type: {badge.condition_Type}</h3>
+										<p className="text-sm text-gray-600 mt-1">{badge.description}</p>
 									</div>
-									<div className="mt-4 flex justify-end gap-2">
-										<button
-											onClick={() => {
-												setIsModalOpen(true);
-												setSelectedBadge(badge);
-											}}
-											className="flex items-center text-sm gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 hover:cursor-pointer transition">
-											<Pencil className="w-4 h-4" />
-											Update
-										</button>
-										<button
-											onClick={() => {
-												setIsConfirmDeleteOpen(true);
-												setSelectedBadge(badge);
-											}}
-											className="flex items-center gap-1 px-3 py-1 border rounded text-red-600 border-red-600 hover:bg-red-50 hover:cursor-pointer transition">
-											<Trash2 className="w-4 h-4" />
-											Remove
-										</button>
+									<div className="mt-4 flex justify-between items-center">
+										<span className="text-sm font-medium text-gray-700">Value: {badge.value}</span>
+										<div className="flex gap-2">
+											<button
+												onClick={() => {
+													setIsModalOpen(true);
+													setSelectedBadge(badge);
+												}}
+												className="flex items-center text-sm gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 hover:cursor-pointer transition">
+												<Pencil className="w-4 h-4" />
+												Update
+											</button>
+											<button
+												onClick={() => {
+													setIsConfirmDeleteOpen(true);
+													setSelectedBadge(badge);
+												}}
+												className="flex items-center gap-1 px-3 py-1 border rounded text-red-600 border-red-600 hover:bg-red-50 hover:cursor-pointer transition">
+												<Trash2 className="w-4 h-4" />
+												Remove
+											</button>
+										</div>
 									</div>
 								</div>
 							))
@@ -157,12 +151,18 @@ function ManageBadges() {
 
 					{/* Badge popup modal */}
 					<BadgeModal
+						key={selectedBadge ? selectedBadge.badgeId : "new"}
 						isOpen={isModalOpen}
 						onClose={() => {
 							setIsModalOpen(false);
 							setSelectedBadge(null);
 						}}
 						initialValues={selectedBadge}
+						onSuccess={() => {
+							fetchBadges();
+							setIsModalOpen(false);
+							setSelectedBadge(null);
+						}}
 					/>
 
 					{/* Delete confirmation popup modal */}
@@ -175,6 +175,7 @@ function ManageBadges() {
 						message={selectedBadge ? `Do you want to remove this badge named: ${selectedBadge.badgeName}?` : ""}
 						onConfirm={async () => {
 							try {
+								console.log(selectedBadge);
 								await deleteBadge(selectedBadge.badgeId);
 								toast.success("Remove badge successfully");
 								setBadges((prev) => prev.filter((b) => b.badgeId !== selectedBadge.badgeId));

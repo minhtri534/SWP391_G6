@@ -5,11 +5,11 @@ import * as Yup from "yup";
 import { addBadge, updateBadge } from "../api/Badges";
 import { toast } from "react-toastify";
 
-function BadgeModal({ isOpen, onClose, initialValues }) {
+function BadgeModal({ isOpen, onClose, initialValues, onSuccess }) {
 	const validation = Yup.object({
 		badgeName: Yup.string().required("Badge name is required"),
 		description: Yup.string().max(100, "Description limit 100 characters"),
-		conditionType: Yup.number().required("Condition Type is required"),
+		conditionType: Yup.string().required("Condition Type is required"),
 		value: Yup.number().required("Value is required"),
 		imageUrl: Yup.string().url("Must be a valid URL").nullable(),
 	});
@@ -17,28 +17,49 @@ function BadgeModal({ isOpen, onClose, initialValues }) {
 	// Decide create or update action
 	const isUpdating = Boolean(initialValues);
 
+	const initValues = initialValues
+		? {
+				badgeId: initialValues.badgeId,
+				badgeName: initialValues.badgeName,
+				description: initialValues.description,
+				conditionType: initialValues.condition_Type,
+				value: initialValues.value,
+				imageUrl: initialValues.imageUrl || "",
+		  }
+		: {
+				badgeName: "",
+				description: "",
+				conditionType: "",
+				value: 0,
+				imageUrl: "",
+		  };
+
 	const formik = useFormik({
 		enableReinitialize: true,
-		initialValues: initialValues || {
-			badgeName: "",
-			description: "",
-			conditionType: 1,
-			value: 0,
-			imageUrl: "",
-		},
+		initialValues: initValues,
 		onSubmit: async (values) => {
+			console.log("Submitting", values);
 			try {
-				console.log(values);
+				const payload = {
+					badgeId: initialValues?.badgeId,
+					badgeName: values.badgeName,
+					description: values.description,
+					conditionType: values.conditionType,
+					value: values.value,
+				};
 				if (isUpdating) {
 					// Do updating account
-					await updateBadge();
+					await updateBadge(payload);
 					toast.success("Update badge successfully!!!");
 				} else {
 					// Do creating account
-					await addBadge();
+					await addBadge(payload);
 					toast.success("Add badge successfully!!!");
 				}
-				onClose();
+				if (onSuccess) {
+					onSuccess();
+				}
+				handleClose();
 			} catch (error) {
 				console.error(error);
 				toast.error(error?.response?.data?.message || error.message || "Something went wrong.");
@@ -47,6 +68,11 @@ function BadgeModal({ isOpen, onClose, initialValues }) {
 		validationSchema: validation,
 	});
 
+	const handleClose = () => {
+		formik.resetForm();
+		onClose();
+	};
+
 	if (!isOpen) return null;
 
 	return (
@@ -54,13 +80,13 @@ function BadgeModal({ isOpen, onClose, initialValues }) {
 			{console.log(initialValues)}
 			<div className="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
 				{/* Form header */}
-				<button onClick={onClose} className="absolute top-2 right-2 text-gray-500 hover:text-red-500 hover:bg-red-100">
+				<button onClick={handleClose} className="absolute top-2 right-2 text-gray-500 hover:text-red-500 hover:bg-red-100">
 					<X className="w-5 h-5" />
 				</button>
 				<h2 className="text-xl font-semibold mb-4">{initialValues ? "Update Badge" : "Create Badge"}</h2>
 
 				{/* Form body */}
-				<form onSubmit={formik.handleSubmit} className="space-y-4">
+				<form key={initialValues ? initialValues.badgeId : "new"} onSubmit={formik.handleSubmit} className="space-y-4">
 					<div className="grid gap-4">
 						<div>
 							<label className="block text-sm font-medium text-gray-700">Badge Name</label>
@@ -95,8 +121,10 @@ function BadgeModal({ isOpen, onClose, initialValues }) {
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
 								className="w-full border p-2 rounded focus:ring-2 focus:ring-green-300">
-								<option value={1}>New Member</option>
-								<option value={2}>Old Member</option>
+								<option value={""}>---Select Condition---</option>
+								<option value={"NewMember"}>New Member</option>
+								<option value={"DayStreak"}>Day Streak</option>
+								<option value={"GoalComplete"}>Goal Completion</option>
 							</select>
 							{formik.touched.conditionType && formik.errors.conditionType && <div className="text-red-500 text-sm mt-1">{formik.errors.conditionType}</div>}
 						</div>
@@ -127,7 +155,7 @@ function BadgeModal({ isOpen, onClose, initialValues }) {
 						</div>
 					</div>
 					<div className="flex justify-end gap-2 mt-4">
-						<button type="button" onClick={onClose} className="px-4 py-2 border rounded hover:bg-gray-100">
+						<button type="button" onClick={handleClose} className="px-4 py-2 border rounded hover:bg-gray-100">
 							Cancel
 						</button>
 						<button type="submit" disabled={formik.isSubmitting} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
