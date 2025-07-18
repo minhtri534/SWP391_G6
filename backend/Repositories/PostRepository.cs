@@ -42,10 +42,17 @@ namespace backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Post post)
+       public async Task DeleteAsync(int postId)
         {
-            _context.Posts.Remove(post);
-            await _context.SaveChangesAsync();
+            await _context.Database.ExecuteSqlRawAsync(@"
+                DELETE r 
+                FROM report r
+                INNER JOIN comment c ON r.commentId = c.commentId
+                WHERE c.postId = {0}", postId);
+            await _context.Database.ExecuteSqlRawAsync("DELETE FROM comment WHERE postId = {0}", postId);
+            await _context.Database.ExecuteSqlRawAsync("DELETE FROM post WHERE postId = {0}", postId);
         }
+
+
     }
 }
