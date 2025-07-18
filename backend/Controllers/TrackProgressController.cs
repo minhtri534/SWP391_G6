@@ -10,7 +10,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "3")]
+    [Authorize(Roles = "2,3")]
     public class TrackProgressController : ControllerBase
     {
         private readonly AppDbContext _context;
