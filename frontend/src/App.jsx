@@ -14,13 +14,14 @@ import SmokingSelfReport from "./SmokingSelfReport";
 import PlatformFeedback from "./PlatformFeedback";
 import Payment from "./Payment";
 import EditProfile from "./EditProfile";
-import Achievements from "./Achievements";
 import Settings from "./Settings";
 import Forums from "./Forums";
 import QuitPlan from "./QuitPlan";
 import ChooseQuitPlan from "./ChooseQuitPlan";
 import MyCoach from "./MyCoach";
 import Badges from "./Badges";
+import DailyProgress from "./DailyProgress";
+import MemberHome from "./MemberHome";
 
 // Admin routes
 import AdminDashboard from "./routes/admin/AdminDashboard";
@@ -43,11 +44,10 @@ function App() {
           <Route path="/membership" element={<Membership />} />
           <Route path="/coaching" element={<BookingCoach />} />
           <Route path="/report" element={<SmokingSelfReport />} />
-          <Route path="/home" element={<LoggedInHome user={{ name: "Minh Tri" }} />} />
+          <Route path="/home" element={<LoggedInHome />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/platform-feedback" element={<PlatformFeedback />} />
           <Route path="/edit-profile" element={<EditProfile />} />
-          <Route path="/achievements" element={<Achievements />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/forums" element={<Forums />} />
           <Route path="/quitplan" element={<QuitPlan />} />
@@ -55,7 +55,8 @@ function App() {
           <Route path="/quitplan/:level" element={<QuitPlan />} /> 
           <Route path="/mycoach" element={<MyCoach />} /> 
           <Route path="/badges" element={<Badges />} />
-
+          <Route path="/dailyprogress" element={<DailyProgress />} />
+          <Route path="/memberhome" element={<MemberHome />} />
 
           {/* Admin routing */}
           <Route path="/Admin/Dashboard" element={<AdminDashboard />} />

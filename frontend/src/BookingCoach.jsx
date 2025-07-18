@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import {
   FaStar,
   FaUserTie,
@@ -10,49 +11,81 @@ import {
   FaLink,
   FaFileUpload,
   FaUserCircle,
+  FaSpinner,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
-const coaches = [
-  {
-    id: 1,
-    name: "Coach John",
-    review: "Great for beginners",
-    stars: 4,
-    status: "Available",
-    type: "Fitness & Wellness",
-    startDate: "2025-07-20",
-    endDate: "2025-08-20",
-  },
-  {
-    id: 2,
-    name: "Coach Lisa",
-    review: "Amazing support!",
-    stars: 5,
-    status: "Available",
-    type: "Mental Support",
-    startDate: "2025-07-25",
-    endDate: "2025-08-25",
-  },
-  {
-    id: 3,
-    name: "Coach Mark",
-    review: "Strict but effective",
-    stars: 3,
-    status: "Unavailable",
-    type: "Quit Strategy Planning",
-    startDate: "2025-07-22",
-    endDate: "2025-08-22",
-  },
-];
-
 const BookingCoach = () => {
+  const [coaches, setCoaches] = useState([]);
   const [selectedCoach, setSelectedCoach] = useState(null);
   const [receipt, setReceipt] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const menuRef = useRef();
   const navigate = useNavigate();
   const userName = localStorage.getItem("userName") || "User";
+  const token = localStorage.getItem("userToken"); // Lấy token từ localStorage
+
+  useEffect(() => {
+    const fetchCoaches = async () => {
+      if (!token) {
+        setError("No authentication token found. Please log in first.");
+        setLoading(false);
+        return;
+      }
+
+      console.log("Token being sent:", token); // Debug token
+      setLoading(true);
+      setError(null);
+      const endpoints = [
+        "http://localhost:5196/api/Booking/Package/1",
+        "http://localhost:5196/api/Booking/Package/2",
+        "http://localhost:5196/api/Booking/Package/3",
+        "http://localhost:5196/api/Booking/Package/4",
+        "http://localhost:5196/api/Booking/Package/5",
+        "http://localhost:5196/api/Booking/Package/6",
+      ];
+
+      const fetchWithRetry = async (url, retries = 2) => {
+        for (let i = 0; i < retries; i++) {
+          try {
+            const response = await axios.get(url, {
+              timeout: 5000,
+              headers: {
+                Authorization: `Bearer ${token}`, // Gửi token với định dạng Bearer
+              },
+            });
+            console.log(`Data from ${url}:`, response.data);
+            return response.data;
+          } catch (err) {
+            console.error(`Attempt ${i + 1} failed for ${url}:`, err.response?.status, err.message);
+            if (i === retries - 1) throw err;
+            await new Promise((resolve) => setTimeout(resolve, 1000)); // Chờ 1 giây trước khi retry
+          }
+        }
+      };
+
+      try {
+        const coachPromises = endpoints.map((url) => fetchWithRetry(url));
+        const results = await Promise.all(coachPromises);
+        console.log("All results:", results);
+        const validCoaches = results.filter((coach) => coach && typeof coach === "object");
+        console.log("Valid coaches:", validCoaches);
+        setCoaches(validCoaches);
+      } catch (err) {
+        const errorMsg = err.response?.status === 403
+          ? "Access denied (403). You may not have permission for this resource. Contact admin or log in with appropriate credentials."
+          : `Failed to load coaches: ${err.message}. Please check your network or try again later.`;
+        setError(errorMsg);
+        console.error("Fetch error:", err.response?.data || err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCoaches();
+  }, [token]);
 
   const handleBuyClick = (coach) => {
     setSelectedCoach(coach);
@@ -97,7 +130,7 @@ const BookingCoach = () => {
           borderBottom: "2px solid #ccc",
         }}
       >
-        <Link to="/home" style={{ textDecoration: "none" }}>
+        <Link to="/memberhome" style={{ textDecoration: "none" }}>
           <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>
             <span style={{ color: "#f57c00" }}>Quit</span>
             <span style={{ color: "#69c770" }}>Smoking.com</span>
@@ -153,57 +186,37 @@ const BookingCoach = () => {
           Buy a Coach
         </h2>
 
+        {loading && (
+          <div className="text-center text-white text-xl flex items-center justify-center gap-2">
+            <FaSpinner className="animate-spin" /> Loading...
+          </div>
+        )}
+        {error && <p className="text-center text-red-500">{error}</p>}
+        {!loading && !error && coaches.length === 0 && (
+          <p className="text-center text-white">No coaches available.</p>
+        )}
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {coaches.map((coach) => (
             <div
-              key={coach.id}
+              key={coach.id || Math.random()}
               className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition"
             >
-              <h3 className="text-xl font-bold text-green-700 mb-2 flex items-center gap-2">
-                <FaUserTie /> {coach.name}
+              <h3 className="text-xl font-bold text-green-700 mb-2">
+                Coach: {coach.name || "Unnamed Coach"}
               </h3>
-
-              <p className="text-gray-600 mb-1 flex items-center gap-2">
-                {[...Array(coach.stars)].map((_, i) => (
-                  <FaStar key={i} className="text-yellow-400" />
+              <div className="space-y-2">
+                {Object.entries(coach).map(([key, value]) => (
+                  <p key={key} className="text-gray-600 flex items-center gap-2">
+                    <strong>{key}:</strong> {value?.toString() || "N/A"}
+                  </p>
                 ))}
-                <span className="ml-2">{coach.review}</span>
-              </p>
-
-              <p className="text-gray-600 mb-1 flex items-center gap-2">
-                {coach.status === "Available" ? (
-                  <FaRegCheckCircle className="text-green-600" />
-                ) : (
-                  <FaTimesCircle className="text-red-500" />
-                )}
-                <strong>Status:</strong> {coach.status}
-              </p>
-
-              <p className="text-gray-600 mb-1 flex items-center gap-2">
-                <FaUserTie />
-                <strong>Type:</strong> {coach.type}
-              </p>
-
-              <p className="text-gray-600 mb-1 flex items-center gap-2">
-                <FaCalendarAlt />
-                <strong>Start:</strong> {coach.startDate}
-              </p>
-
-              <p className="text-gray-600 mb-4 flex items-center gap-2">
-                <FaCalendarAlt />
-                <strong>End:</strong> {coach.endDate}
-              </p>
-
+              </div>
               <button
                 onClick={() => handleBuyClick(coach)}
-                disabled={coach.status !== "Available"}
-                className={`w-full py-2 rounded-lg font-semibold transition ${
-                  coach.status === "Available"
-                    ? "bg-green-600 text-white hover:bg-green-700"
-                    : "bg-gray-400 text-white cursor-not-allowed"
-                }`}
+                className="w-full py-2 mt-4 rounded-lg font-semibold bg-green-600 text-white hover:bg-green-700 transition"
               >
-                {coach.status === "Available" ? "Buy Coach" : "Unavailable"}
+                Buy Coach
               </button>
             </div>
           ))}

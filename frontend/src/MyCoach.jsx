@@ -52,7 +52,7 @@ const MyCoach = () => {
           borderBottom: "2px solid #ccc",
         }}
       >
-        <Link to="/home" style={{ textDecoration: "none" }}>
+        <Link to="/memberhome" style={{ textDecoration: "none" }}>
           <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>
             <span style={{ color: "#f57c00" }}>Quit</span>
             <span style={{ color: "#69c770" }}>Smoking.com</span>

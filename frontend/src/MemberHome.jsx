@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUserCircle, FaBell } from "react-icons/fa";
-import { toast } from "react-toastify"; // Thêm react-toastify
-import "react-toastify/dist/ReactToastify.css"; // Import CSS cho toast
 import NoSmokingIcon from "./assets/no-smoking.png";
 import Coach from "./assets/instructor.png";
 import Report from "./assets/immigration.png";
@@ -12,18 +10,15 @@ import Feedback from "./assets/talking.png";
 import QuitPlan from "./assets/project.png";
 import Progress from "./assets/progress.png";
 
-function LoggedInHome() {
+function MemberHome() {
   const navigate = useNavigate();
   const userName = localStorage.getItem("userName") || "User";
-  // Kiểm tra trạng thái membership từ localStorage, mặc định là guest (false)
-  const isMember = localStorage.getItem("isMember") === "true";
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const menuRef = useRef();
   const notifRef = useRef();
 
-  // Sample notifications data
   const notifications = [
     { id: 1, content: "Your coaching session is tomorrow at 2 PM!", date: "2025-07-17" },
     { id: 2, content: "New community post in the forum!", date: "2025-07-16" },
@@ -53,126 +48,58 @@ function LoggedInHome() {
     navigate("/login");
   };
 
-  const handleNavigateReport = () => {
-    if (!isMember) {
-      toast.info("Please subscribe to a membership plan to access this feature.", {
-        position: "bottom-right",
-        autoClose: 3000,
-      });
-    } else {
-      navigate("/report");
-    }
-  };
-
-  const handleNavigateCoaching = () => {
-    if (!isMember) {
-      toast.info("Please subscribe to a membership plan to access this feature.", {
-        position: "bottom-right",
-        autoClose: 3000,
-      });
-    } else {
-      navigate("/coaching");
-    }
-  };
-
-  const handleMembershipClick = () => navigate("/membership");
+  const handleNavigateReport = () => navigate("/report");
+  const handleNavigateCoaching = () => navigate("/coaching");
 
   const articleItems = [
     {
       title: "🏆 Achievements Overview",
       desc: "Track your smoke-free milestones and celebrate success. A powerful way to stay motivated throughout your journey.",
       img: Achievement,
-      onClick: () => {
-        if (!isMember) {
-          toast.info("Please subscribe to a membership plan to access this feature.", {
-            position: "bottom-right",
-            autoClose: 3000,
-          });
-        } else {
-          navigate("/Badges");
-        }
-      },
+      onClick: () => navigate("/Badges"),
     },
     {
       title: "💬 Community Forums",
       desc: "Connect with peers, ask questions, share wins and struggles. You’re not alone — our community is here.",
       img: Forums,
-      onClick: () => {
-        if (!isMember) {
-          toast.info("Please subscribe to a membership plan to access this feature.", {
-            position: "bottom-right",
-            autoClose: 3000,
-          });
-        } else {
-          navigate("/forums");
-        }
-      },
+      onClick: () => navigate("/forums"),
     },
     {
       title: "📢 Feedback & Reviews",
       desc: "Share your experience with our system or coaching team. Your insights help us grow and serve you better.",
       img: Feedback,
-      onClick: () => {
-        if (!isMember) {
-          toast.info("Please subscribe to a membership plan to access this feature.", {
-            position: "bottom-right",
-            autoClose: 3000,
-          });
-        } else {
-          navigate("/platform-feedback");
-        }
-      },
+      onClick: () => navigate("/platform-feedback"),
     },
     {
       title: "📄 Start with Quitplan now",
       desc: "Discover expert-backed health tips and lifestyle changes that support your smoke-free transformation.",
       img: QuitPlan,
-      onClick: () => {
-        if (!isMember) {
-          toast.info("Please subscribe to a membership plan to access this feature.", {
-            position: "bottom-right",
-            autoClose: 3000,
-          });
-        } else {
-          navigate("/choosequitplan");
-        }
-      },
+      onClick: () => navigate("/choosequitplan"),
     },
     {
       title: "📈 Daily Progress",
       desc: "Monitor your daily efforts and progress towards a smoke-free life. Stay on track with personalized insights and tips.",
       img: Progress,
-      onClick: () => {
-        if (!isMember) {
-          toast.info("Please subscribe to a membership plan to access this feature.", {
-            position: "bottom-right",
-            autoClose: 3000,
-          });
-        } else {
-          navigate("/dailyprogress");
-        }
-      },
+      onClick: () => navigate("/dailyprogress"),
     },
   ];
 
-  // Split articles for top (4) and bottom (3) rows
   const topRowArticles = [
     { title: "📝 Smoking Self-Report", desc: "Help us understand your smoking habits through a short form. It tailors your quitting journey more effectively.", img: Report, onClick: handleNavigateReport },
     { title: "🎯 Coaching Sessions", desc: "Book 1-on-1 time with certified coaches. Build a plan, stay motivated, and succeed in quitting smoking.", img: Coach, onClick: handleNavigateCoaching },
-    articleItems[0], // Achievements Overview
-    articleItems[1], // Community Forums
+    articleItems[0],
+    articleItems[1],
   ];
   const bottomRowArticles = [
-    articleItems[2], // Feedback & Reviews
-    articleItems[3], // Start with Quitplan now
-    articleItems[4], // Daily Progress
+    articleItems[2],
+    articleItems[3],
+    articleItems[4],
   ];
 
   return (
     <div style={{ fontFamily: '"Segoe UI", sans-serif', background: "linear-gradient(to bottom, #a8e063, #56ab2f)", color: "#111", minHeight: "100vh" }}>
-      {/* Header */}
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "15px 30px", background: "white", borderBottom: "2px solid #ccc" }}>
-        <Link to="/home" style={{ textDecoration: "none" }}>
+        <Link to="/memberhome" style={{ textDecoration: "none" }}>
           <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>
             <span style={{ color: "#f57c00" }}>Quit</span><span style={{ color: "#69c770" }}>Smoking.com</span>
           </h1>
@@ -196,7 +123,7 @@ function LoggedInHome() {
                     borderRadius: "50%",
                     border: "1px solid white",
                   }}
-                ></span>
+                />
               )}
             </div>
             {notifOpen && (
@@ -215,21 +142,14 @@ function LoggedInHome() {
                   padding: "10px",
                 }}
               >
-                <h3 style={{ fontSize: "16px", padding: "10px", color: "#333", borderBottom: "1px solid #eee" }}>
-                  Notifications
-                </h3>
+                <h3 style={{ fontSize: "16px", padding: "10px", color: "#333", borderBottom: "1px solid #eee" }}>Notifications</h3>
                 {notifications.length === 0 ? (
                   <p style={{ padding: "10px", color: "#666", fontSize: "14px" }}>No notifications</p>
                 ) : (
                   notifications.map((notif) => (
                     <div
                       key={notif.id}
-                      style={{
-                        padding: "10px",
-                        borderBottom: "1px solid #eee",
-                        fontSize: "14px",
-                        color: "#333",
-                      }}
+                      style={{ padding: "10px", borderBottom: "1px solid #eee", fontSize: "14px", color: "#333" }}
                     >
                       <p style={{ margin: 0 }}>{notif.content}</p>
                       <p style={{ fontSize: "12px", color: "#888", marginTop: "5px" }}>{notif.date}</p>
@@ -283,9 +203,7 @@ function LoggedInHome() {
         </div>
       </header>
 
-      {/* Main */}
       <main style={{ padding: "40px 30px" }}>
-        {/* Hero */}
         <section style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "40px" }}>
           <div style={{ flex: 1, minWidth: "280px" }}>
             <h1 style={{ fontSize: "32px", color: "white", marginBottom: "10px" }}>🌿 Breathe Free. Live Better</h1>
@@ -300,13 +218,9 @@ function LoggedInHome() {
 
         <hr style={{ margin: "40px 0", border: "none", height: "5px", background: "white", opacity: 0.3 }} />
 
-        {/* Articles */}
         <section>
-          <h2 style={{ color: "black", fontSize: "15px", marginBottom: "30px", textAlign: "center" }}>
-            <b>📚 ARTICLES & TOOLS</b>
-          </h2>
+          <h2 style={{ color: "black", fontSize: "15px", marginBottom: "30px", textAlign: "center" }}><b>📚 ARTICLES & TOOLS</b></h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
-            {/* Top Row: 4 Articles */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(200px, 1fr))", gap: "30px" }}>
               {topRowArticles.map((item, index) => (
                 <div
@@ -322,7 +236,6 @@ function LoggedInHome() {
                 </div>
               ))}
             </div>
-            {/* Bottom Row: 3 Articles */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(200px, 1fr))", gap: "30px" }}>
               {bottomRowArticles.map((item, index) => (
                 <div
@@ -339,7 +252,6 @@ function LoggedInHome() {
               ))}
             </div>
           </div>
-          {/* Responsive adjustment for smaller screens */}
           <style jsx>{`
             @media (max-width: 600px) {
               div[style*="gridTemplateColumns: repeat(4, minmax(200px, 1fr))"],
@@ -352,22 +264,18 @@ function LoggedInHome() {
 
         <hr style={{ margin: "40px 0", border: "none", height: "5px", background: "white", opacity: 0.3 }} />
 
-        {/* Membership */}
         <section style={{ textAlign: "center", padding: "50px 0" }}>
-          <h3 style={{ fontSize: "26px", fontWeight: "600", color: "#111" }}>Want more personalized support?</h3>
+          <h3 style={{ fontSize: "26px", fontWeight: "600", color: "#111" }}>Enjoy Your Premium Journey!</h3>
           <p style={{ fontSize: "16px", color: "#666", maxWidth: "600px", margin: "10px auto" }}>
-            Join our premium membership for coaching, tracking, and more.
+            You’re now a member! Access all features, coaching, and personalized support to thrive on your smoke-free path.
           </p>
-          <button style={orangeBtn} onClick={handleMembershipClick}>Become a Member</button>
+          <button style={orangeBtn} onClick={() => navigate("/settings")}>Manage Your Plan</button>
         </section>
 
         <hr style={{ margin: "40px 0", border: "none", height: "5px", background: "white", opacity: 0.3 }} />
 
-        {/* Blog */}
         <section style={{ marginTop: "50px" }}>
-          <h2 style={{ textAlign: "center", color: "white", fontSize: "20px", marginBottom: "30px" }}>
-            🧠 Coach Insights & Community Wisdom
-          </h2>
+          <h2 style={{ textAlign: "center", color: "white", fontSize: "20px", marginBottom: "30px" }}>🧠 Coach Insights & Community Wisdom</h2>
           <div
             style={{
               display: "grid",
@@ -421,7 +329,6 @@ function LoggedInHome() {
         </section>
       </main>
 
-      {/* Footer */}
       <footer style={{ textAlign: "center", padding: "16px", backgroundColor: "#ffffff", fontSize: "14px", borderTop: "1px solid #ddd", color: "#777777" }}>
         © 2025 QuitSmoking.com. All rights reserved.
       </footer>
@@ -481,4 +388,4 @@ const orangeBtn = {
   cursor: "pointer",
 };
 
-export default LoggedInHome;
+export default MemberHome;
