@@ -37,6 +37,44 @@ namespace backend.Controllers
             return Ok(results);
         }
 
+        [HttpGet("memberId")]
+        public async Task<IActionResult> GetBookedCoachByMemberId(int memberId)
+        {
+            var package = await _context.UserCoachPackages
+                .Where(a => a.UserId == memberId && a.Status.Equals("Active"))
+                .FirstOrDefaultAsync();
+
+            if (package == null)
+            {
+                return NotFound();
+            }
+
+            var coachPackage = await _context.CoachPackages
+                .Where(a => a.PackageId == package.PackageId)
+                .FirstOrDefaultAsync();
+
+            var username = _context.Users.Select(a => new { UserId = a.UserId, UserName = a.UserName });
+            var result = await _context.CoachInfos
+                .Where(a => a.CoachId == coachPackage.CoachId)
+                .Join(username, a => a.UserId, b => b.UserId,
+                    (a, b) => new
+                    {
+                        CoachId = a.CoachId,
+                        UserName = b.UserName,
+                        PhoneNum = a.PhoneNum,
+                        Experience = a.Experience,
+                        AvailableTime = a.AvailableTime
+                    })
+                .FirstOrDefaultAsync();
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
         [HttpGet("Package/{coachId}")]
         public async Task<IActionResult> GetPackagesById(int coachId)
         {
