@@ -1,5 +1,4 @@
-﻿-- DROP & CREATE DATABASE
-DROP DATABASE IF EXISTS SWP391;
+﻿DROP DATABASE IF EXISTS SWP391;
 GO
 
 CREATE DATABASE SWP391;
@@ -24,7 +23,7 @@ CREATE TABLE users (
   roleId INT,
   status VARCHAR(50),
   joinDate DATE,
-  FOREIGN KEY (roleId) REFERENCES role(roleId) ON DELETE CASCADE
+  FOREIGN KEY (roleId) REFERENCES role(roleId)
 );
 GO
 
@@ -35,7 +34,7 @@ CREATE TABLE coach_info (
   experience INT,
   available_time VARCHAR(100),
   specialty VARCHAR(100),
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
+  FOREIGN KEY (userId) REFERENCES users(userId)
 );
 GO
 
@@ -55,7 +54,7 @@ CREATE TABLE plan_milestone (
   title VARCHAR(100),
   description TEXT,
   target_date DATE,
-  FOREIGN KEY (badgeId) REFERENCES badge(badgeId) ON DELETE CASCADE
+  FOREIGN KEY (badgeId) REFERENCES badge(badgeId)
 );
 GO
 
@@ -68,8 +67,8 @@ CREATE TABLE smoking_status (
   frequency VARCHAR(50),
   price_per_pack DECIMAL(10, 2),
   description TEXT,
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
-  FOREIGN KEY (milestoneId) REFERENCES plan_milestone(milestoneId) ON DELETE SET NULL
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (milestoneId) REFERENCES plan_milestone(milestoneId)
 );
 GO
 
@@ -81,14 +80,15 @@ CREATE TABLE quit_plan (
   reason TEXT,
   start_date DATE,
   goal_date DATE,
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
-  FOREIGN KEY (coachId) REFERENCES coach_info(coachId) ON DELETE NO ACTION,
-  FOREIGN KEY (statusId) REFERENCES smoking_status(statusId) ON DELETE NO ACTION
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (coachId) REFERENCES coach_info(coachId),
+  FOREIGN KEY (statusId) REFERENCES smoking_status(statusId)
 );
 GO
 
+
 ALTER TABLE plan_milestone
-ADD FOREIGN KEY (planId) REFERENCES quit_plan(planId) ON DELETE NO ACTION;
+ADD FOREIGN KEY (planId) REFERENCES quit_plan(planId);
 GO
 
 CREATE TABLE daily_progress (
@@ -98,7 +98,7 @@ CREATE TABLE daily_progress (
   no_smoking BIT,
   symptoms TEXT,
   date DATE,
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
+  FOREIGN KEY (userId) REFERENCES users(userId)
 );
 GO
 
@@ -108,7 +108,7 @@ CREATE TABLE post (
   title TEXT NOT NULL,
   content TEXT NOT NULL,
   create_date DATETIME NOT NULL,         
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
+  FOREIGN KEY (userId) REFERENCES users(userId)
 );
 GO
 
@@ -118,8 +118,8 @@ CREATE TABLE comment (
   userId INT,
   content TEXT,
   created_date DATE,
-  FOREIGN KEY (postId) REFERENCES post(postId) ON DELETE CASCADE,
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE NO ACTION
+  FOREIGN KEY (postId) REFERENCES post(postId),
+  FOREIGN KEY (userId) REFERENCES users(userId)
 );
 GO
 
@@ -130,9 +130,9 @@ CREATE TABLE report (
   userId INT,
   commentId INT,
   create_day DATE,
-  FOREIGN KEY (postId) REFERENCES post(postId) ON DELETE SET NULL,
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE NO ACTION,
-  FOREIGN KEY (commentId) REFERENCES comment(commentId) ON DELETE NO ACTION
+  FOREIGN KEY (postId) REFERENCES post(postId),
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (commentId) REFERENCES comment(commentId)
 );
 GO
 
@@ -142,9 +142,9 @@ CREATE TABLE coach_plan_badge (
   planId INT,
   date_get DATE,
   PRIMARY KEY (coachId, badgeId, planId),
-  FOREIGN KEY (coachId) REFERENCES coach_info(coachId) ON DELETE CASCADE,
-  FOREIGN KEY (badgeId) REFERENCES badge(badgeId) ON DELETE CASCADE,
-  FOREIGN KEY (planId) REFERENCES quit_plan(planId) ON DELETE NO ACTION
+  FOREIGN KEY (coachId) REFERENCES coach_info(coachId),
+  FOREIGN KEY (badgeId) REFERENCES badge(badgeId),
+  FOREIGN KEY (planId) REFERENCES quit_plan(planId)
 );
 GO
 
@@ -156,9 +156,9 @@ CREATE TABLE notification (
   message TEXT,
   send_date DATE,
   type VARCHAR(50),
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
-  FOREIGN KEY (relatedLogId) REFERENCES daily_progress(progressId) ON DELETE NO ACTION,
-  FOREIGN KEY (relatedMilestoneId) REFERENCES plan_milestone(milestoneId) ON DELETE NO ACTION
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (relatedLogId) REFERENCES daily_progress(progressId),
+  FOREIGN KEY (relatedMilestoneId) REFERENCES plan_milestone(milestoneId)
 );
 GO
 
@@ -170,9 +170,9 @@ CREATE TABLE feedback (
   content TEXT,
   rating INT,
   time_created DATE,
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
-  FOREIGN KEY (coachId) REFERENCES coach_info(coachId) ON DELETE NO ACTION,
-  FOREIGN KEY (planId) REFERENCES quit_plan(planId) ON DELETE NO ACTION
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (coachId) REFERENCES coach_info(coachId),
+  FOREIGN KEY (planId) REFERENCES quit_plan(planId)
 );
 GO
 
@@ -190,8 +190,8 @@ CREATE TABLE user_memberships (
   start_date DATE,
   end_date DATE,
   PRIMARY KEY (userId, membershipId),
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
-  FOREIGN KEY (membershipId) REFERENCES membership(membershipId) ON DELETE CASCADE
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (membershipId) REFERENCES membership(membershipId)
 );
 GO
 
@@ -204,7 +204,7 @@ CREATE TABLE payment (
   method VARCHAR(50),
   type VARCHAR(50),
   status VARCHAR(50),
-  FOREIGN KEY (userId_fk, membershipId_fk) REFERENCES user_memberships(userId, membershipId) ON DELETE CASCADE
+  FOREIGN KEY (userId_fk, membershipId_fk) REFERENCES user_memberships(userId, membershipId)
 );
 GO
 
@@ -217,8 +217,8 @@ CREATE TABLE chat_log (
   status VARCHAR(50),
   chat_date DATE,
   sender VARCHAR(50),
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
-  FOREIGN KEY (coachId) REFERENCES coach_info(coachId) ON DELETE NO ACTION
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (coachId) REFERENCES coach_info(coachId)
 );
 GO
 
@@ -229,8 +229,8 @@ CREATE TABLE booking_consultation (
   date DATE,
   type VARCHAR(50),
   status VARCHAR(50),
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
-  FOREIGN KEY (coachId) REFERENCES coach_info(coachId) ON DELETE NO ACTION
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (coachId) REFERENCES coach_info(coachId)
 );
 GO
 
@@ -244,11 +244,12 @@ CREATE TABLE transaction_money (
   status VARCHAR(50),
   method VARCHAR(50),
   transaction_date DATE,
-  FOREIGN KEY (memberId) REFERENCES users(userId) ON DELETE CASCADE,
-  FOREIGN KEY (coachId) REFERENCES coach_info(coachId) ON DELETE NO ACTION,
-  FOREIGN KEY (planId) REFERENCES quit_plan(planId) ON DELETE NO ACTION,
-  FOREIGN KEY (bookingId) REFERENCES booking_consultation(bookingId) ON DELETE NO ACTION
+  FOREIGN KEY (memberId) REFERENCES users(userId),
+  FOREIGN KEY (coachId) REFERENCES coach_info(coachId),
+  FOREIGN KEY (planId) REFERENCES quit_plan(planId),
+  FOREIGN KEY (bookingId) REFERENCES booking_consultation(bookingId) 
 );
+
 GO
 
 CREATE TABLE user_badge (
@@ -256,8 +257,8 @@ CREATE TABLE user_badge (
   badgeId INT,
   date_awarded DATE,
   PRIMARY KEY (userId, badgeId),
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
-  FOREIGN KEY (badgeId) REFERENCES badge(badgeId) ON DELETE CASCADE
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (badgeId) REFERENCES badge(badgeId)
 );
 GO
 
@@ -268,7 +269,7 @@ CREATE TABLE coach_package (
   duration_months INT,
   price DECIMAL(10, 2),
   description TEXT,
-  FOREIGN KEY (coachId) REFERENCES coach_info(coachId) ON DELETE CASCADE
+  FOREIGN KEY (coachId) REFERENCES coach_info(coachId)
 );
 GO
 
@@ -279,8 +280,8 @@ CREATE TABLE user_coach_package (
   start_date DATE,
   end_date DATE,
   status VARCHAR(50),
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
-  FOREIGN KEY (packageId) REFERENCES coach_package(packageId) ON DELETE NO ACTION
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (packageId) REFERENCES coach_package(packageId)
 );
 GO
 
@@ -438,4 +439,114 @@ INSERT INTO user_coach_package (userId, packageId, start_date, end_date, status)
 VALUES
 (2, 1, '2025-07-01', '2025-07-31', 'Active'),
 (3, 2, '2025-07-05', '2025-10-04', 'Pending');
+GO
+
+-- USERS Cascade Deletion
+CREATE TRIGGER trg_Delete_Users_Cascade
+ON users
+AFTER DELETE
+AS
+BEGIN
+  -- Delete dependent data FIRST to avoid constraint errors
+  DELETE FROM feedback WHERE userId IN (SELECT userId FROM DELETED);
+  DELETE FROM report WHERE userId IN (SELECT userId FROM DELETED);
+  DELETE FROM comment WHERE userId IN (SELECT userId FROM DELETED);
+  DELETE FROM post WHERE userId IN (SELECT userId FROM DELETED);
+  DELETE FROM daily_progress WHERE userId IN (SELECT userId FROM DELETED);
+  DELETE FROM user_badge WHERE userId IN (SELECT userId FROM DELETED);
+  DELETE FROM user_memberships WHERE userId IN (SELECT userId FROM DELETED);
+  DELETE FROM payment WHERE userId_fk IN (SELECT userId FROM DELETED);
+  DELETE FROM notification WHERE userId IN (SELECT userId FROM DELETED);
+  DELETE FROM chat_log WHERE userId IN (SELECT userId FROM DELETED);
+  DELETE FROM booking_consultation WHERE userId IN (SELECT userId FROM DELETED);
+  DELETE FROM user_coach_package WHERE userId IN (SELECT userId FROM DELETED);
+END;
+GO
+
+-- COMMENT Cascade Deletion
+CREATE TRIGGER trg_Delete_Comment_Cascade
+ON comment
+AFTER DELETE
+AS
+BEGIN
+  DELETE FROM report WHERE commentId IN (SELECT commentId FROM DELETED);
+END;
+GO
+
+-- POST Cascade Deletion
+CREATE TRIGGER trg_Delete_Post_Cascade
+ON post
+AFTER DELETE
+AS
+BEGIN
+  -- Delete child reports first to prevent FK errors
+  DELETE FROM report WHERE postId IN (SELECT postId FROM DELETED);
+  DELETE FROM comment WHERE postId IN (SELECT postId FROM DELETED);
+END;
+GO
+
+-- BADGE Cascade Deletion
+CREATE TRIGGER trg_Delete_Badge_Cascade
+ON badge
+AFTER DELETE
+AS
+BEGIN
+  DELETE FROM user_badge WHERE badgeId IN (SELECT badgeId FROM DELETED);
+  DELETE FROM coach_plan_badge WHERE badgeId IN (SELECT badgeId FROM DELETED);
+END;
+GO
+
+-- MEMBERSHIP Cascade Deletion
+CREATE TRIGGER trg_Delete_Membership_Cascade
+ON membership
+AFTER DELETE
+AS
+BEGIN
+  DELETE FROM user_memberships WHERE membershipId IN (SELECT membershipId FROM DELETED);
+  DELETE FROM payment WHERE membershipId_fk IN (SELECT membershipId FROM DELETED);
+END;
+GO
+
+-- COACH_INFO Cascade Deletion
+CREATE TRIGGER trg_Delete_Coach_Cascade
+ON coach_info
+AFTER DELETE
+AS
+BEGIN
+  -- Delete deeply nested first
+  DELETE FROM user_coach_package WHERE packageId IN (
+    SELECT packageId FROM coach_package WHERE coachId IN (SELECT coachId FROM DELETED)
+  );
+  DELETE FROM coach_package WHERE coachId IN (SELECT coachId FROM DELETED);
+
+  -- Then delete other related data
+  DELETE FROM chat_log WHERE coachId IN (SELECT coachId FROM DELETED);
+  DELETE FROM booking_consultation WHERE coachId IN (SELECT coachId FROM DELETED);
+  DELETE FROM feedback WHERE coachId IN (SELECT coachId FROM DELETED);
+  DELETE FROM coach_plan_badge WHERE coachId IN (SELECT coachId FROM DELETED);
+  DELETE FROM transaction_money WHERE coachId IN (SELECT coachId FROM DELETED);
+END;
+GO
+
+-- QUIT_PLAN Cascade Deletion
+CREATE TRIGGER trg_Delete_Quit_plan_Cascade
+ON quit_plan
+AFTER DELETE
+AS
+BEGIN
+  DELETE FROM feedback WHERE planId IN (SELECT planId FROM DELETED);
+  DELETE FROM plan_milestone WHERE planId IN (SELECT planId FROM DELETED);
+  DELETE FROM coach_plan_badge WHERE planId IN (SELECT planId FROM DELETED);
+  DELETE FROM transaction_money WHERE planId IN (SELECT planId FROM DELETED);
+END;
+GO
+
+-- PLAN_MILESTONE Cascade Deletion
+CREATE TRIGGER trg_Delete_Plan_milestone_Cascade
+ON plan_milestone
+AFTER DELETE
+AS
+BEGIN
+  DELETE FROM notification WHERE relatedMilestoneId IN (SELECT milestoneId FROM DELETED);
+END;
 GO
