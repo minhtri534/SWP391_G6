@@ -444,7 +444,7 @@ GO
 -- USERS Cascade Deletion
 CREATE TRIGGER trg_Delete_Users_Cascade
 ON users
-AFTER DELETE
+INSTEAD OF DELETE
 AS
 BEGIN
   -- Delete dependent data FIRST to avoid constraint errors
@@ -460,57 +460,62 @@ BEGIN
   DELETE FROM chat_log WHERE userId IN (SELECT userId FROM DELETED);
   DELETE FROM booking_consultation WHERE userId IN (SELECT userId FROM DELETED);
   DELETE FROM user_coach_package WHERE userId IN (SELECT userId FROM DELETED);
+  DELETE FROM users WHERE userId IN (SELECT userId FROM DELETED);
 END;
 GO
 
 -- COMMENT Cascade Deletion
 CREATE TRIGGER trg_Delete_Comment_Cascade
 ON comment
-AFTER DELETE
+INSTEAD OF DELETE
 AS
 BEGIN
   DELETE FROM report WHERE commentId IN (SELECT commentId FROM DELETED);
+  DELETE FROM comment WHERE commentId IN (SELECT commentId FROM DELETED);
 END;
 GO
 
 -- POST Cascade Deletion
 CREATE TRIGGER trg_Delete_Post_Cascade
 ON post
-AFTER DELETE
+INSTEAD OF DELETE
 AS
 BEGIN
   -- Delete child reports first to prevent FK errors
   DELETE FROM report WHERE postId IN (SELECT postId FROM DELETED);
   DELETE FROM comment WHERE postId IN (SELECT postId FROM DELETED);
+  DELETE FROM post WHERE postId IN (SELECT postId FROM DELETED);
 END;
 GO
 
 -- BADGE Cascade Deletion
 CREATE TRIGGER trg_Delete_Badge_Cascade
 ON badge
-AFTER DELETE
+INSTEAD OF DELETE
 AS
 BEGIN
   DELETE FROM user_badge WHERE badgeId IN (SELECT badgeId FROM DELETED);
   DELETE FROM coach_plan_badge WHERE badgeId IN (SELECT badgeId FROM DELETED);
+  DELETE FROM badge WHERE badgeId IN (SELECT badgeId FROM DELETED);
 END;
 GO
 
 -- MEMBERSHIP Cascade Deletion
 CREATE TRIGGER trg_Delete_Membership_Cascade
 ON membership
-AFTER DELETE
+INSTEAD OF DELETE
 AS
 BEGIN
   DELETE FROM user_memberships WHERE membershipId IN (SELECT membershipId FROM DELETED);
   DELETE FROM payment WHERE membershipId_fk IN (SELECT membershipId FROM DELETED);
+  DELETE FROM membership WHERE membershipId IN (SELECT membershipId FROM DELETED);
 END;
 GO
 
 -- COACH_INFO Cascade Deletion
 CREATE TRIGGER trg_Delete_Coach_Cascade
 ON coach_info
-AFTER DELETE
+INSTEAD OF DELETE
 AS
 BEGIN
   -- Delete deeply nested first
@@ -525,28 +530,31 @@ BEGIN
   DELETE FROM feedback WHERE coachId IN (SELECT coachId FROM DELETED);
   DELETE FROM coach_plan_badge WHERE coachId IN (SELECT coachId FROM DELETED);
   DELETE FROM transaction_money WHERE coachId IN (SELECT coachId FROM DELETED);
+  DELETE FROM coach_info WHERE coachId IN (SELECT coachId FROM DELETED);
 END;
 GO
 
 -- QUIT_PLAN Cascade Deletion
 CREATE TRIGGER trg_Delete_Quit_plan_Cascade
 ON quit_plan
-AFTER DELETE
+INSTEAD OF DELETE
 AS
 BEGIN
   DELETE FROM feedback WHERE planId IN (SELECT planId FROM DELETED);
   DELETE FROM plan_milestone WHERE planId IN (SELECT planId FROM DELETED);
   DELETE FROM coach_plan_badge WHERE planId IN (SELECT planId FROM DELETED);
   DELETE FROM transaction_money WHERE planId IN (SELECT planId FROM DELETED);
+  DELETE FROM quit_plan WHERE planId IN (SELECT planId FROM DELETED);
 END;
 GO
 
 -- PLAN_MILESTONE Cascade Deletion
 CREATE TRIGGER trg_Delete_Plan_milestone_Cascade
 ON plan_milestone
-AFTER DELETE
+INSTEAD OF DELETE
 AS
 BEGIN
   DELETE FROM notification WHERE relatedMilestoneId IN (SELECT milestoneId FROM DELETED);
+  DELETE FROM plan_milestone WHERE milestoneId IN (SELECT milestoneId FROM DELETED);
 END;
 GO

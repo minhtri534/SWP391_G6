@@ -51,7 +51,14 @@ namespace backend.Data
             modelBuilder.Entity<CoachInfo>().ToTable("coach_info").HasKey(c => c.CoachId);
             modelBuilder.Entity<QuitPlan>().ToTable("quit_plan").HasKey(q => q.PlanId);
             modelBuilder.Entity<UserMembership>().ToTable("user_memberships").HasKey(us => new { us.MembershipId, us.UserId });
+            // triggers
             modelBuilder.Entity<Badge>().ToTable(tb => tb.HasTrigger("trg_Delete_Badge_Cascade"));
+            modelBuilder.Entity<Membership>().ToTable(tb => tb.HasTrigger("trg_Delete_Membership_Cascade"));
+            modelBuilder.Entity<CoachInfo>().ToTable(tb => tb.HasTrigger("trg_Delete_Coach_Cascade"));
+            modelBuilder.Entity<QuitPlan>().ToTable(tb => tb.HasTrigger("trg_Delete_Quit_plan_Cascade"));
+            modelBuilder.Entity<PlanMilestone>().ToTable(tb => tb.HasTrigger("trg_Delete_Plan_milestone_Cascade"));
+            modelBuilder.Entity<Comment>().ToTable(tb => tb.HasTrigger("trg_Delete_Comment_Cascade"));
+            modelBuilder.Entity<Post>().ToTable(tb => tb.HasTrigger("trg_Delete_Post_Cascade"));
         }
     }
 
