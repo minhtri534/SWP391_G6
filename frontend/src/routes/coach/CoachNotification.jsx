@@ -12,7 +12,9 @@ function CoachNotification() {
 					className="flex-1 overflow-y-auto p-6 space-y-6"
 					style={{
 						background: "linear-gradient(to bottom, #98fcb1, #d0f3a3)",
-					}}></div>
+					}}>
+					Notification table
+				</div>
 			</div>
 		</div>
 	);

@@ -5,7 +5,7 @@ const baseApi = "http://localhost:5196";
 
 export async function getUsers() {
 	try {
-		const response = await axios.get(`${baseApi}/AccountManageAdmin/ViewAllAccount`, getAuthConfig());
+		const response = await axios.get(`${baseApi}/AccountManageAdmin/ViewAllUsers`, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Get user failed!!!";

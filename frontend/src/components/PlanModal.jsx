@@ -10,6 +10,16 @@ function PlanModal({ isOpen, onClose, initialValues }) {
 		reason: Yup.string().required("Reason is required"),
 		startDate: Yup.date().required("Start date is required"),
 		goalDate: Yup.date().required("Goal date is required").min(Yup.ref("startDate"), "Goal date must be after start date"),
+		milestones: Yup.array()
+			.min(1, "At least one milestone is required")
+			.of(
+				Yup.object().shape({
+					title: Yup.string().required("Title is required"),
+					description: Yup.string().required("Description is required"),
+					targetDate: Yup.date().required("Target date is required"),
+					badge: Yup.string().required("Badge is required"),
+				})
+			),
 	});
 
 	// Decide create or update action
@@ -21,7 +31,7 @@ function PlanModal({ isOpen, onClose, initialValues }) {
 			reason: "",
 			startDate: "",
 			goalDate: "",
-			milestones: [{ title: "test", description: "test", targetDate: "19/07/2025", badge: "1" }],
+			milestones: [],
 		},
 		onSubmit: async (values) => {
 			try {
@@ -29,14 +39,14 @@ function PlanModal({ isOpen, onClose, initialValues }) {
 				// const payload = values;
 				if (isUpdating) {
 					// Do update plan
-					await updatePlan(values);
+					// await updatePlan(values);
 					toast.success("Update plan successfully!!!");
 				} else {
 					// Do create plan
-					await addPlan(values);
+					// await addPlan(values);
 					toast.success("Add plan successfully!!!");
 				}
-				onClose();
+				handleClose();
 			} catch (error) {
 				console.error(error);
 				toast.error(error?.response?.data?.message || error.message || "Something went wrong.");
@@ -52,6 +62,7 @@ function PlanModal({ isOpen, onClose, initialValues }) {
 		setEditingIndex(newMilestones.length - 1); // Focus last
 	};
 
+	//Remove milestone from plan function
 	const handleRemoveMilestone = (index) => {
 		const updated = [...formik.values.milestones];
 		updated.splice(index, 1);
@@ -60,6 +71,11 @@ function PlanModal({ isOpen, onClose, initialValues }) {
 
 	const [editingIndex, setEditingIndex] = useState(null);
 
+	const handleClose = () => {
+		formik.resetForm();
+		onClose();
+	};
+
 	if (!isOpen) return null;
 
 	return (
@@ -67,7 +83,7 @@ function PlanModal({ isOpen, onClose, initialValues }) {
 			{console.log(initialValues)}
 			<div className="bg-white rounded-lg shadow-lg w-full max-w-svh max-h-[90vh] p-6 relative">
 				{/* Form header */}
-				<button onClick={onClose} className="absolute top-2 right-2 text-gray-500 hover:text-red-500 hover:bg-red-100">
+				<button onClick={handleClose} className="absolute top-2 right-2 text-gray-500 hover:text-red-500 hover:bg-red-100">
 					<X className="w-5 h-5" />
 				</button>
 				<h2 className="text-xl font-semibold mb-4">{initialValues ? "Update Plan" : "Create Plan"}</h2>
@@ -100,11 +116,12 @@ function PlanModal({ isOpen, onClose, initialValues }) {
 							<div className="h-full w-px bg-gray-300" />
 						</div>
 
-						{/* Right section: Milestone */}
+						{/* Right section: Plan Milestone */}
 						<div className="col-span-6 max-h-[60vh] overflow-y-auto space-y-4">
 							<h3 className="font-semibold text-lg">Milestones</h3>
 
 							{formik.values.milestones.length === 0 && <p className="text-gray-500 text-sm">No milestones added.</p>}
+							{formik.errors.milestones && typeof formik.errors.milestones === "string" && <p className="text-red-500 text-sm">{formik.errors.milestones}</p>}
 
 							{formik.values.milestones.map((milestone, index) => (
 								<div key={index} className="border rounded p-4 bg-gray-50 relative">
@@ -115,7 +132,12 @@ function PlanModal({ isOpen, onClose, initialValues }) {
 													<strong>{milestone.title || "Untitled"}</strong>
 													<div className="text-sm text-gray-500">{milestone.badge}</div>
 												</div>
-												<button className="text-red-500 px-2 py-1 hover:border hover:rounded hover:bg-red-500 hover:text-white" onClick={() => handleRemoveMilestone(index)}>
+												<button
+													className="text-red-500 px-1 py-1 hover:border hover:rounded hover:bg-red-500 hover:text-white"
+													onClick={(e) => {
+														handleRemoveMilestone(index);
+														e.stopPropagation();
+													}}>
 													<X />
 												</button>
 											</div>
@@ -129,16 +151,23 @@ function PlanModal({ isOpen, onClose, initialValues }) {
 											<div>
 												<label className="block text-sm font-medium">Title</label>
 												<input type="text" name={`milestones[${index}].title`} className="w-full border rounded p-2" value={milestone.title} onChange={formik.handleChange} />
+												{formik.touched.milestones?.[index]?.title && formik.errors.milestones?.[index]?.title && <div className="text-red-500 text-sm mt-1">{formik.errors.milestones[index].title}</div>}
 											</div>
 
 											<div>
 												<label className="block text-sm font-medium">Description</label>
 												<textarea name={`milestones[${index}].description`} className="w-full border rounded p-2" value={milestone.description} onChange={formik.handleChange} />
+												{formik.touched.milestones?.[index]?.description && formik.errors.milestones?.[index]?.description && (
+													<div className="text-red-500 text-sm mt-1">{formik.errors.milestones[index].description}</div>
+												)}
 											</div>
 
 											<div>
 												<label className="block text-sm font-medium">Target Date</label>
 												<input type="date" name={`milestones[${index}].targetDate`} className="w-full border rounded p-2" value={milestone.targetDate} onChange={formik.handleChange} />
+												{formik.touched.milestones?.[index]?.targetDate && formik.errors.milestones?.[index]?.targetDate && (
+													<div className="text-red-500 text-sm mt-1">{formik.errors.milestones[index].targetDate}</div>
+												)}
 											</div>
 
 											<div>
@@ -149,6 +178,7 @@ function PlanModal({ isOpen, onClose, initialValues }) {
 													<option value="Medium">Medium</option>
 													<option value="Hard">Hard</option>
 												</select>
+												{formik.touched.milestones?.[index]?.badge && formik.errors.milestones?.[index]?.badge && <div className="text-red-500 text-sm mt-1">{formik.errors.milestones[index].badge}</div>}
 											</div>
 											{/* Done editing */}
 											<div className="text-right">
@@ -174,7 +204,7 @@ function PlanModal({ isOpen, onClose, initialValues }) {
 						</div>
 
 						<div className="flex gap-2">
-							<button type="button" onClick={onClose} className="px-4 py-2 border rounded hover:bg-gray-100">
+							<button type="button" onClick={handleClose} className="px-4 py-2 border rounded hover:bg-gray-100">
 								Cancel
 							</button>
 							<button type="submit" disabled={formik.isSubmitting} className="px-4 py-2 border rounded bg-green-600 text-white hover:bg-green-700">
