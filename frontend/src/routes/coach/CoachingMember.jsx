@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import CoachSidebar from "../../components/CoachSidebar";
 import CoachTopbar from "../../components/CoachTopbar";
-import { Pencil, Trash2 } from "lucide-react";
+import { ClipboardList, Pencil, Trash2 } from "lucide-react";
 import PlanModal from "../../components/PlanModal";
 import { deletePlan } from "../../api/Plan";
 import { getUsers } from "../../api/Users";
 import { toast } from "react-toastify";
 import DeleteConfirmation from "../../components/DeleteConfirmation";
 import Pagination from "../../components/Pagination";
+import ViewPlan from "../../components/ViewPlan";
+import SmokingCondition from "../../components/SmokingCondition";
 
 function CoachingMember() {
 	//Fake data
@@ -23,7 +25,7 @@ function CoachingMember() {
 				reason: "Wants to improve health and be a good example for family.",
 				startDate: "2025-07-10",
 				goalDate: "2025-09-01",
-				milestones: [],
+				milestones: [{ milestoneId: 1, title: "test", description: "test", targetDate: "19/07/2025", badgeId: 1 }],
 			},
 		},
 		{
@@ -65,7 +67,7 @@ function CoachingMember() {
 
 	// Get member list
 	useEffect(() => {
-		fetchUsers();
+		// fetchUsers();
 	}, []);
 
 	// For filter and sort
@@ -109,6 +111,9 @@ function CoachingMember() {
 	const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
 	const [selectedMember, setSelectedMember] = useState(null);
 	const [selectedDeletePlan, setSelectedDeletePlan] = useState(null);
+	const [isConditionModalOpen, setIsConditionModalOpen] = useState(false);
+	const [isViewPlanOpen, setIsViewPlanOpen] = useState(false);
+	const [selectedPlan, setSelectedPlan] = useState(null);
 
 	//Reset pagination to 1st page
 	useEffect(() => {
@@ -190,21 +195,39 @@ function CoachingMember() {
 											</td>
 											<td className="px-6 py-3">
 												{member.quitPlan && (
-													<button className="flex items-center gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 hover:cursor-pointer transition">View progress</button>
+													<button
+														onClick={() => {
+															setIsViewPlanOpen(true);
+															setSelectedPlan(member.quitPlan);
+														}}
+														className="flex items-center gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 hover:cursor-pointer transition">
+														View progress
+													</button>
 												)}
 											</td>
 											<td className="px-6 py-3">
 												<div className="flex justify-end gap-2">
 													{!member.quitPlan && (
-														<button
-															onClick={() => {
-																setIsModalOpen(true);
-																setSelectedMember(member);
-															}}
-															className="flex items-center gap-1 px-3 py-1 border rounded text-green-600 border-green-600 hover:bg-green-50 hover:cursor-pointer transition">
-															<Pencil className="w-4 h-4" />
-															Create Plan
-														</button>
+														<>
+															<button
+																onClick={() => {
+																	setIsConditionModalOpen(true);
+																	setSelectedMember(member);
+																}}
+																className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
+																<ClipboardList className="w-4 h-4" />
+																Smoking condition
+															</button>
+															<button
+																onClick={() => {
+																	setIsModalOpen(true);
+																	setSelectedMember(member);
+																}}
+																className="flex items-center gap-1 px-3 py-1 border rounded text-green-600 border-green-600 hover:bg-green-50 hover:cursor-pointer transition">
+																<Pencil className="w-4 h-4" />
+																Create Plan
+															</button>
+														</>
 													)}
 													{member.quitPlan && (
 														<>
@@ -240,7 +263,7 @@ function CoachingMember() {
 					{/* Pagination */}
 					{filteredList.length > 0 && <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => setCurrentPage(page)} />}
 
-					{/* Plan popup modal */}
+					{/* Create or Update plan popup modal */}
 					<PlanModal
 						isOpen={isModalOpen}
 						onClose={() => {
@@ -248,6 +271,19 @@ function CoachingMember() {
 							setSelectedMember(null);
 						}}
 						initialValues={selectedMember?.quitPlan || null}
+					/>
+
+					{/* View member plan modal */}
+					<ViewPlan isOpen={isViewPlanOpen} plan={selectedPlan} onClose={() => setIsViewPlanOpen(false)} />
+
+					{/* View member smoking condition modal */}
+					<SmokingCondition
+						isOpen={isConditionModalOpen}
+						onClose={() => {
+							setIsConditionModalOpen(false);
+							setSelectedMember(null);
+						}}
+						condition={selectedMember}
 					/>
 
 					{/* Delete Confirmation popup modal */}

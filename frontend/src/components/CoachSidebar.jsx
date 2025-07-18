@@ -14,7 +14,7 @@ function CoachSidebar() {
 	//remove user token and navigate to Login page
 	const handleLogout = () => {
 		//Remove token
-		//...
+		localStorage.clear();
 		//Navigate to login
 		navigate("/Login");
 	};
@@ -52,7 +52,7 @@ function CoachSidebar() {
 			<ul className="space-y-2 text-sm mt-4">
 				<li>
 					<NavLink
-						to="/"
+						to="/home"
 						className={({ isActive }) =>
 							`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors duration-200 ${isActive ? "bg-green-100 text-green-700 font-semibold" : "text-gray-700 hover:bg-gray-100"}`
 						}>
