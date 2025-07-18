@@ -32,12 +32,14 @@ function Login() {
 
       const token = response.data.token;
       const usernameFromServer = response.data.username || form.username;
+      const role = response.data.user.roleId;
+
 
       // ✅ Cập nhật vào context
       setUser({
         userId: response.data.userId, // Đảm bảo backend trả về userId
         username: usernameFromServer,
-        role: response.data.role || "member",
+        role: role || "member",
       });
 
       // ✅ Lưu vào localStorage nếu cần
@@ -45,7 +47,19 @@ function Login() {
       localStorage.setItem("userName", usernameFromServer);
 
       toast.success("Login successful!");
-      setTimeout(() => navigate("/home"), 1500);
+      if (role == 1 ) {
+        setTimeout(() => navigate("/"), 1500);
+      }
+      else if (role == 2 ) {
+        setTimeout(() => navigate("/home"), 1500);
+      }
+      else if (role == 3 ) {
+        setTimeout(() => navigate("/Coach/Home"), 1500);
+      }
+      else if (role == 4 ) {
+        setTimeout(() => navigate("/Admin/Dashboard"), 1500);
+      }
+      
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed. Please try again.");
     } finally {
