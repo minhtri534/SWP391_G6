@@ -61,7 +61,7 @@ function CoachSidebar() {
 					</NavLink>
 				</li>
 				<li>
-					<button onClick={handleLogout} className="w-full flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition">
+					<button onClick={handleLogout} className="w-full flex items-center gap-2 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:cursor-pointer transition">
 						<LogOut className="w-4 h-4 text-gray-700" />
 						Logout
 					</button>

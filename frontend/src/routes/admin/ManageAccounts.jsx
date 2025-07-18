@@ -4,89 +4,29 @@ import AdminTopbar from "../../components/AdminTopbar";
 import Pagination from "../../components/Pagination";
 import { Lock, Pencil, Trash2 } from "lucide-react";
 import AccountModal from "../../components/AccountModal";
-import { deleteUser, getUsers } from "../../api/Users";
+import { deleteUser, getUsers, lockUser, unlockUser } from "../../api/Users";
 import { toast } from "react-toastify";
 import DeleteConfirmation from "../../components/DeleteConfirmation";
 
 function ManageAccounts() {
-	// Fake data
-	const [users, setUsers] = useState([
-		{
-			userId: 1,
-			userName: "alice",
-			age: 28,
-			gender: "Female",
-			phoneNum: "0912345678",
-			password: "alice123",
-			roleId: 1,
-			status: "Active",
-			joinDate: "2023-01-10",
-			badgeId: 2,
-		},
-		{
-			userId: 2,
-			userName: "bob",
-			age: 30,
-			gender: "Male",
-			phoneNum: "0987654321",
-			password: "bobsecure",
-			roleId: 2,
-			status: "Active",
-			joinDate: "2023-02-12",
-			badgeId: 3,
-		},
-		{
-			userId: 3,
-			userName: "charlie",
-			age: 26,
-			gender: "Male",
-			phoneNum: "0911112233",
-			password: "pass123",
-			roleId: 2,
-			status: "Locked",
-			joinDate: "2023-03-05",
-			badgeId: 1,
-		},
-		{
-			userId: 4,
-			userName: "daisy",
-			age: 24,
-			gender: "Female",
-			phoneNum: "0922333444",
-			password: "daisy456",
-			roleId: 2,
-			status: "Active",
-			joinDate: "2023-03-25",
-			badgeId: 4,
-		},
-		{
-			userId: 5,
-			userName: "eric",
-			age: 35,
-			gender: "Male",
-			phoneNum: "0912344444",
-			password: "ericpw",
-			roleId: 1,
-			status: "Inactive",
-			joinDate: "2023-04-10",
-			badgeId: 2,
-		},
-	]);
+	// Data
+	const [users, setUsers] = useState([]);
+
+	//Get account function
+	const fetchUsers = async () => {
+		try {
+			const data = await getUsers();
+			//some filtering if needed
+			//...
+			setUsers(data);
+		} catch (error) {
+			console.error(error);
+			toast.error(error?.response?.data?.message || error.message || "Failed to load members.");
+		}
+	};
 
 	// Get member list
 	useEffect(() => {
-		const fetchUsers = async () => {
-			try {
-				const data = await getUsers();
-				//some filtering if needed
-				//...
-				setUsers(data);
-			} catch (error) {
-				console.error(error);
-				toast.error(error?.response?.data?.message || error.message || "Failed to load members.");
-			}
-		};
-
 		fetchUsers();
 	}, []);
 
@@ -101,7 +41,7 @@ function ManageAccounts() {
 		return (
 			user.userName.toLowerCase().includes(searchName.toLowerCase()) &&
 			(filterGender ? user.gender === filterGender : true) &&
-			(filterRole ? user.roleId === parseInt(filterRole) : true) &&
+			(filterRole ? user.role.roleId === parseInt(filterRole) : true) &&
 			(filterStatus ? user.status === filterStatus : true)
 		);
 	});
@@ -152,6 +92,16 @@ function ManageAccounts() {
 	const [selectedAccount, setSelectedAccount] = useState(null);
 	const [selectedDeleteAccount, setSelectedDeleteAccount] = useState(null);
 
+	//Format date
+	const formatDate = (isoDateString) => {
+		if (!isoDateString) return "";
+		const date = new Date(isoDateString);
+		const day = String(date.getDate()).padStart(2, "0");
+		const month = String(date.getMonth() + 1).padStart(2, "0");
+		const year = date.getFullYear();
+		return `${day}/${month}/${year}`;
+	};
+
 	return (
 		<div className="flex">
 			<AdminSidebar />
@@ -163,7 +113,8 @@ function ManageAccounts() {
 						background: "linear-gradient(to bottom, #98fcb1, #d0f3a3)",
 					}}>
 					{/* Header*/}
-					<div className="flex justify-between items-center"></div>
+					{/* <div className="flex justify-between items-center"></div> */}
+					{console.log(users)}
 
 					{/* Filter and sort */}
 					<div className="bg-green-50 p-4 rounded-lg shadow flex flex-wrap gap-4">
@@ -173,12 +124,15 @@ function ManageAccounts() {
 							<option value="">All Genders</option>
 							<option value="Male">Male</option>
 							<option value="Female">Female</option>
+							<option value="Other">Other</option>
 						</select>
 
 						<select className="border rounded px-3 py-2 w-40" value={filterRole} onChange={(e) => setFilterRole(e.target.value)}>
 							<option value="">All Roles</option>
-							<option value="1">Admin</option>
-							<option value="2">Coach/User</option>
+							<option value="1">Guest</option>
+							<option value="2">Member</option>
+							<option value="3">Coach</option>
+							<option value="4">Admin</option>
 						</select>
 
 						<select className="border rounded px-3 py-2 w-40" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
@@ -198,7 +152,7 @@ function ManageAccounts() {
 							<option value="joinDesc">Join Date descending</option>
 						</select>
 						<button onClick={() => setIsModalOpen(true)} className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 hover:cursor-pointer transition">
-							Create Account
+							Add Coach Account
 						</button>
 					</div>
 
@@ -209,6 +163,7 @@ function ManageAccounts() {
 								<tr>
 									<th className="text-left px-6 py-3">Id</th>
 									<th className="text-left px-6 py-3">Name</th>
+									<th className="text-left px-6 py-3">Role</th>
 									<th className="text-left px-6 py-3">Age</th>
 									<th className="text-left px-6 py-3">Gender</th>
 									<th className="text-left px-6 py-3">Phone Number</th>
@@ -235,14 +190,15 @@ function ManageAccounts() {
 										<tr key={user.userId} className="border-t hover:bg-gray-50">
 											<td className="px-6 py-3">{user.userId}</td>
 											<td className="px-6 py-3">{user.userName}</td>
+											<td className="px-6 py-3">{user.role.roleName}</td>
 											<td className="px-6 py-3">{user.age}</td>
 											<td className="px-6 py-3">{user.gender}</td>
 											<td className="px-6 py-3">{user.phoneNum}</td>
 											<td className="px-6 py-3">{user.status}</td>
-											<td className="px-6 py-3">{user.joinDate}</td>
+											<td className="px-6 py-3">{formatDate(user.joinDate)}</td>
 											<td className="px-6 py-3">
 												<div className="flex justify-end gap-2">
-													<button
+													{/* <button
 														className="flex items-center gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 hover:cursor-pointer transition"
 														onClick={() => {
 															setIsModalOpen(true);
@@ -250,10 +206,29 @@ function ManageAccounts() {
 														}}>
 														<Pencil className="w-4 h-4" />
 														Update
-													</button>
-													<button className="flex items-center gap-1 px-3 py-1 border rounded text-yellow-600 border-yellow-600 hover:bg-yellow-50 hover:cursor-pointer transition">
+													</button> */}
+													<button
+														className={`flex items-center gap-1 px-3 py-1 border rounded ${
+															user.status === "Locked" ? "text-green-600 border-green-600 hover:bg-green-50" : "text-yellow-600 border-yellow-600 hover:bg-yellow-50"
+														} hover:cursor-pointer transition`}
+														onClick={async () => {
+															try {
+																if (user.status === "Locked") {
+																	await unlockUser(user.userId);
+																	toast.success(`Unlocked ${user.userName}`);
+																} else {
+																	await lockUser(user.userId);
+																	toast.success(`Locked ${user.userName}`);
+																}
+																// Refresh user list
+																fetchUsers();
+															} catch (error) {
+																console.error(error);
+																toast.error(error.message);
+															}
+														}}>
 														<Lock className="w-4 h-4" />
-														Lock
+														{user.status === "Locked" ? "Unlock" : "Lock"}
 													</button>
 													<button
 														className="flex items-center gap-1 px-3 py-1 border rounded text-red-600 border-red-600 hover:bg-red-50 hover:cursor-pointer transition"
@@ -285,6 +260,11 @@ function ManageAccounts() {
 							setSelectedAccount(null);
 						}}
 						initialValues={selectedAccount}
+						onSuccess={() => {
+							fetchUsers();
+							setIsModalOpen(false);
+							setSelectedAccount(null);
+						}}
 					/>
 
 					{/* Delete Confirmation popup modal */}

@@ -3,7 +3,7 @@ import CoachSidebar from "../../components/CoachSidebar";
 import CoachTopbar from "../../components/CoachTopbar";
 import { Star } from "lucide-react";
 import { toast } from "react-toastify";
-import { getFeedbacks } from "../../api/Feedback";
+import { getFeedbacksByCoachId } from "../../api/Feedback";
 
 function CoachFeedback() {
 	const [feedbacks, setFeedbacks] = useState([
@@ -28,7 +28,7 @@ function CoachFeedback() {
 	useEffect(() => {
 		const fetchFeedbacks = async () => {
 			try {
-				const data = await getFeedbacks();
+				const data = await getFeedbacksByCoachId();
 				setFeedbacks(data);
 			} catch (error) {
 				console.error(error);
