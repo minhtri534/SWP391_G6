@@ -77,7 +77,8 @@ namespace backend.Controllers
                 user = new
                 {
                     user.UserId,
-                    user.UserName
+                    user.UserName,
+                    user.RoleId
                 },
                 token = GenerateJwtToken(user.UserName, user.RoleId)
             });
