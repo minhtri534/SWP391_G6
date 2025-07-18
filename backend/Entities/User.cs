@@ -8,37 +8,27 @@ public class User
 {
     [Key]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	[Column("userId")]
     public int UserId { get; set; }
-
 	[StringLength(100)]
-	[Required]
+	[Column("userName")]
     public string UserName { get; set; }
-
-	
+	[Column("age")]
     public int Age { get; set; } = default(int);
-
-
+	[Column("gender")]
     public string Gender { get; set; } = String.Empty;
-
-    [Required]
-	[MaxLength(10)]
-	[RegularExpression(@"^0\d{9}$", ErrorMessage = "Phone number must start with 0 and contain exactly 10 digits.")]
-	public string PhoneNum { get; set; }
-
-    [Required]
-	[StringLength(100)]
+	[Column("phoneNum")]
+    public string PhoneNum { get; set; }
+	[Column("password")]
+    [StringLength(100)]
 	public string Password { get; set; }
-	
-    [Required]
-	[Range(0,2)]
-	public int RoleId { get; set; }
-
-	
-	[MaxLength(100)]
+	[Column("roleId")]
+    public int RoleId { get; set; }
+	[Column("status")]
+    [MaxLength(100)]
 	public string Status { get; set; }
-
-	
-	public DateTime JoinDate { get; set; }
+	[Column("joinDate")]
+    public DateTime JoinDate { get; set; }
 	[ForeignKey(nameof(RoleId))]
 	public Role Role { get; set; }
 }

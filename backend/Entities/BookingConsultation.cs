@@ -13,8 +13,11 @@ namespace backend.Entities
         public int UserId { get; set; }
         [ForeignKey("coachId")]
         public int CoachId { get; set; }
+        [Column("date")]
         public DateTime Date { get; set; }
+        [Column("type")]
         public string? Type { get; set; }
+        [Column("status")]
         public string? Status { get; set; }
     }
 }

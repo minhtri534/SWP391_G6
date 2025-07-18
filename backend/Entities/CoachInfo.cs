@@ -7,10 +7,14 @@ namespace backend.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("coachId")]
         public int CoachId { get; set; }
+        [Column("userId")]
         public int UserId { get; set; }
         [MaxLength(20)]
+        [Column("phoneNum")]
         public string PhoneNum { get; set; }
+        [Column("experience")]
         public int Experience { get; set; }
         [MaxLength(100)]
         [Column("available_time")]
