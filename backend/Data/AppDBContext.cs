@@ -1,4 +1,4 @@
-using backend.Data;
+﻿using backend.Data;
 using backend.Entities; // namespace chứa các model C#
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
@@ -51,6 +51,7 @@ namespace backend.Data
             modelBuilder.Entity<CoachInfo>().ToTable("coach_info").HasKey(c => c.CoachId);
             modelBuilder.Entity<QuitPlan>().ToTable("quit_plan").HasKey(q => q.PlanId);
             modelBuilder.Entity<UserMembership>().ToTable("user_memberships").HasKey(us => new { us.MembershipId, us.UserId });
+            modelBuilder.Entity<Badge>().ToTable(tb => tb.HasTrigger("trg_Delete_Badge_Cascade"));
         }
     }
 

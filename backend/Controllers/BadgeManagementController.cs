@@ -10,7 +10,6 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "4")]
     public class BadgeManagementController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -21,12 +20,14 @@ namespace backend.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "4")]
         public async Task<IActionResult> GetAllBadges()
         {
             return Ok(_context.Badges.ToList());
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "4")]
         public async Task<IActionResult> GetBadgeById(int id)
         {
             var badge = await _context.Badges.FindAsync(id);
@@ -38,6 +39,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "3, 4")]
         public async Task<IActionResult> AddBadge([FromBody] BadgeCreateRequest badge)
         {
             Badge NewBadge;
@@ -61,6 +63,7 @@ namespace backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "4")]
         public async Task<IActionResult> DeleteBadgeById(int id)
         {
             var badge = await _context.Badges.FindAsync(id);
@@ -74,18 +77,21 @@ namespace backend.Controllers
         }
 
         [HttpGet("Stats")]
+        [Authorize(Roles = "4")]
         public async Task<IActionResult> GetTotalNumberOfObtainedBadges()
         {
             return Ok(await _context.UserBadges.CountAsync());
         }
 
         [HttpGet("Stats/{id}")]
+        [Authorize(Roles = "4")]
         public async Task<IActionResult> GetTotalNumberOfObtainedBadgesById(int id)
         {
             return Ok(await _context.UserBadges.Where(b => b.BadgeId == id).CountAsync());
         }
 
         [HttpGet("Stats/Ranking")]
+        [Authorize(Roles = "4")]
         public async Task<IActionResult> GetTopTotalNumberOfObtainedBadges()
         {
             var query = _context.UserBadges
@@ -100,6 +106,7 @@ namespace backend.Controllers
         }
 
         [HttpDelete("Revoke/{userId}/{badgeId}")]
+        [Authorize(Roles = "4")]
         public async Task<IActionResult> RevokeBadge(int userId, int badgeId)
         {
             var badge = await _context.UserBadges

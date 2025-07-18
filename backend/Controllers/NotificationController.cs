@@ -19,7 +19,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "3")]
+        [Authorize(Roles = "3,4")]
         public async Task<IActionResult> CreateNotification([FromBody] NotificationCreateRequest request)
         {
             Notification notification;

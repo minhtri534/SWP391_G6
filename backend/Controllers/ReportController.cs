@@ -40,9 +40,9 @@ namespace backend.Controllers
 
         [Authorize(Roles = "4")]
         [HttpDelete("post/{postId}")]
-        public async Task<IActionResult> DeletePost(int postId, [FromQuery] int userId)
+        public async Task<IActionResult> DeletePost(int postId)
         {
-            var result = await _reportService.DeletePostAsync(postId, userId);
+            var result = await _reportService.DeletePostAsync(postId);
             if (!result.Allowed)
                 return result.ErrorResult;
 
@@ -51,9 +51,9 @@ namespace backend.Controllers
 
         [Authorize(Roles = "4")]
         [HttpDelete("comment/{commentId}")]
-        public async Task<IActionResult> DeleteComment(int commentId, [FromQuery] int userId)
+        public async Task<IActionResult> DeleteComment(int commentId)
         {
-            var result = await _reportService.DeleteCommentAsync(commentId, userId);
+            var result = await _reportService.DeleteCommentAsync(commentId);
             if (!result.Allowed)
                 return result.ErrorResult;
 
@@ -62,9 +62,9 @@ namespace backend.Controllers
 
         [Authorize(Roles = "2,3")]
         [HttpPost]
-        public async Task<IActionResult> CreateReport([FromBody] CreateReportDto dto, [FromQuery] int userId)
+        public async Task<IActionResult> CreateReport([FromBody] CreateReportDto dto)
         {
-            var result = await _reportService.CreateReportAsync(dto, userId);
+            var result = await _reportService.CreateReportAsync(dto);
             if (!result.Allowed)
                 return result.ErrorResult;
 
@@ -73,9 +73,9 @@ namespace backend.Controllers
         
         [Authorize(Roles = "4")]
         [HttpDelete("report/{ReportId}")]
-        public async Task<IActionResult> DeleteReport(int ReportId, [FromQuery] int userId)
+        public async Task<IActionResult> DeleteReport(int ReportId)
         {
-            var result = await _reportService.DeleteReportAsync(ReportId, userId);
+            var result = await _reportService.DeleteReportAsync(ReportId);
             if (!result.Allowed)
                 return result.ErrorResult;
 
