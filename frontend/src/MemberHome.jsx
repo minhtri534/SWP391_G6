@@ -269,7 +269,6 @@ function MemberHome() {
           <p style={{ fontSize: "16px", color: "#666", maxWidth: "600px", margin: "10px auto" }}>
             You’re now a member! Access all features, coaching, and personalized support to thrive on your smoke-free path.
           </p>
-          <button style={orangeBtn} onClick={() => navigate("/settings")}>Manage Your Plan</button>
         </section>
 
         <hr style={{ margin: "40px 0", border: "none", height: "5px", background: "white", opacity: 0.3 }} />

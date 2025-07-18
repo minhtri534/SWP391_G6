@@ -1,20 +1,34 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaUserCircle, FaHeartbeat, FaFire, FaStar, FaLeaf } from "react-icons/fa";
+import { FaUserCircle, FaStickyNote, FaSmileBeam, FaHeartbeat, FaCalendarAlt } from "react-icons/fa";
 
-// Mock data for daily progress (member-facing keys only)
-const progressData = {
-  daysSmokeFree: 7,
-  cigarettesAvoided: 35,
-  healthBenefits: "Improved lung capacity and better energy levels!",
-  motivationalMessage: "You're doing great! Keep up the momentum!",
+// Initial mock data
+const initialProgressData = {
+  note: "",
+  no_smoking: false,
+  symptoms: "",
+  date: new Date().toISOString().slice(0, 10), // Default to current date
 };
 
 const DailyProgress = () => {
   const userName = localStorage.getItem("userName") || "User";
   const [menuOpen, setMenuOpen] = useState(false);
+  const [progress, setProgress] = useState(initialProgressData);
   const menuRef = useRef();
   const navigate = useNavigate();
+
+  // Load data from localStorage on mount
+  useEffect(() => {
+    const savedProgress = localStorage.getItem("dailyProgress");
+    if (savedProgress) {
+      setProgress(JSON.parse(savedProgress));
+    }
+  }, []);
+
+  // Save data to localStorage when progress changes
+  useEffect(() => {
+    localStorage.setItem("dailyProgress", JSON.stringify(progress));
+  }, [progress]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -26,13 +40,26 @@ const DailyProgress = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setProgress((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleSave = () => {
+    localStorage.setItem("dailyProgress", JSON.stringify(progress));
+    alert("Progress saved successfully!");
+  };
+
   return (
     <div
       style={{
         fontFamily: '"Segoe UI", sans-serif',
         background: "linear-gradient(to bottom, #a8e063, #56ab2f)",
         minHeight: "100vh",
-        color: "#111", // Đảm bảo màu chữ có thể nhìn thấy trên nền gradient
+        color: "#111",
       }}
     >
       {/* Header */}
@@ -99,7 +126,7 @@ const DailyProgress = () => {
       </header>
 
       {/* Main content */}
-      <div style={{ padding: "32px" }}> {/* Thay thế p-8 bằng padding cố định */}
+      <div style={{ padding: "32px" }}>
         <h2 style={{
           fontSize: "2rem",
           fontWeight: "bold",
@@ -140,12 +167,17 @@ const DailyProgress = () => {
               alignItems: "center",
               gap: "0.5rem",
             }}>
-              <FaLeaf />
-              Days Smoke-Free
+              <FaStickyNote />
+              Note
             </h3>
-            <p style={{ fontSize: "1rem", color: "#4b5563", marginBottom: "1.5rem" }}>
-              {progressData.daysSmokeFree} days
-            </p>
+            <input
+              type="text"
+              name="note"
+              value={progress.note}
+              onChange={handleChange}
+              style={{ width: "100%", padding: "0.5rem", marginBottom: "1.5rem", borderRadius: "0.375rem", border: "1px solid #d1d5db" }}
+              placeholder="Enter your note here"
+            />
           </div>
           <div style={{
             background: "white",
@@ -165,12 +197,19 @@ const DailyProgress = () => {
               alignItems: "center",
               gap: "0.5rem",
             }}>
-              <FaFire />
-              Cigarettes Avoided
+              <FaSmileBeam />
+              No Smoking
             </h3>
-            <p style={{ fontSize: "1rem", color: "#4b5563", marginBottom: "1.5rem" }}>
-              {progressData.cigarettesAvoided}
-            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <input
+                type="checkbox"
+                name="no_smoking"
+                checked={progress.no_smoking}
+                onChange={handleChange}
+                style={{ transform: "scale(1.5)", marginRight: "8px" }}
+              />
+              <label>No smoking today</label>
+            </div>
           </div>
           <div style={{
             background: "white",
@@ -191,11 +230,15 @@ const DailyProgress = () => {
               gap: "0.5rem",
             }}>
               <FaHeartbeat />
-              Health Benefits
+              Symptoms
             </h3>
-            <p style={{ fontSize: "1rem", color: "#4b5563", marginBottom: "1.5rem" }}>
-              {progressData.healthBenefits}
-            </p>
+            <textarea
+              name="symptoms"
+              value={progress.symptoms}
+              onChange={handleChange}
+              style={{ width: "100%", padding: "0.5rem", marginBottom: "1.5rem", borderRadius: "0.375rem", border: "1px solid #d1d5db", minHeight: "80px" }}
+              placeholder="Enter symptoms here"
+            />
           </div>
           <div style={{
             background: "white",
@@ -215,13 +258,39 @@ const DailyProgress = () => {
               alignItems: "center",
               gap: "0.5rem",
             }}>
-              <FaStar />
-              Motivation
+              <FaCalendarAlt />
+              Date
             </h3>
-            <p style={{ fontSize: "1rem", color: "#4b5563", marginBottom: "1.5rem" }}>
-              {progressData.motivationalMessage}
-            </p>
+            <input
+              type="date"
+              name="date"
+              value={progress.date}
+              onChange={handleChange}
+              style={{ width: "100%", padding: "0.5rem", marginBottom: "1.5rem", borderRadius: "0.375rem", border: "1px solid #d1d5db" }}
+            />
           </div>
+        </div>
+
+        {/* Save button */}
+        <div style={{ textAlign: "center", marginTop: "2rem" }}>
+          <button
+            onClick={handleSave}
+            style={{
+              padding: "0.75rem 1.5rem",
+              background: "#15803d",
+              color: "white",
+              fontSize: "1rem",
+              borderRadius: "0.375rem",
+              border: "none",
+              cursor: "pointer",
+              fontWeight: "bold",
+              transition: "background 0.3s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#146c43")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#15803d")}
+          >
+            Save Progress
+          </button>
         </div>
       </div>
     </div>

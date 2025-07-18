@@ -48,10 +48,10 @@ function Login() {
 
       toast.success("Login successful!");
       if (role == 1 ) {
-        setTimeout(() => navigate("/"), 1500);
+        setTimeout(() => navigate("/home"), 1500);
       }
       else if (role == 2 ) {
-        setTimeout(() => navigate("/home"), 1500);
+        setTimeout(() => navigate("/memberhome"), 1500);
       }
       else if (role == 3 ) {
         setTimeout(() => navigate("/Coach/Home"), 1500);
