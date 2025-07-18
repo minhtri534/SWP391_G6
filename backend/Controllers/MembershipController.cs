@@ -58,7 +58,7 @@ public class MembershipController : ControllerBase
     }
     //DELETE MEMBERSHIP PLAN//
     [HttpDelete("DeleteMembershipPlan/{membershipId}")]
-    public IActionResult DeleteMembership(int membershipId, [FromBody] CRUDMembershipRequest request)
+    public IActionResult DeleteMembership(int membershipId)
     {
         var membership = _context.Memberships.FirstOrDefault(m => m.MembershipId == membershipId);
         if (membership == null)
