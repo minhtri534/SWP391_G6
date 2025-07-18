@@ -51,7 +51,6 @@ function App() {
 					<Route path="/payment" element={<Payment />} />
 					<Route path="/platform-feedback" element={<PlatformFeedback />} />
 					<Route path="/edit-profile" element={<EditProfile />} />
-					<Route path="/achievements" element={<Achievements />} />
 					<Route path="/settings" element={<Settings />} />
 					<Route path="/forums" element={<Forums />} />
 					<Route path="/quitplan" element={<QuitPlan />} />
@@ -59,8 +58,8 @@ function App() {
 					<Route path="/quitplan/:level" element={<QuitPlan />} />
 					<Route path="/mycoach" element={<MyCoach />} />
 					<Route path="/badges" element={<Badges />} />
-          <Route path="/dailyprogress" element={<DailyProgress />} />
-          <Route path="/memberhome" element={<MemberHome />} />
+          			<Route path="/dailyprogress" element={<DailyProgress />} />
+          			<Route path="/memberhome" element={<MemberHome />} />
 
 					{/* Admin routing */}
 					<Route path="/Admin/Dashboard" element={<AdminDashboard />} />
