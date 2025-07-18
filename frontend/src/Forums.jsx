@@ -1,266 +1,257 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Dropdown, Avatar } from "antd";
-import { DownOutlined, UserOutlined } from "@ant-design/icons";
+import React, { useState, useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  FaUserCircle,
+  FaComments,
+  FaUserFriends,
+  FaLightbulb,
+  FaPaperPlane,
+} from "react-icons/fa";
 
-const dummyPosts = [
-  {
-    postId: 1,
-    userId: 101,
-    title: "Tôi đã bỏ thuốc lá được 7 ngày!",
-    content: "Cảm ơn cộng đồng rất nhiều vì sự động viên! Mọi người cố lên nhé!",
-    create_date: "2025-07-10",
-    comments: ["Quá tuyệt vời!", "Tui mới ngày 2 thôi, cố lên!"],
-  },
-  {
-    postId: 2,
-    userId: 102,
-    title: "Mẹo vượt qua cơn thèm thuốc buổi sáng",
-    content: "Mình thường uống nước và đi bộ nhanh 10 phút mỗi sáng. Khá hiệu quả!",
-    create_date: "2025-07-12",
-    comments: [],
-  },
-];
+const Forums = () => {
+  const userName = localStorage.getItem("userName") || "User";
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef();
+  const navigate = useNavigate();
 
-function Forums() {
-  const [posts, setPosts] = useState(dummyPosts);
-  const [selectedPostId, setSelectedPostId] = useState(null);
-  const [newPost, setNewPost] = useState({ title: "", content: "" });
-  const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState({
+    support: [],
+    tips: [],
+    general: [],
+  });
 
-  const handleReport = (postId) => {
-    alert(`Reported post ID: ${postId}`);
+  const [inputs, setInputs] = useState({
+    support: "",
+    tips: "",
+    general: "",
+  });
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
   };
 
-  const toggleDetail = (postId) => {
-    setSelectedPostId(selectedPostId === postId ? null : postId);
+  const handleCommentChange = (type, value) => {
+    setInputs((prev) => ({ ...prev, [type]: value }));
   };
 
-  const handleNewPost = () => {
-    if (newPost.title.trim() && newPost.content.trim()) {
-      const updated = [
-        ...posts,
-        {
-          postId: posts.length + 1,
-          userId: 999,
-          title: newPost.title,
-          content: newPost.content,
-          create_date: new Date().toISOString().split("T")[0],
-          comments: [],
-        },
-      ];
-      setPosts(updated);
-      setNewPost({ title: "", content: "" });
-    }
+  const handleCommentSubmit = (type) => {
+    if (inputs[type].trim() === "") return;
+
+    const newComment = {
+      name: userName,
+      content: inputs[type],
+      time: new Date().toLocaleString(),
+    };
+
+    setComments((prev) => ({
+      ...prev,
+      [type]: [...prev[type], newComment],
+    }));
+
+    setInputs((prev) => ({ ...prev, [type]: "" }));
   };
 
-  const handleAddComment = (postId) => {
-    if (!newComment.trim()) return;
-    const updated = posts.map((post) =>
-      post.postId === postId
-        ? { ...post, comments: [...post.comments, newComment] }
-        : post
-    );
-    setPosts(updated);
-    setNewComment("");
-  };
-
-  const userMenu = {
-    items: [
-      {
-        key: "1",
-        label: <Link to="/profile">Profile</Link>,
-      },
-      {
-        key: "2",
-        label: <Link to="/logout">Logout</Link>,
-      },
-    ],
-  };
+  const renderComments = (type) =>
+    comments[type].map((c, index) => (
+      <div key={index} style={{ marginBottom: "8px" }}>
+        <span style={{ fontWeight: "bold", color: "#2e7d32" }}>{c.name}:</span>{" "}
+        <span>{c.content}</span>
+        <div style={{ fontSize: "12px", color: "#888", marginLeft: "10px" }}>
+          {c.time}
+        </div>
+      </div>
+    ));
 
   return (
     <div
       style={{
-        fontFamily: "Segoe UI, sans-serif",
-        background: "linear-gradient(to bottom right, #a8e063, #56ab2f)",
+        fontFamily: '"Segoe UI", sans-serif',
+        background: "linear-gradient(to bottom, #a8e063, #56ab2f)",
         minHeight: "100vh",
-        paddingBottom: "60px",
       }}
     >
-      {/* Header giống Membership */}
+      {/* Header */}
       <header
         style={{
-          backgroundColor: "white",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "16px 40px",
-          borderBottom: "2px solid #eee",
+          padding: "15px 30px",
+          background: "white",
+          borderBottom: "2px solid #ccc",
         }}
       >
         <Link to="/home" style={{ textDecoration: "none" }}>
-          <h1 style={{ margin: 0, fontSize: "22px", fontWeight: "bold" }}>
+          <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>
             <span style={{ color: "#f57c00" }}>Quit</span>
             <span style={{ color: "#69c770" }}>Smoking.com</span>
           </h1>
         </Link>
-
-        <Dropdown menu={userMenu} placement="bottomRight">
-          <div style={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
-            <Avatar icon={<UserOutlined />} style={{ backgroundColor: "#87d068" }} />
-            <span style={{ marginLeft: "8px", marginRight: "4px", fontWeight: "500" }}>
-              Member
-            </span>
-            <DownOutlined />
+        <div style={{ position: "relative" }} ref={menuRef}>
+          <div
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              cursor: "pointer",
+              background: "white",
+              padding: "8px 12px",
+              borderRadius: "20px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+              fontWeight: "500",
+            }}
+          >
+            <FaUserCircle size={22} color="#4CAF50" />
+            <span>{userName}</span>
           </div>
-        </Dropdown>
-      </header>
-
-      <main style={{ padding: "40px 80px", color: "#111" }}>
-        <h2 style={{ textAlign: "center", color: "white", marginBottom: "40px" }}>
-          💬 Community Forum – Share & Support
-        </h2>
-
-        <div
-          style={{
-            backgroundColor: "white",
-            padding: "24px",
-            borderRadius: "12px",
-            marginBottom: "30px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h3>Đăng bài mới</h3>
-          <input
-            type="text"
-            placeholder="Tiêu đề"
-            value={newPost.title}
-            onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
-            style={inputStyle}
-          />
-          <textarea
-            placeholder="Nội dung bài viết"
-            value={newPost.content}
-            onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
-            style={{ ...inputStyle, height: "80px" }}
-          />
-          <button onClick={handleNewPost} style={buttonStylePrimary}>
-            Đăng bài
-          </button>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-          {posts.map((post) => (
-            <div
-              key={post.postId}
+          {menuOpen && (
+            <ul
               style={{
-                backgroundColor: "white",
-                borderRadius: "12px",
-                padding: "24px",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+                position: "absolute",
+                top: "110%",
+                right: 0,
+                background: "white",
+                listStyle: "none",
+                padding: "10px 0",
+                boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
+                borderRadius: "8px",
+                zIndex: 999,
+                width: "180px",
               }}
             >
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div>
-                  <h3>{post.title}</h3>
-                  <p style={{ color: "#666", fontSize: "14px" }}>
-                    🧑‍💻 User ID: {post.userId} | 📅 {post.create_date}
-                  </p>
-                </div>
-                <button
-                  onClick={() => handleReport(post.postId)}
-                  style={{
-                    backgroundColor: "#e53935",
-                    color: "white",
-                    border: "none",
-                    padding: "6px 12px",
-                    borderRadius: "8px",
-                    cursor: "pointer",
-                    height: "fit-content",
-                    marginTop: "6px",
-                  }}
-                >
-                  🚩 Report
-                </button>
-              </div>
-
-              {selectedPostId === post.postId ? (
-                <>
-                  <p style={{ marginTop: "15px", fontSize: "15px" }}>{post.content}</p>
-                  <div style={{ marginTop: "10px" }}>
-                    <h4>Bình luận:</h4>
-                    {post.comments.length > 0 ? (
-                      <ul style={{ paddingLeft: "20px" }}>
-                        {post.comments.map((cmt, idx) => (
-                          <li key={idx} style={{ fontSize: "14px", marginBottom: "4px" }}>{cmt}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p style={{ fontSize: "14px" }}>Chưa có bình luận.</p>
-                    )}
-                    <input
-                      type="text"
-                      placeholder="Thêm bình luận..."
-                      value={newComment}
-                      onChange={(e) => setNewComment(e.target.value)}
-                      style={{ ...inputStyle, marginTop: "10px" }}
-                    />
-                    <button
-                      onClick={() => handleAddComment(post.postId)}
-                      style={{ ...buttonStylePrimary, marginLeft: "10px" }}
-                    >
-                      Gửi
-                    </button>
-                  </div>
-                  <button
-                    onClick={() => toggleDetail(post.postId)}
-                    style={buttonStyleSecondary}
-                  >
-                    Ẩn nội dung
-                  </button>
-                </>
-              ) : (
-                <button
-                  onClick={() => toggleDetail(post.postId)}
-                  style={buttonStylePrimary}
-                >
-                  Xem chi tiết
-                </button>
-              )}
-            </div>
-          ))}
+              <MenuItem
+                label="👤 Edit Profile"
+                onClick={() => navigate("/edit-profile")}
+              />
+              <MenuItem
+                label="🏆 View Achievements"
+                onClick={() => navigate("/achievements")}
+              />
+              <MenuItem
+                label="⚙️ Settings"
+                onClick={() => navigate("/settings")}
+              />
+              <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
+              <MenuItem label="🔓 Logout" onClick={handleLogout} />
+            </ul>
+          )}
         </div>
-      </main>
+      </header>
+
+      {/* Main */}
+      <div className="p-8">
+        <h2 className="text-4xl font-bold text-center text-green-100 mb-10 flex items-center justify-center gap-2">
+          <FaComments className="text-white" />
+          Community Forums
+        </h2>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <ForumCard
+            title="Support Group"
+            icon={<FaUserFriends />}
+            description="Connect with other members who are also on their quit journey."
+            type="support"
+            input={inputs.support}
+            onInputChange={handleCommentChange}
+            onSubmit={handleCommentSubmit}
+            renderComments={renderComments}
+          />
+          <ForumCard
+            title="Tips & Advice"
+            icon={<FaLightbulb />}
+            description="Share your strategies or learn what has helped others quit successfully."
+            type="tips"
+            input={inputs.tips}
+            onInputChange={handleCommentChange}
+            onSubmit={handleCommentSubmit}
+            renderComments={renderComments}
+          />
+          <ForumCard
+            title="General Discussion"
+            icon={<FaComments />}
+            description="Open space to discuss anything related to smoking cessation or lifestyle changes."
+            type="general"
+            input={inputs.general}
+            onInputChange={handleCommentChange}
+            onSubmit={handleCommentSubmit}
+            renderComments={renderComments}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+function ForumCard({
+  title,
+  icon,
+  description,
+  type,
+  input,
+  onInputChange,
+  onSubmit,
+  renderComments,
+}) {
+  return (
+    <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition">
+      <h3 className="text-xl font-bold text-green-700 mb-4 flex items-center gap-2">
+        {icon}
+        {title}
+      </h3>
+      <p className="text-gray-700 mb-2">{description}</p>
+      <div style={{ marginTop: "16px", marginBottom: "10px" }}>
+        {renderComments(type)}
+      </div>
+      <div style={{ display: "flex", gap: "8px", marginTop: "12px" }}>
+        <input
+          type="text"
+          placeholder="Write a comment..."
+          value={input}
+          onChange={(e) => onInputChange(type, e.target.value)}
+          className="flex-1 px-3 py-2 border rounded-md text-sm"
+          style={{ flex: 1 }}
+        />
+        <button
+          onClick={() => onSubmit(type)}
+          className="bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-700 flex items-center gap-1 text-sm"
+        >
+          <FaPaperPlane />
+          Send
+        </button>
+      </div>
     </div>
   );
 }
 
-const buttonStylePrimary = {
-  marginTop: "10px",
-  backgroundColor: "#4caf50",
-  color: "white",
-  border: "none",
-  borderRadius: "8px",
-  padding: "8px 16px",
-  cursor: "pointer",
-};
-
-const buttonStyleSecondary = {
-  marginTop: "10px",
-  backgroundColor: "#ccc",
-  color: "#111",
-  border: "none",
-  borderRadius: "8px",
-  padding: "8px 16px",
-  cursor: "pointer",
-};
-
-const inputStyle = {
-  width: "100%",
-  padding: "10px",
-  borderRadius: "8px",
-  border: "1px solid #ccc",
-  marginBottom: "10px",
-};
+function MenuItem({ label, onClick }) {
+  return (
+    <li
+      onClick={onClick}
+      style={{
+        padding: "10px 16px",
+        fontSize: "14px",
+        color: "#333",
+        cursor: "pointer",
+        transition: "background 0.2s",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "#f4f4f4")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+    >
+      {label}
+    </li>
+  );
+}
 
 export default Forums;

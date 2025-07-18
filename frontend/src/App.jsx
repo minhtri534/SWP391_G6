@@ -18,6 +18,9 @@ import Achievements from "./Achievements";
 import Settings from "./Settings";
 import Forums from "./Forums";
 import QuitPlan from "./QuitPlan";
+import ChooseQuitPlan from "./ChooseQuitPlan";
+import MyCoach from "./MyCoach";
+import Badges from "./Badges";
 
 // Admin routes
 import AdminDashboard from "./routes/admin/AdminDashboard";
@@ -44,6 +47,11 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/forums" element={<Forums />} />
           <Route path="/quitplan" element={<QuitPlan />} />
+          <Route path="/choosequitplan" element={<ChooseQuitPlan />} />
+          <Route path="/quitplan/:level" element={<QuitPlan />} /> 
+          <Route path="/mycoach" element={<MyCoach />} /> 
+          <Route path="/badges" element={<Badges />} />
+
 
           {/* Admin routing */}
           <Route path="/Admin/Dashboard" element={<AdminDashboard />} />
