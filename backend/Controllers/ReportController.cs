@@ -34,9 +34,9 @@ namespace backend.Controllers
         }
 
         [HttpDelete("post/{postId}")]
-        public async Task<IActionResult> DeletePost(int postId)
+        public async Task<IActionResult> DeletePost(int postId, [FromQuery] int userId)
         {
-            var result = await _reportService.DeletePostAsync(postId);
+            var result = await _reportService.DeletePostAsync(postId, userId);
             if (!result.Allowed)
                 return result.ErrorResult;
 
@@ -44,9 +44,9 @@ namespace backend.Controllers
         }
 
         [HttpDelete("comment/{commentId}")]
-        public async Task<IActionResult> DeleteComment(int commentId)
+        public async Task<IActionResult> DeleteComment(int commentId, [FromQuery] int userId)
         {
-            var result = await _reportService.DeleteCommentAsync(commentId);
+            var result = await _reportService.DeleteCommentAsync(commentId, userId);
             if (!result.Allowed)
                 return result.ErrorResult;
 
@@ -54,9 +54,9 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateReport([FromBody] CreateReportDto dto)
+        public async Task<IActionResult> CreateReport([FromBody] CreateReportDto dto, [FromQuery] int userId)
         {
-            var result = await _reportService.CreateReportAsync(dto);
+            var result = await _reportService.CreateReportAsync(dto, userId);
             if (!result.Allowed)
                 return result.ErrorResult;
 
@@ -64,9 +64,9 @@ namespace backend.Controllers
         }
         
         [HttpDelete("report/{ReportId}")]
-        public async Task<IActionResult> DeleteReport(int ReportId)
+        public async Task<IActionResult> DeleteReport(int ReportId, [FromQuery] int userId)
         {
-            var result = await _reportService.DeleteReportAsync(ReportId);
+            var result = await _reportService.DeleteReportAsync(ReportId, userId);
             if (!result.Allowed)
                 return result.ErrorResult;
 

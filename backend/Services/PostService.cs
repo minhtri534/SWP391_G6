@@ -88,9 +88,8 @@ namespace backend.Services
             var post = await _repo.GetByIdAsync(id);
             if (post == null) return;
 
-            await _repo.DeleteAsync(id);
+            await _repo.DeleteAsync(post);
         }
-
 
         public async Task<ServiceAccessResult> CanUserPostAsync(int userId)
         {

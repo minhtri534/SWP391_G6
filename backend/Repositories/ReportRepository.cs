@@ -35,21 +35,23 @@ namespace backend.Repositories
 
         public async Task DeletePostAsync(int postId)
         {
-            await _context.Database.ExecuteSqlRawAsync(@"
-                DELETE FROM report 
-                WHERE commentId IN (SELECT commentId FROM comment WHERE postId = {0})", postId);
-            await _context.Database.ExecuteSqlRawAsync("DELETE FROM comment WHERE postId = {0}", postId);
-            await _context.Database.ExecuteSqlRawAsync("DELETE FROM report WHERE postId = {0}", postId);
-            await _context.Database.ExecuteSqlRawAsync("DELETE FROM post WHERE postId = {0}", postId);
+            var post = await _context.Posts.FindAsync(postId);
+            if (post != null)
+            {
+                _context.Posts.Remove(post);
+                await _context.SaveChangesAsync();
+            }
         }
-
 
         public async Task DeleteCommentAsync(int commentId)
         {
-            await _context.Database.ExecuteSqlRawAsync("DELETE FROM report WHERE commentId = {0}", commentId);
-            await _context.Database.ExecuteSqlRawAsync("DELETE FROM comment WHERE commentId = {0}", commentId);
+            var comment = await _context.Comments.FindAsync(commentId);
+            if (comment != null)
+            {
+                _context.Comments.Remove(comment);
+                await _context.SaveChangesAsync();
+            }
         }
-
 
         public async Task DeleteReportAsync(int ReportId)
         {

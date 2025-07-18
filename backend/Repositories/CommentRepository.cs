@@ -38,9 +38,8 @@ namespace backend.Repositories
 
         public async Task DeleteAsync(Comment comment)
         {
-            await _context.Database.ExecuteSqlRawAsync("DELETE FROM report WHERE commentId = {0}", comment.CommentId);
-            await _context.Database.ExecuteSqlRawAsync("DELETE FROM comment WHERE commentId = {0}", comment.CommentId);
+            _context.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
         }
-
     }
 }
