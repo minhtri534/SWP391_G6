@@ -1,21 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import momoQR from "./assets/momo-qr.png";
+import { FaUserCircle } from "react-icons/fa";
 
 function Payment() {
   const location = useLocation();
   const navigate = useNavigate();
   const membershipId = location.state?.membershipId;
-
-  const [amount, setAmount] = useState(0);
-  const [method, setMethod] = useState("Credit Card");
-  const [loading, setLoading] = useState(false);
-
+  const userName = localStorage.getItem("userName") || "User";
   const userId = localStorage.getItem("userId");
 
+  const [amount, setAmount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef();
+
   useEffect(() => {
-    // Giả sử giá tiền tính theo membershipId
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
     if (membershipId === 1) setAmount(9.99);
     else if (membershipId === 2) setAmount(19.99);
     else if (membershipId === 3) setAmount(219.99);
@@ -31,12 +43,12 @@ function Payment() {
 
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5196/api/Payment", {
+      await axios.post("http://localhost:5196/api/Payment", {
         userId_fk: userId,
         membershipId_fk: membershipId,
         amount: amount,
         pay_date: new Date().toISOString(),
-        method: method,
+        method: "Momo",
         type: "Online",
         status: "Completed",
       });
@@ -51,77 +63,160 @@ function Payment() {
     }
   };
 
+  const handleNavigate = (path) => {
+    setMenuOpen(false);
+    navigate(path);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
   return (
     <div
       style={{
         fontFamily: "Poppins, sans-serif",
         minHeight: "100vh",
         background: "linear-gradient(to bottom, #a8e063, #56ab2f)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "20px",
       }}
     >
-      <div
+      <header
         style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "15px 30px",
           background: "white",
-          padding: "30px",
-          borderRadius: "12px",
-          maxWidth: "400px",
-          width: "100%",
-          boxShadow: "0 6px 12px rgba(0,0,0,0.1)",
+          borderBottom: "2px solid #ccc",
         }}
       >
-        <h2 style={{ marginBottom: "20px", textAlign: "center", color: "#2e7d32" }}>
-          Membership Payment
-        </h2>
-
-        <p>
-          <b>Selected Plan:</b>{" "}
-          {membershipId === 1 ? "Basic" : membershipId === 2 ? "Standard" : "Premium"}
-        </p>
-        <p>
-          <b>Amount:</b> ${amount}
-        </p>
-
-        <div style={{ marginTop: "20px" }}>
-          <label style={{ display: "block", marginBottom: "8px" }}>Payment Method:</label>
-          <select
-            value={method}
-            onChange={(e) => setMethod(e.target.value)}
+        <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>
+          <span style={{ color: "#f57c00" }}>Quit</span>
+          <span style={{ color: "#69c770" }}>Smoking.com</span>
+        </h1>
+        <div style={{ position: "relative" }} ref={menuRef}>
+          <div
+            onClick={() => setMenuOpen(!menuOpen)}
             style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
-              marginBottom: "20px",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              cursor: "pointer",
+              background: "white",
+              padding: "8px 12px",
+              borderRadius: "20px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+              fontWeight: "500",
             }}
           >
-            <option value="Credit Card">Credit Card</option>
-            <option value="Momo">Momo</option>
-            <option value="Bank Transfer">Bank Transfer</option>
-          </select>
+            <FaUserCircle size={22} color="#4CAF50" />
+            <span>{userName}</span>
+          </div>
+          {menuOpen && (
+            <ul
+              style={{
+                position: "absolute",
+                top: "110%",
+                right: 0,
+                background: "white",
+                listStyle: "none",
+                padding: "10px 0",
+                boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
+                borderRadius: "8px",
+                zIndex: 999,
+                width: "180px",
+              }}
+            >
+              <MenuItem label="👤 Edit Profile" onClick={() => handleNavigate("/edit-profile")} />
+              <MenuItem label="🏆 View Achievements" onClick={() => handleNavigate("/achievements")} />
+              <MenuItem label="⚙️ Settings" onClick={() => handleNavigate("/settings")} />
+              <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
+              <MenuItem label="🔓 Logout" onClick={handleLogout} />
+            </ul>
+          )}
         </div>
+      </header>
 
-        <button
-          onClick={handlePayment}
-          disabled={loading}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "40px 20px",
+        }}
+      >
+        <div
           style={{
+            background: "white",
+            padding: "30px",
+            borderRadius: "12px",
+            maxWidth: "400px",
             width: "100%",
-            padding: "12px",
-            background: "#2e7d32",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            fontWeight: "bold",
-            cursor: "pointer",
+            boxShadow: "0 6px 12px rgba(0,0,0,0.1)",
+            textAlign: "center",
           }}
         >
-          {loading ? "Processing..." : "Pay Now"}
-        </button>
+          <h2 style={{ marginBottom: "20px", color: "#2e7d32" }}>
+            Membership Payment
+          </h2>
+          <p>
+            <b>Selected Plan:</b>{" "}
+            {membershipId === 1 ? "Basic" : membershipId === 2 ? "Standard" : "Premium"}
+          </p>
+          <p>
+            <b>Amount:</b> ${amount}
+          </p>
+
+          <div style={{ margin: "20px 0" }}>
+            <img
+              src={momoQR}
+              alt="Momo QR Code"
+              style={{ maxWidth: "100%", borderRadius: "8px" }}
+            />
+            <p style={{ fontSize: "14px", color: "#555", marginTop: "10px" }}>
+              Scan the QR code using <b>MoMo</b> App to complete your payment.
+            </p>
+          </div>
+
+          <button
+            onClick={handlePayment}
+            disabled={loading}
+            style={{
+              width: "100%",
+              padding: "12px",
+              background: "#2e7d32",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}
+          >
+            {loading ? "Processing..." : "I Have Paid"}
+          </button>
+        </div>
       </div>
     </div>
+  );
+}
+
+function MenuItem({ label, onClick }) {
+  return (
+    <li
+      onClick={onClick}
+      style={{
+        padding: "10px 16px",
+        fontSize: "14px",
+        color: "#333",
+        cursor: "pointer",
+        transition: "background 0.2s",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "#f4f4f4")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+    >
+      {label}
+    </li>
   );
 }
 

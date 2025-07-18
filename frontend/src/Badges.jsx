@@ -1,12 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaCrown } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
-const EditProfile = () => {
-  const navigate = useNavigate();
+const allBadges = [
+  { id: 1, name: "Smoke-Free Week", description: "Completed one week without smoking.", issuedDate: "2025-06-01", achieved: true },
+  { id: 2, name: "30 Days Strong", description: "Completed 30 days smoke-free.", issuedDate: "2025-07-01", achieved: true },
+  { id: 3, name: "First Check-in", description: "Completed your first progress check-in.", issuedDate: "2025-06-05", achieved: true },
+  { id: 4, name: "Community Helper", description: "Helped someone in the forum.", achieved: false },
+  { id: 5, name: "Milestone Master", description: "Completed all milestones in your plan.", achieved: false },
+  { id: 6, name: "Motivation Speaker", description: "Shared motivation story in community.", achieved: false }
+];
+
+const Badges = () => {
   const userName = localStorage.getItem("userName") || "User";
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
+
+  const [showAchieved, setShowAchieved] = useState(true);
+  const filteredBadges = allBadges.filter(badge => badge.achieved === showAchieved);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -21,24 +33,6 @@ const EditProfile = () => {
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
-  };
-
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    age: "",
-    gender: "",
-    address: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSave = (e) => {
-    e.preventDefault();
-    console.log("Saved data:", formData);
-    alert("Profile updated!");
   };
 
   return (
@@ -109,42 +103,52 @@ const EditProfile = () => {
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="max-w-xl mx-auto bg-white rounded-xl shadow-md p-8 mt-12">
-        <h2 className="text-3xl font-bold text-center text-green-700 mb-6">Edit Profile</h2>
-        <form onSubmit={handleSave} className="space-y-5">
-          <InputField label="Name" name="name" value={formData.name} onChange={handleChange} />
-          <InputField label="Phone Number" name="phone" value={formData.phone} onChange={handleChange} />
-          <InputField label="Age" name="age" value={formData.age} onChange={handleChange} />
-          <InputField label="Gender" name="gender" value={formData.gender} onChange={handleChange} />
-          <InputField label="Password" name="password" value={formData.password} onChange={handleChange} />
+      {/* Main */}
+      <div className="p-8">
+        <h2 className="text-4xl font-bold text-center text-green-100 mb-10 flex items-center justify-center gap-2">
+          <FaCrown className="text-white" />
+          {showAchieved ? "Your Achieved Badges" : "Badges You Haven’t Achieved Yet"}
+        </h2>
 
+        <div style={{ textAlign: "center", marginBottom: "30px" }}>
           <button
-            type="submit"
-            className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition text-sm font-semibold"
+            onClick={() => setShowAchieved(!showAchieved)}
+            className="bg-green-600 hover:bg-green-700 text-white py-2 px-5 rounded text-sm transition"
           >
-            Save Changes
+            {showAchieved ? "View Unachieved Badges" : "View Achieved Badges"}
           </button>
-        </form>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredBadges.length > 0 ? (
+            filteredBadges.map((badge) => (
+              <div
+                key={badge.id}
+                className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition"
+              >
+                <h3 className="text-xl font-bold text-green-700 mb-2">
+                  {badge.name}
+                </h3>
+                <p className="text-gray-700 mb-2">{badge.description}</p>
+                {badge.issuedDate && (
+                  <p className="text-gray-400 text-sm">
+                    <strong>Issued:</strong> {badge.issuedDate}
+                  </p>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="text-white text-center w-full text-md">
+              {showAchieved
+                ? "You haven’t achieved any badges yet. Keep going!"
+                : "You’ve achieved all badges. Great job!"}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 };
-
-function InputField({ label, name, value, onChange }) {
-  return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-      <input
-        type="text"
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
-      />
-    </div>
-  );
-}
 
 function MenuItem({ label, onClick }) {
   return (
@@ -165,4 +169,4 @@ function MenuItem({ label, onClick }) {
   );
 }
 
-export default EditProfile;
+export default Badges;

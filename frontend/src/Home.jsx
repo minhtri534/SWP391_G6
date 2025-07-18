@@ -7,6 +7,7 @@ import Report from "./assets/immigration.png";
 import Achievement from "./assets/goal.png";
 import Forums from "./assets/meeting.png";
 import Feedback from "./assets/talking.png";
+import QuitPlan from "./assets/project.png";
 
 function Home() {
   const navigate = useNavigate();
@@ -121,7 +122,7 @@ function Home() {
               {
                 title: "📄 Health Tips & Strategies",
                 desc: "Discover expert-backed health tips and lifestyle changes that support your smoke-free transformation.",
-                img: "",
+                img: QuitPlan,
               },
             ].map((item, index) => (
               <div

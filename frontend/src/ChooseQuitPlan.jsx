@@ -1,12 +1,35 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import { FaUserCircle, FaCrown, FaHeartbeat, FaFire, FaStar, FaRocket } from "react-icons/fa";
 
-const EditProfile = () => {
-  const navigate = useNavigate();
+const quitPlans = [
+  {
+    id: "light",
+    level: "Light Addiction",
+    description: "You smoke occasionally or less than 5 cigarettes a day. This plan focuses on identifying triggers and gradually reducing intake.",
+  },
+  {
+    id: "moderate",
+    level: "Moderate Addiction",
+    description: "You smoke regularly, around 5–10 cigarettes per day. This plan includes scheduled reduction, support tools, and motivational tracking.",
+  },
+  {
+    id: "strong",
+    level: "Strong Addiction",
+    description: "You smoke a pack a day or more. This plan introduces structured reduction phases, health monitoring, and strong behavioral therapy.",
+  },
+  {
+    id: "severe",
+    level: "Severe Addiction",
+    description: "You are highly dependent on nicotine, possibly chain-smoking. This plan provides intensive quit support, daily coaching, and relapse prevention strategies.",
+  },
+];
+
+const ChooseQuitPlan = () => {
   const userName = localStorage.getItem("userName") || "User";
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -18,27 +41,8 @@ const EditProfile = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
-  };
-
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    age: "",
-    gender: "",
-    address: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSave = (e) => {
-    e.preventDefault();
-    console.log("Saved data:", formData);
-    alert("Profile updated!");
+  const handleStartPlan = (level) => {
+    navigate(`/quitplan/${level}`);
   };
 
   return (
@@ -103,48 +107,49 @@ const EditProfile = () => {
               <MenuItem label="🏆 View Achievements" onClick={() => navigate("/achievements")} />
               <MenuItem label="⚙️ Settings" onClick={() => navigate("/settings")} />
               <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
-              <MenuItem label="🔓 Logout" onClick={handleLogout} />
+              <MenuItem label="🔓 Logout" onClick={() => {
+                localStorage.clear();
+                navigate("/login");
+              }} />
             </ul>
           )}
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="max-w-xl mx-auto bg-white rounded-xl shadow-md p-8 mt-12">
-        <h2 className="text-3xl font-bold text-center text-green-700 mb-6">Edit Profile</h2>
-        <form onSubmit={handleSave} className="space-y-5">
-          <InputField label="Name" name="name" value={formData.name} onChange={handleChange} />
-          <InputField label="Phone Number" name="phone" value={formData.phone} onChange={handleChange} />
-          <InputField label="Age" name="age" value={formData.age} onChange={handleChange} />
-          <InputField label="Gender" name="gender" value={formData.gender} onChange={handleChange} />
-          <InputField label="Password" name="password" value={formData.password} onChange={handleChange} />
+      {/* Main content */}
+      <div className="p-8">
+        <h2 className="text-4xl font-bold text-center text-green-100 mb-10 flex items-center justify-center gap-2">
+          <FaHeartbeat className="text-white" />
+          Choose Your Quit Plan
+        </h2>
 
-          <button
-            type="submit"
-            className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition text-sm font-semibold"
-          >
-            Save Changes
-          </button>
-        </form>
+        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
+          {quitPlans.map((plan, idx) => (
+            <div
+              key={plan.id}
+              className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition"
+            >
+              <h3 className="text-xl font-bold text-green-700 mb-4 flex items-center gap-2">
+                {idx === 0 && <FaStar />}
+                {idx === 1 && <FaFire />}
+                {idx === 2 && <FaCrown />}
+                {idx === 3 && <FaRocket />}
+                {plan.level}
+              </h3>
+              <p className="text-gray-700 mb-6">{plan.description}</p>
+              <button
+                onClick={() => handleStartPlan(plan.id)}
+                className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition text-sm"
+              >
+                Start Now
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
-
-function InputField({ label, name, value, onChange }) {
-  return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-      <input
-        type="text"
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
-      />
-    </div>
-  );
-}
 
 function MenuItem({ label, onClick }) {
   return (
@@ -165,4 +170,4 @@ function MenuItem({ label, onClick }) {
   );
 }
 
-export default EditProfile;
+export default ChooseQuitPlan;

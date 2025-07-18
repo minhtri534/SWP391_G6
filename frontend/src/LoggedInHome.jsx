@@ -1,183 +1,249 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaUserCircle } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { FaUserCircle, FaBell } from "react-icons/fa";
 import NoSmokingIcon from "./assets/no-smoking.png";
 import Coach from "./assets/instructor.png";
 import Report from "./assets/immigration.png";
 import Achievement from "./assets/goal.png";
 import Forums from "./assets/meeting.png";
 import Feedback from "./assets/talking.png";
+import QuitPlan from "./assets/project.png";
 
 function LoggedInHome() {
   const navigate = useNavigate();
   const userName = localStorage.getItem("userName") || "User";
 
-  const handleMembershipClick = () => {
-    navigate("/membership");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const menuRef = useRef();
+  const notifRef = useRef();
+
+  // Sample notifications data
+  const notifications = [
+    { id: 1, content: "Your coaching session is tomorrow at 2 PM!", date: "2025-07-17" },
+    { id: 2, content: "New community post in the forum!", date: "2025-07-16" },
+    { id: 3, content: "You achieved a new milestone: 7 days smoke-free!", date: "2025-07-15" },
+  ];
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+      if (notifRef.current && !notifRef.current.contains(e.target)) {
+        setNotifOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleNavigate = (path) => {
+    setMenuOpen(false);
+    navigate(path);
   };
 
-  const handleNavigateReport = () => {
-    navigate("/report");
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
   };
 
-  const handleNavigateCoaching = () => {
-    navigate("/coaching");
-  };
+  const handleNavigateReport = () => navigate("/report");
+  const handleNavigateCoaching = () => navigate("/coaching");
+  const handleMembershipClick = () => navigate("/membership");
+
+  const articleItems = [
+    {
+      title: "🏆 Achievements Overview",
+      desc: "Track your smoke-free milestones and celebrate success. A powerful way to stay motivated throughout your journey.",
+      img: Achievement,
+    },
+    {
+      title: "💬 Community Forums",
+      desc: "Connect with peers, ask questions, share wins and struggles. You’re not alone — our community is here.",
+      img: Forums,
+      onClick: () => navigate("/forums"),
+    },
+    {
+      title: "📢 Feedback & Reviews",
+      desc: "Share your experience with our system or coaching team. Your insights help us grow and serve you better.",
+      img: Feedback,
+      onClick: () => navigate("/platform-feedback"),
+    },
+    {
+      title: "📄 Start with Quitplan now",
+      desc: "Discover expert-backed health tips and lifestyle changes that support your smoke-free transformation.",
+      img: QuitPlan,
+      onClick: () => navigate("/choosequitplan"),
+    },
+  ];
 
   return (
-    <div
-      style={{
-        margin: 0,
-        padding: 0,
-        fontFamily: '"Segoe UI", sans-serif',
-        background: "linear-gradient(to bottom, #a8e063, #56ab2f)",
-        color: "#111",
-        minHeight: "100vh",
-      }}
-    >
+    <div style={{ fontFamily: '"Segoe UI", sans-serif', background: "linear-gradient(to bottom, #a8e063, #56ab2f)", color: "#111", minHeight: "100vh" }}>
       {/* Header */}
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "15px 30px",
-          background: "white",
-          borderBottom: "2px solid #ccc",
-        }}
-      >
+      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "15px 30px", background: "white", borderBottom: "2px solid #ccc" }}>
         <Link to="/home" style={{ textDecoration: "none" }}>
           <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>
-            <span style={{ color: "#f57c00" }}>Quit</span>
-            <span style={{ color: "#69c770" }}>Smoking.com</span>
+            <span style={{ color: "#f57c00" }}>Quit</span><span style={{ color: "#69c770" }}>Smoking.com</span>
           </h1>
         </Link>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <FaUserCircle size={22} />
-          <span style={{ fontWeight: "500" }}>{userName}</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+          <div style={{ position: "relative" }} ref={notifRef}>
+            <div
+              onClick={() => setNotifOpen(!notifOpen)}
+              style={{ cursor: "pointer", position: "relative", padding: "8px", borderRadius: "50%", background: "white", boxShadow: "0 2px 6px rgba(0,0,0,0.1)" }}
+            >
+              <FaBell size={22} color="#4CAF50" />
+              {notifications.length > 0 && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "2px",
+                    right: "2px",
+                    width: "10px",
+                    height: "10px",
+                    background: "red",
+                    borderRadius: "50%",
+                    border: "1px solid white",
+                  }}
+                ></span>
+              )}
+            </div>
+            {notifOpen && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "110%",
+                  right: 0,
+                  background: "white",
+                  boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
+                  borderRadius: "8px",
+                  zIndex: 999,
+                  width: "300px",
+                  maxHeight: "400px",
+                  overflowY: "auto",
+                  padding: "10px",
+                }}
+              >
+                <h3 style={{ fontSize: "16px", padding: "10px", color: "#333", borderBottom: "1px solid #eee" }}>
+                  Notifications
+                </h3>
+                {notifications.length === 0 ? (
+                  <p style={{ padding: "10px", color: "#666", fontSize: "14px" }}>No notifications</p>
+                ) : (
+                  notifications.map((notif) => (
+                    <div
+                      key={notif.id}
+                      style={{
+                        padding: "10px",
+                        borderBottom: "1px solid #eee",
+                        fontSize: "14px",
+                        color: "#333",
+                      }}
+                    >
+                      <p style={{ margin: 0 }}>{notif.content}</p>
+                      <p style={{ fontSize: "12px", color: "#888", marginTop: "5px" }}>{notif.date}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
+          <div style={{ position: "relative" }} ref={menuRef}>
+            <div
+              onClick={() => setMenuOpen(!menuOpen)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                cursor: "pointer",
+                background: "white",
+                padding: "8px 12px",
+                borderRadius: "20px",
+                boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+                fontWeight: "500",
+              }}
+            >
+              <FaUserCircle size={22} color="#4CAF50" />
+              <span>{userName}</span>
+            </div>
+            {menuOpen && (
+              <ul
+                style={{
+                  position: "absolute",
+                  top: "110%",
+                  right: 0,
+                  background: "white",
+                  listStyle: "none",
+                  padding: "10px 0",
+                  boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
+                  borderRadius: "8px",
+                  zIndex: 999,
+                  width: "180px",
+                }}
+              >
+                <MenuItem label="👤 Edit Profile" onClick={() => handleNavigate("/edit-profile")} />
+                <MenuItem label="🏆 My Coach" onClick={() => handleNavigate("/MyCoach")} />
+                <MenuItem label="⚙️ Settings" onClick={() => handleNavigate("/settings")} />
+                <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
+                <MenuItem label="🔓 Logout" onClick={handleLogout} />
+              </ul>
+            )}
+          </div>
         </div>
       </header>
 
       {/* Main */}
       <main style={{ padding: "40px 30px" }}>
         {/* Hero */}
-        <section
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: "40px",
-          }}
-        >
+        <section style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "40px" }}>
           <div style={{ flex: 1, minWidth: "280px" }}>
-            <h1 style={{ fontSize: "32px", color: "white", marginBottom: "10px" }}>
-              🌿 Breathe Free. Live Better
-            </h1>
+            <h1 style={{ fontSize: "32px", color: "white", marginBottom: "10px" }}>🌿 Breathe Free. Live Better</h1>
             <p style={{ color: "white", fontSize: "16px" }}>
-              Your journey to quit smoking starts here — with expert support,
-              personalized tools, and a community that cares. Let’s build a healthier future together.
+              Your journey to quit smoking starts here — with expert support, personalized tools, and a community that cares. Let’s build a healthier future together.
             </p>
           </div>
           <div style={{ flex: 1, minWidth: "250px", textAlign: "center", marginLeft: "50%" }}>
-            <img
-              src={NoSmokingIcon}
-              alt="illustration"
-              style={{ maxWidth: "190px", filter: "drop-shadow(0 0 6px rgba(0,0,0,0.3))" }}
-            />
+            <img src={NoSmokingIcon} alt="illustration" style={{ maxWidth: "190px", filter: "drop-shadow(0 0 6px rgba(0,0,0,0.3))" }} />
           </div>
         </section>
 
-        <hr
-          style={{
-            margin: "40px 0",
-            border: "none",
-            height: "5px",
-            background: "white",
-            opacity: 0.3,
-          }}
-        />
+        <hr style={{ margin: "40px 0", border: "none", height: "5px", background: "white", opacity: 0.3 }} />
 
         {/* Articles */}
         <section>
           <h2 style={{ color: "black", fontSize: "15px", marginBottom: "30px", textAlign: "center" }}>
-            <b>📚ARTICLES & TOOLS</b> 
+            <b>📚ARTICLES & TOOLS</b>
           </h2>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-              gap: "30px",
-            }}
-          >
-            {/* Self Report */}
-            <div
-              onClick={handleNavigateReport}
-              style={articleCardStyle(true)}
-            >
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "30px" }}>
+            <div onClick={handleNavigateReport} style={articleCardStyle(true)}>
               <div style={articleImageStyle}>
-                <img
-                  src={Report}
-                  alt="Self Report"
-                  style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "6px" }}
-                />
+                <img src={Report} alt="Self Report" style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "6px" }} />
               </div>
-              <h3 style={{ fontSize: "16px", marginBottom: "5px", color: "#111" }}>
-                📝 Smoking Self-Report
-              </h3>
+              <h3 style={{ fontSize: "16px", marginBottom: "5px", color: "#111" }}>📝 Smoking Self-Report</h3>
               <p style={{ fontSize: "14px", color: "#666" }}>
                 Help us understand your smoking habits through a short form. It tailors your quitting journey more effectively.
               </p>
             </div>
 
-            {/* Coaching */}
-            <div
-              onClick={handleNavigateCoaching}
-              style={articleCardStyle(true)}
-            >
+            <div onClick={handleNavigateCoaching} style={articleCardStyle(true)}>
               <div style={articleImageStyle}>
-                <img
-                  src={Coach}
-                  alt="Coaching"
-                  style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "6px" }}
-                />
+                <img src={Coach} alt="Coaching" style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "6px" }} />
               </div>
-              <h3 style={{ fontSize: "16px", marginBottom: "5px", color: "#111" }}>
-                🎯 Coaching Sessions
-              </h3>
+              <h3 style={{ fontSize: "16px", marginBottom: "5px", color: "#111" }}>🎯 Coaching Sessions</h3>
               <p style={{ fontSize: "14px", color: "#666" }}>
                 Book 1-on-1 time with certified coaches. Build a plan, stay motivated, and succeed in quitting smoking.
               </p>
             </div>
 
-            {/* Other Articles */}
-            {[{
-              title: "🏆 Achievements Overview",
-              desc: "Track your smoke-free milestones and celebrate success. A powerful way to stay motivated throughout your journey.",
-              img: Achievement,
-            }, {
-              title: "💬 Community Forums",
-              desc: "Connect with peers, ask questions, share wins and struggles. You’re not alone — our community is here.",
-              img: Forums,
-            }, {
-              title: "📢 Feedback & Reviews",
-              desc: "Share your experience with our system or coaching team. Your insights help us grow and serve you better.",
-              img: Feedback,
-            }, {
-              title: "📄 Health Tips & Strategies",
-              desc: "Discover expert-backed health tips and lifestyle changes that support your smoke-free transformation.",
-              img: "",
-            }].map((item, index) => (
-              <div key={index} style={articleCardStyle(false)}>
+            {articleItems.map((item, index) => (
+              <div
+                key={index}
+                onClick={item.onClick || null}
+                style={articleCardStyle(!!item.onClick)}
+              >
                 <div style={articleImageStyle}>
-                  {item.img && (
-                    <img
-                      src={item.img}
-                      alt="icon"
-                      style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "6px" }}
-                    />
-                  )}
+                  <img src={item.img} alt="icon" style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "6px" }} />
                 </div>
                 <h3 style={{ fontSize: "16px", marginBottom: "5px", color: "#111" }}>{item.title}</h3>
                 <p style={{ fontSize: "14px", color: "#666" }}>{item.desc}</p>
@@ -186,43 +252,18 @@ function LoggedInHome() {
           </div>
         </section>
 
-        <hr
-          style={{
-            margin: "40px 0",
-            border: "none",
-            height: "5px",
-            background: "white",
-            opacity: 0.3,
-          }}
-        />
+        <hr style={{ margin: "40px 0", border: "none", height: "5px", background: "white", opacity: 0.3 }} />
 
         {/* Membership */}
         <section style={{ textAlign: "center", padding: "50px 0" }}>
-          <h3 style={{ fontSize: "26px", fontWeight: "600", color: "#111" }}>
-            Want more personalized support?
-          </h3>
-          <p style={{
-            fontSize: "16px",
-            color: "#666",
-            maxWidth: "600px",
-            margin: "10px auto",
-          }}>
+          <h3 style={{ fontSize: "26px", fontWeight: "600", color: "#111" }}>Want more personalized support?</h3>
+          <p style={{ fontSize: "16px", color: "#666", maxWidth: "600px", margin: "10px auto" }}>
             Join our premium membership for coaching, tracking, and more.
           </p>
-          <button style={orangeBtn} onClick={handleMembershipClick}>
-            Become a Member
-          </button>
+          <button style={orangeBtn} onClick={handleMembershipClick}>Become a Member</button>
         </section>
 
-        <hr
-          style={{
-            margin: "40px 0",
-            border: "none",
-            height: "5px",
-            background: "white",
-            opacity: 0.3,
-          }}
-        />
+        <hr style={{ margin: "40px 0", border: "none", height: "5px", background: "white", opacity: 0.3 }} />
 
         {/* Blog */}
         <section style={{ marginTop: "50px" }}>
@@ -276,17 +317,29 @@ function LoggedInHome() {
       </main>
 
       {/* Footer */}
-      <footer style={{
-        textAlign: "center",
-        padding: "16px",
-        backgroundColor: "#ffffff",
-        fontSize: "14px",
-        borderTop: "1px solid #ddd",
-        color: "#777777",
-      }}>
+      <footer style={{ textAlign: "center", padding: "16px", backgroundColor: "#ffffff", fontSize: "14px", borderTop: "1px solid #ddd", color: "#777777" }}>
         © 2025 QuitSmoking.com. All rights reserved.
       </footer>
     </div>
+  );
+}
+
+function MenuItem({ label, onClick }) {
+  return (
+    <li
+      onClick={onClick}
+      style={{
+        padding: "10px 16px",
+        fontSize: "14px",
+        color: "#333",
+        cursor: "pointer",
+        transition: "background 0.2s",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "#f4f4f4")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+    >
+      {label}
+    </li>
   );
 }
 
@@ -297,12 +350,6 @@ const articleCardStyle = (clickable) => ({
   boxShadow: "0 2px 6px rgba(0, 0, 0, 0.15)",
   cursor: clickable ? "pointer" : "default",
   transition: "transform 0.2s ease, box-shadow 0.2s ease",
-  ...(clickable && {
-    ":hover": {
-      transform: "translateY(-5px)",
-      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
-    },
-  }),
 });
 
 const articleImageStyle = {
