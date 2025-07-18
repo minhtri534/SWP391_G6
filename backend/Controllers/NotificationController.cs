@@ -9,7 +9,6 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "3")]
     public class NotificationController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -20,6 +19,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "3")]
         public async Task<IActionResult> CreateNotification([FromBody] NotificationCreateRequest request)
         {
             Notification notification;
@@ -44,7 +44,8 @@ namespace backend.Controllers
             return Ok();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("coach/{id}")]
+        [Authorize(Roles = "3")]
         public async Task<IActionResult> GetSentNotifications(int id)
         {
             var results = _context.Notifications
@@ -70,6 +71,19 @@ namespace backend.Controllers
 
             return Ok(results);
         }
-
+        [HttpGet("{userId}")]
+        [Authorize(Roles = "2,3,4")]
+        public async Task<IActionResult> GetNotificationsByUserId(int userId)
+        {
+            var results = _context.Notifications
+                .Where(a => a.UserId == userId)
+                .OrderByDescending(a => a.Send_Date)
+                .ToList();
+            if (results.IsNullOrEmpty())
+            {
+                return NotFound();
+            }
+            return Ok(results);
+        }
     }
 }
