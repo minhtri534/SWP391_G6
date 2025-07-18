@@ -20,9 +20,9 @@ namespace backend.Controllers
 
         [Authorize(Roles = "2,3,4")]
         [HttpGet]
-        public async Task<IActionResult> GetFeedbacks([FromQuery] int? userId, [FromQuery] int? coachId)
+        public async Task<IActionResult> GetFeedbacks([FromQuery] int? userId)
         {
-            var result = await _service.GetAllFeedbacksAsync(userId, coachId);
+            var result = await _service.GetAllFeedbacksAsync(userId);
             return Ok(result);
         }
 
@@ -62,9 +62,9 @@ namespace backend.Controllers
 
         [Authorize(Roles = "2")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id, [FromQuery] int userId)
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = await _service.DeleteFeedbackAsync(id, userId);
+            var result = await _service.DeleteFeedbackAsync(id);
             if (!result.Allowed)
                 return result.ErrorResult;
 

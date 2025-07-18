@@ -9,11 +9,15 @@ namespace backend.Repositories
     {
         Task<IEnumerable<Report>> GetAllReportsAsync();
         Task<Report?> GetReportByIdAsync(int id);
+
+        // ✅ Thêm mới
+        Task<Report?> GetReportByPostIdAsync(int postId);
+        Task<Report?> GetReportByCommentIdAsync(int commentId);
+
         Task DeletePostAsync(int postId);
         Task DeleteCommentAsync(int commentId);
-        Task AddReportAsync(Report report);
         Task DeleteReportAsync(int ReportId);
-
-
+        Task AddReportAsync(Report report);
     }
+
 }

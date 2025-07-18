@@ -72,15 +72,6 @@ namespace backend.Services
 
         public async Task<ServiceAccessResult> CreateFeedbackAsync(CreateFeedbackDto dto)
         {
-            var user = await _context.Users.FindAsync(dto.UserId);
-            if (user == null || user.RoleId != 2)
-                return ServiceAccessResult.Forbid("Only members can create feedback.");
-
-            if (dto.CoachId == null && dto.PlanId == null)
-            {
-                return ServiceAccessResult.Forbid("Feedback must be associated with either a coach or a plan.");
-            }
-
             var feedback = new Feedback
             {
                 UserId = dto.UserId,
@@ -111,19 +102,11 @@ namespace backend.Services
             return ServiceAccessResult.Ok();
         }
 
-        public async Task<ServiceAccessResult> DeleteFeedbackAsync(int id, int userId)
+        public async Task<ServiceAccessResult> DeleteFeedbackAsync(int id)
         {
             var feedback = await _repository.GetByIdAsync(id);
             if (feedback == null)
                 return ServiceAccessResult.NotFound("Feedback not found");
-
-            var user = await _context.Users.FindAsync(userId);
-            if (user == null)
-                return ServiceAccessResult.Forbid("User not found");
-
-            if (feedback.UserId != userId && user.RoleId != 4)
-                return ServiceAccessResult.Forbid("You can only delete your own feedback.");
-
             await _repository.DeleteAsync(feedback);
             return ServiceAccessResult.Ok();
         }

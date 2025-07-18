@@ -8,6 +8,6 @@ namespace backend.Services
         Task<FeedbackDto?> GetFeedbackByIdAsync(int id);
         Task<ServiceAccessResult> CreateFeedbackAsync(CreateFeedbackDto dto);
         Task<ServiceAccessResult> UpdateFeedbackAsync(int id, UpdateFeedbackDto dto);
-        Task<ServiceAccessResult> DeleteFeedbackAsync(int id, int userId);
+        Task<ServiceAccessResult> DeleteFeedbackAsync(int id);
     }
 }
