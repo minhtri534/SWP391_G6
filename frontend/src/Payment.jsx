@@ -43,14 +43,10 @@ function Payment() {
 
     setLoading(true);
     try {
-      await axios.post("http://localhost:5196/api/Payment", {
-        userId_fk: userId,
-        membershipId_fk: membershipId,
-        amount: amount,
-        pay_date: new Date().toISOString(),
-        method: "Momo",
-        type: "Online",
-        status: "Completed",
+      await axios.post("http://localhost:5196/api/Booking", {
+        userId: userId,
+        packageId: packageId,
+        start_Date: new Date().toISOString(),
       });
 
       toast.success("Payment successful! Welcome to your upgraded membership.");

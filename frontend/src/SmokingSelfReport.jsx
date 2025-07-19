@@ -10,24 +10,50 @@ import {
   FaInfoCircle,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  getSmokingStatus,
+  createSmokingStatus,
+  updateSmokingStatus,
+} from "./api/SmokingStatus";
 
 const SmokingSelfReport = () => {
-  const [report, setReport] = useState(() => {
-    const saved = localStorage.getItem("smokingReport");
-    return saved ? JSON.parse(saved) : {
-      time_period: "",
-      amount_per_day: "",
-      frequency: "",
-      price_per_pack: "",
-      description: "",
-    };
+  const [report, setReport] = useState({
+    time_period: "",
+    amount_per_day: "",
+    frequency: "",
+    price_per_pack: "",
+    description: "",
   });
-
+  const [hasData, setHasData] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
   const navigate = useNavigate();
+
   const userName = localStorage.getItem("userName") || "User";
+  const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    const fetchReport = async () => {
+      try {
+        const data = await getSmokingStatus(userId);
+        if (data) {
+          setReport({
+            time_period: data.timePeriod || "",
+            amount_per_day: data.amountPerDay || "",
+            frequency: data.frequency || "",
+            price_per_pack: data.pricePerPack || "",
+            description: data.description || "",
+          });
+          setHasData(true);
+          setIsEditing(false);
+        }
+      } catch (err) {
+        console.error("Error fetching report:", err.message);
+      }
+    };
+    fetchReport();
+  }, [userId]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -49,9 +75,30 @@ const SmokingSelfReport = () => {
     setReport((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    localStorage.setItem("smokingReport", JSON.stringify(report));
-    setIsEditing(false);
+  const handleSave = async () => {
+    try {
+      const payload = {
+        userId: userId,
+        timePeriod: report.time_period,
+        amountPerDay: report.amount_per_day,
+        frequency: report.frequency,
+        pricePerPack: report.price_per_pack,
+        description: report.description,
+      };
+
+      if (hasData) {
+        await updateSmokingStatus(payload);
+      } else {
+        await createSmokingStatus(payload);
+        setHasData(true);
+      }
+
+      alert("Saved successfully!");
+      setIsEditing(false);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to save: " + err.message);
+    }
   };
 
   return (
@@ -62,7 +109,6 @@ const SmokingSelfReport = () => {
         minHeight: "100vh",
       }}
     >
-      {/* Header */}
       <header
         style={{
           display: "flex",
@@ -122,7 +168,6 @@ const SmokingSelfReport = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md mt-12">
         <h2 className="text-3xl font-bold text-green-700 mb-6 flex items-center gap-2">
           <FaSmoking />
@@ -131,46 +176,16 @@ const SmokingSelfReport = () => {
 
         {isEditing ? (
           <div className="space-y-4">
-            <InputField
-              label="Time Period"
-              icon={<FaClock />}
-              name="time_period"
-              value={report.time_period}
-              onChange={handleChange}
-            />
-            <InputField
-              label="Amount per Day"
-              icon={<FaSmoking />}
-              name="amount_per_day"
-              value={report.amount_per_day}
-              onChange={handleChange}
-            />
-            <InputField
-              label="Frequency"
-              icon={<FaCalendarAlt />}
-              name="frequency"
-              value={report.frequency}
-              onChange={handleChange}
-            />
-            <InputField
-              label="Price per Pack"
-              icon={<FaDollarSign />}
-              name="price_per_pack"
-              value={report.price_per_pack}
-              onChange={handleChange}
-            />
+            <InputField label="Time Period" icon={<FaClock />} name="time_period" value={report.time_period} onChange={handleChange} />
+            <InputField label="Amount per Day" icon={<FaSmoking />} name="amount_per_day" value={report.amount_per_day} onChange={handleChange} />
+            <InputField label="Frequency" icon={<FaCalendarAlt />} name="frequency" value={report.frequency} onChange={handleChange} />
+            <InputField label="Price per Pack" icon={<FaDollarSign />} name="price_per_pack" value={report.price_per_pack} onChange={handleChange} />
             <div>
               <label className="font-semibold flex items-center gap-2 mb-1">
                 <FaPen />
                 Description:
               </label>
-              <textarea
-                name="description"
-                rows="4"
-                value={report.description}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-              />
+              <textarea name="description" rows="4" value={report.description} onChange={handleChange} className="w-full p-2 border rounded" />
             </div>
           </div>
         ) : (
@@ -213,13 +228,7 @@ const InputField = ({ label, icon, name, value, onChange }) => (
       {icon}
       {label}:
     </label>
-    <input
-      type="text"
-      name={name}
-      value={value}
-      onChange={onChange}
-      className="w-full p-2 border rounded"
-    />
+    <input type="text" name={name} value={value} onChange={onChange} className="w-full p-2 border rounded" />
   </div>
 );
 
