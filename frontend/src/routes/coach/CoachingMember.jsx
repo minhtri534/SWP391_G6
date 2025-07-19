@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import CoachSidebar from "../../components/CoachSidebar";
 import CoachTopbar from "../../components/CoachTopbar";
-import { ClipboardList, Pencil, Trash2 } from "lucide-react";
+import { ClipboardList, List, Pencil, Trash2 } from "lucide-react";
 import PlanModal from "../../components/PlanModal";
 import { deletePlan } from "../../api/Plan";
-import { getUsers } from "../../api/Users";
+import { getCoachMember, getUsers } from "../../api/Users";
 import { toast } from "react-toastify";
 import DeleteConfirmation from "../../components/DeleteConfirmation";
 import Pagination from "../../components/Pagination";
 import ViewPlan from "../../components/ViewPlan";
 import SmokingCondition from "../../components/SmokingCondition";
+import MemberAchievements from "../../components/MemberAchievements";
+import DailyReport from "../../components/DailyReport";
 
 function CoachingMember() {
 	//Fake data
@@ -18,6 +20,13 @@ function CoachingMember() {
 			userId: 1,
 			userName: "Jane Doe",
 			gender: "Female",
+			smokingCondition: {
+				timePeriod: "Midnight",
+				amountPerDay: 40,
+				pricePerPack: 29.99,
+				frequency: "Daily",
+				description: "Smoking to escape the depression.",
+			},
 			quitPlan: {
 				planId: 101,
 				coachId: 10,
@@ -32,12 +41,26 @@ function CoachingMember() {
 			userId: 2,
 			userName: "John Doe",
 			gender: "Male",
+			smokingCondition: {
+				timePeriod: "Midnight",
+				amountPerDay: 40,
+				pricePerPack: 29.99,
+				frequency: "Daily",
+				description: "Smoking to escape the depression.",
+			},
 			quitPlan: null, // has no quit plan yet
 		},
 		{
 			userId: 3,
 			userName: "Joe Mami",
 			gender: "Male",
+			smokingCondition: {
+				timePeriod: "Midnight",
+				amountPerDay: 40,
+				pricePerPack: 29.99,
+				frequency: "Daily",
+				description: "Smoking to escape the depression.",
+			},
 			quitPlan: {
 				planId: 102,
 				coachId: 10,
@@ -53,9 +76,9 @@ function CoachingMember() {
 		},
 	]);
 
-	const fetchUsers = async () => {
+	const fetchMembers = async (coachId) => {
 		try {
-			const data = await getUsers();
+			const data = await getCoachMember(coachId);
 			//some filtering if needed
 			//...
 			setUsers(data);
@@ -67,7 +90,8 @@ function CoachingMember() {
 
 	// Get member list
 	useEffect(() => {
-		// fetchUsers();
+		//disable for now
+		fetchMembers();
 	}, []);
 
 	// For filter and sort
@@ -107,12 +131,14 @@ function CoachingMember() {
 	const pageUser = sortedList.slice(startIndex, startIndex + pageSize);
 
 	// For popup modal
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false); //Create or Update modal
+	const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false); //Confirm delete modal
+	const [isConditionModalOpen, setIsConditionModalOpen] = useState(false); //Member Smoking Condition modal
+	const [isViewPlanOpen, setIsViewPlanOpen] = useState(false); //View member plan modal
+	const [isViewAchievements, setIsViewAchievements] = useState(false); //View member's achievements
+	const [isViewDaily, setIsViewDaily] = useState(false); //View member's daily report
 	const [selectedMember, setSelectedMember] = useState(null);
 	const [selectedDeletePlan, setSelectedDeletePlan] = useState(null);
-	const [isConditionModalOpen, setIsConditionModalOpen] = useState(false);
-	const [isViewPlanOpen, setIsViewPlanOpen] = useState(false);
 	const [selectedPlan, setSelectedPlan] = useState(null);
 
 	//Reset pagination to 1st page
@@ -162,6 +188,8 @@ function CoachingMember() {
 									<th className="text-left px-6 py-3">Gender</th>
 									<th className="text-left px-6 py-3">Plan Time</th>
 									<th className="text-left px-6 py-3">Progress</th>
+									<th className="text-left px-6 py-3">Smoking Condition</th>
+									<th className="text-left px-6 py-3">Daily Report</th>
 									<th className="text-right px-6 py-3">Action</th>
 								</tr>
 							</thead>
@@ -182,7 +210,14 @@ function CoachingMember() {
 									pageUser.map((member) => (
 										<tr key={member.userId} className="border-t hover:bg-gray-50">
 											<td className="px-6 py-3">{member.userId}</td>
-											<td className="px-6 py-3">{member.userName}</td>
+											<td
+												className="px-6 py-3 hover:underline hover:cursor-pointer"
+												onClick={() => {
+													setIsViewAchievements(true);
+													setSelectedMember(member);
+												}}>
+												{member.userName}
+											</td>
 											<td className="px-6 py-3">{member.gender}</td>
 											<td className="px-6 py-3">
 												{member.quitPlan ? (
@@ -206,18 +241,31 @@ function CoachingMember() {
 												)}
 											</td>
 											<td className="px-6 py-3">
+												<button
+													onClick={() => {
+														setIsConditionModalOpen(true);
+														setSelectedMember(member);
+													}}
+													className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
+													<ClipboardList className="w-4 h-4" />
+													Smoking condition
+												</button>
+											</td>
+											<td className="px-6 py-3">
+												<button
+													onClick={() => {
+														setIsViewDaily(true);
+														setSelectedMember(member);
+													}}
+													className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
+													<List className="w-4 h-4" />
+													Report
+												</button>
+											</td>
+											<td className="px-6 py-3">
 												<div className="flex justify-end gap-2">
 													{!member.quitPlan && (
 														<>
-															<button
-																onClick={() => {
-																	setIsConditionModalOpen(true);
-																	setSelectedMember(member);
-																}}
-																className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
-																<ClipboardList className="w-4 h-4" />
-																Smoking condition
-															</button>
 															<button
 																onClick={() => {
 																	setIsModalOpen(true);
@@ -273,6 +321,26 @@ function CoachingMember() {
 						initialValues={selectedMember?.quitPlan || null}
 					/>
 
+					{/* View member achievements */}
+					<MemberAchievements
+						isOpen={isViewAchievements}
+						member={selectedMember}
+						onClose={() => {
+							setIsViewAchievements(false);
+							setSelectedMember(null);
+						}}
+					/>
+
+					{/* View member daily report */}
+					<DailyReport
+						isOpen={isViewDaily}
+						member={selectedMember}
+						onClose={() => {
+							setIsViewDaily(false);
+							setSelectedMember(null);
+						}}
+					/>
+
 					{/* View member plan modal */}
 					<ViewPlan isOpen={isViewPlanOpen} plan={selectedPlan} onClose={() => setIsViewPlanOpen(false)} />
 
@@ -283,7 +351,7 @@ function CoachingMember() {
 							setIsConditionModalOpen(false);
 							setSelectedMember(null);
 						}}
-						condition={selectedMember}
+						member={selectedMember}
 					/>
 
 					{/* Delete Confirmation popup modal */}

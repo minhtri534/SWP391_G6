@@ -82,3 +82,13 @@ export async function unlockUser(userId) {
 		throw new Error(msg);
 	}
 }
+
+export async function getCoachMember(coachId) {
+	try {
+		const response = await axios.put(`${baseApi}/AccountManageAdmin/${coachId}`, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Get member list failed";
+		throw new Error(msg);
+	}
+}

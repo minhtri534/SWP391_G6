@@ -13,6 +13,16 @@ export async function getBadges() {
 	}
 }
 
+export async function getUserBadge(userId) {
+	try {
+		const response = await axios.get(`${baseApi}/api/Badge/${userId}`, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Get user badges failed!!!";
+		throw new Error(msg);
+	}
+}
+
 export async function addBadge({ badgeName, description, conditionType, value }) {
 	try {
 		const payload = {

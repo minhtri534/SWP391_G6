@@ -23,6 +23,32 @@ export async function getUserNotification(userId) {
 	}
 }
 
+export async function addNotification(params) {
+	try {
+		const payload = {
+			params,
+		};
+		const response = await axios.post(`${baseApi}/api/Notification`, payload, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Add notification failed!!!";
+		throw new Error(msg);
+	}
+}
+
+export async function updateNotification(params) {
+	try {
+		const payload = {
+			params,
+		};
+		const response = await axios.put(`${baseApi}/api/Notification`, payload, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Update notification failed!!!";
+		throw new Error(msg);
+	}
+}
+
 export async function deleteNotification(notificationId) {
 	try {
 		const response = await axios.get(`${baseApi}/api/NotificationManagement${notificationId}`, getAuthConfig());
