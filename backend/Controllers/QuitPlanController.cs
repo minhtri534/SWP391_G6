@@ -45,11 +45,11 @@ public class QuitPlanController : ControllerBase
         
         if (request.UserId <= 0 || request.CoachId <= 0)
         {
-            return BadRequest("UserId và CoachId phải hợp lệ.");
+            return BadRequest("Invalid UserId or CoachId .");
         }
         if (request.StartDate > request.GoalDate)
         {
-            return BadRequest("StartDate không được lớn hơn GoalDate.");
+            return BadRequest("StartDate must not be greater than GoalDate.");
         }
 
         
