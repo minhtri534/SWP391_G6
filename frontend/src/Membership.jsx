@@ -1,39 +1,22 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  FaUserCircle,
-  FaCrown,
-  FaTag,
-  FaMoneyBillWave,
-  FaShoppingCart,
-} from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-
-const memberships = [
-  {
-    id: 1,
-    name: "Bronze Package",
-    duration: "1 Month",
-    price: "$9.99",
-  },
-  {
-    id: 2,
-    name: "Silver Package",
-    duration: "5 Months",
-    price: "$39.99",
-  },
-  {
-    id: 3,
-    name: "Gold Package",
-    duration: "1 Year",
-    price: "$89.99",
-  },
-];
+import { FaUserCircle, FaCrown, FaTag, FaMoneyBillWave, FaShoppingCart } from "react-icons/fa";
+import { getMembershipPlans } from "./api/Membership";
 
 const Membership = () => {
   const userName = localStorage.getItem("userName") || "User";
+  const userRole = localStorage.getItem("role") || "0";
+  const isAdmin = userRole === "1";
   const [menuOpen, setMenuOpen] = useState(false);
+  const [memberships, setMemberships] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const menuRef = useRef();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchMembershipPlans();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -44,6 +27,19 @@ const Membership = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const fetchMembershipPlans = async () => {
+    try {
+      setLoading(true);
+      const data = await getMembershipPlans();
+      setMemberships(data);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.clear();
@@ -113,7 +109,7 @@ const Membership = () => {
               }}
             >
               <MenuItem label="👤 Edit Profile" onClick={() => navigate("/edit-profile")} />
-              <MenuItem label="🏆 My Coach" onClick={() => navigate("/mycoach")} />
+              <MenuItem label="🏆 View Achievements" onClick={() => navigate("/achievements")} />
               <MenuItem label="⚙️ Settings" onClick={() => navigate("/settings")} />
               <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
               <MenuItem label="🔓 Logout" onClick={handleLogout} />
@@ -123,41 +119,92 @@ const Membership = () => {
       </header>
 
       {/* Main */}
-      <div className="p-8">
-        <h2 className="text-4xl font-bold text-center text-green-100 mb-10 flex items-center justify-center gap-2">
-          <FaCrown className="text-white" />
-          Membership Packages
-        </h2>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {memberships.map((m) => (
-            <div
-              key={m.id}
-              className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition"
-            >
-              <h3 className="text-xl font-bold text-green-700 mb-4 flex items-center gap-2">
-                <FaTag />
-                {m.name}
-              </h3>
-
-              <p className="text-gray-700 mb-2">
-                <strong>Duration:</strong> {m.duration}
-              </p>
-              <p className="text-gray-700 mb-4 flex items-center gap-2">
-                <FaMoneyBillWave />
-                <strong>Price:</strong> {m.price}
-              </p>
-
-              <button
-                onClick={() => handleBuy(m.id)}
-                className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition text-sm"
-              >
-                <FaShoppingCart />
-                Buy Now
-              </button>
-            </div>
-          ))}
+      <div style={{ padding: "32px" }}>
+        <div style={{ marginBottom: "20px", textAlign: "center" }}>
+          <h2 style={{
+            fontSize: "2rem",
+            fontWeight: "bold",
+            color: "#ffffff",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+          }}>
+            <FaCrown style={{ color: "#ffffff" }} />
+            Membership Packages
+          </h2>
         </div>
+
+        {loading && <p style={{ textAlign: "center", color: "#ffffff" }}>Loading...</p>}
+        {error && <p style={{ textAlign: "center", color: "#ff0000" }}>{error}</p>}
+
+        {!loading && !error && (
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "1.5rem",
+          }}>
+            {memberships.map((m) => (
+              <div
+                key={m.id}
+                style={{
+                  background: "white",
+                  borderRadius: "0.75rem",
+                  boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                  padding: "1.5rem",
+                  transition: "box-shadow 0.3s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")}
+                onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")}
+              >
+                <h3 style={{
+                  fontSize: "1.25rem",
+                  fontWeight: "bold",
+                  color: "#15803d",
+                  marginBottom: "1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}>
+                  <FaTag />
+                  {m.membershipName}
+                </h3>
+                <p style={{ color: "#4b5563", marginBottom: "0.5rem" }}>
+                  <strong>Duration:</strong> {m.duration}
+                </p>
+                <p style={{
+                  color: "#4b5563",
+                  marginBottom: "1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem"
+                }}>
+                  <FaMoneyBillWave />
+                  <strong>Price:</strong> ${m.price}
+                </p>
+                <div style={{ display: "flex", gap: "0.5rem" }}>
+                  <button
+                    onClick={() => handleBuy(m.id)}
+                    style={{
+                      flex: 1,
+                      padding: "0.5rem",
+                      background: "#4CAF50",
+                      color: "white",
+                      borderRadius: "0.375rem",
+                      border: "none",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "0.25rem",
+                    }}
+                  >
+                    <FaShoppingCart /> Buy
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
