@@ -7,6 +7,7 @@ export function getAuthConfig() {
 	};
 }
 
+
 export function getTokenData(token) {
 	if (!token) return null;
 	try {
