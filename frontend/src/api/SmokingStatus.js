@@ -21,7 +21,7 @@ export async function createSmokingStatus({ userId, timePeriod, amountPerDay, fr
 			amountPerDay: amountPerDay,
 			frequency: frequency,
 			pricePerPack: pricePerPack,
-			description: description
+			description: description,
 		};
 		const response = await axios.post(`${baseApi}/api/SmokingStatus`, payload, getAuthConfig());
 		return response.data;
@@ -39,7 +39,7 @@ export async function updateSmokingStatus({ userId, timePeriod, amountPerDay, fr
 			amountPerDay: amountPerDay,
 			frequency: frequency,
 			pricePerPack: pricePerPack,
-			description: description
+			description: description,
 		};
 		const response = await axios.patch(`${baseApi}/api/SmokingStatus`, payload, getAuthConfig());
 		return response.data;
@@ -48,4 +48,3 @@ export async function updateSmokingStatus({ userId, timePeriod, amountPerDay, fr
 		throw new Error(msg);
 	}
 }
-

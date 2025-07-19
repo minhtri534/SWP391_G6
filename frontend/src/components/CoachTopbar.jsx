@@ -4,12 +4,13 @@ import NotificationDropdown from "./NotificationDropdown";
 import UserDropdown from "./UserDropdown";
 import { getUserNotification } from "../api/Notification";
 import { toast } from "react-toastify";
-import { getTokenData } from "../api/Auth";
+// import { getTokenData } from "../api/Auth";
 
 function CoachTopbar({ title }) {
-	const token = localStorage.getItem("userToken");
-	const tokenData = getTokenData(token);
-	const userId = tokenData?.userId;
+	const userId = localStorage.getItem("userId");
+	// const token = localStorage.getItem("userToken");
+	// const tokenData = getTokenData(token);
+	// const userId = tokenData?.userId;
 	const [notifications, setNotifications] = useState([
 		// { id: 1, content: "You have a new message from a member.", date: "2025-07-17" },
 		// { id: 2, content: "A new report was submitted.", date: "2025-07-16" },
@@ -31,7 +32,13 @@ function CoachTopbar({ title }) {
 				setNotifications(data);
 			} catch (error) {
 				console.error(error);
-				toast.error(error?.response?.data?.message || error.message || "Failed to load notifications.");
+				const status = error?.response?.status;
+				// Only show toast if it's not a 404
+				if (status !== 404) {
+					toast.error(error?.response?.data?.message || error.message || "Failed to load notifications.");
+				}
+				// console.error(error);
+				// toast.error(error?.response?.data?.message || error.message || "Failed to load notifications.");
 			}
 		};
 		fetchNotification(userId);

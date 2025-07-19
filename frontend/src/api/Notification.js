@@ -18,8 +18,11 @@ export async function getUserNotification(userId) {
 		const response = await axios.get(`${baseApi}/api/Notification/${userId}`, getAuthConfig());
 		return response.data;
 	} catch (error) {
-		const msg = error.response?.data?.message || "Get user notifications failed!!!";
-		throw new Error(msg);
+		console.error("getUserNotification error:", error);
+		// Optional: log or customize message before re-throwing
+		throw error;
+		// const msg = error.response?.data?.message || "Get user notifications failed!!!";
+		// throw new Error(msg);
 	}
 }
 

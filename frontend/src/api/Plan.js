@@ -1,10 +1,39 @@
 import axios from "axios";
+import { getAuthConfig } from "./Auth";
 
 const baseApi = "http://localhost:5000";
 
-export async function addPlan(params) {
+export async function getMemberPlan(userId) {
 	try {
-		const response = await axios.post(`${baseApi}`, params);
+		const response = await axios.get(`${baseApi}/api/QuitPlan/user/${userId}`, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Get member plan failed!!!";
+		throw new Error(msg);
+	}
+}
+
+export async function getPlanByPlanId(planId) {
+	try {
+		const response = await axios.get(`${baseApi}/api/QuitPlan/${planId}`, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Get plan by Id failed!!!";
+		throw new Error(msg);
+	}
+}
+
+export async function addPlan({ userId, coachId, statusId, reason, startDate, goalDate }) {
+	try {
+		const payload = {
+			userId: userId,
+			coachId: coachId,
+			statusId: statusId,
+			reason: reason,
+			startDate: startDate,
+			goalDate: goalDate,
+		};
+		const response = await axios.post(`${baseApi}/api/QuitPlan/create`, payload, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Add plan failed!!!";
@@ -12,9 +41,17 @@ export async function addPlan(params) {
 	}
 }
 
-export async function updatePlan(params) {
+export async function updatePlan({ planId, userId, coachId, statusId, reason, startDate, goalDate }) {
 	try {
-		const response = await axios.patch(`${baseApi}`, params);
+		const payload = {
+			userId: userId,
+			coachId: coachId,
+			statusId: statusId,
+			reason: reason,
+			startDate: startDate,
+			goalDate: goalDate,
+		};
+		const response = await axios.put(`${baseApi}/api/QuitPlan/update/${planId}`, payload, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Update plan failed!!!";
@@ -22,9 +59,9 @@ export async function updatePlan(params) {
 	}
 }
 
-export async function deletePlan(params) {
+export async function deletePlan(planId) {
 	try {
-		const response = await axios.delete(`${baseApi}`, params);
+		const response = await axios.delete(`${baseApi}/api/QuitPlan/Delete/${planId}`);
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Remove plan failed!!!";

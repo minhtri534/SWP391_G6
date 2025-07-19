@@ -4,7 +4,7 @@ import CoachTopbar from "../../components/CoachTopbar";
 import { ClipboardList, List, Pencil, Trash2 } from "lucide-react";
 import PlanModal from "../../components/PlanModal";
 import { deletePlan } from "../../api/Plan";
-import { getCoachMember, getUsers } from "../../api/Users";
+import { getCoachMember } from "../../api/Users";
 import { toast } from "react-toastify";
 import DeleteConfirmation from "../../components/DeleteConfirmation";
 import Pagination from "../../components/Pagination";
@@ -20,13 +20,6 @@ function CoachingMember() {
 			userId: 1,
 			userName: "Jane Doe",
 			gender: "Female",
-			smokingCondition: {
-				timePeriod: "Midnight",
-				amountPerDay: 40,
-				pricePerPack: 29.99,
-				frequency: "Daily",
-				description: "Smoking to escape the depression.",
-			},
 			quitPlan: {
 				planId: 101,
 				coachId: 10,
@@ -41,26 +34,12 @@ function CoachingMember() {
 			userId: 2,
 			userName: "John Doe",
 			gender: "Male",
-			smokingCondition: {
-				timePeriod: "Midnight",
-				amountPerDay: 40,
-				pricePerPack: 29.99,
-				frequency: "Daily",
-				description: "Smoking to escape the depression.",
-			},
 			quitPlan: null, // has no quit plan yet
 		},
 		{
 			userId: 3,
 			userName: "Joe Mami",
 			gender: "Male",
-			smokingCondition: {
-				timePeriod: "Midnight",
-				amountPerDay: 40,
-				pricePerPack: 29.99,
-				frequency: "Daily",
-				description: "Smoking to escape the depression.",
-			},
 			quitPlan: {
 				planId: 102,
 				coachId: 10,
@@ -90,7 +69,6 @@ function CoachingMember() {
 
 	// Get member list
 	useEffect(() => {
-		//disable for now
 		fetchMembers();
 	}, []);
 
@@ -186,9 +164,10 @@ function CoachingMember() {
 									<th className="text-left px-6 py-3">#</th>
 									<th className="text-left px-6 py-3">Name</th>
 									<th className="text-left px-6 py-3">Gender</th>
+									<th className="text-left px-6 py-3">Smoking Condition</th>
 									<th className="text-left px-6 py-3">Plan Time</th>
 									<th className="text-left px-6 py-3">Progress</th>
-									<th className="text-left px-6 py-3">Smoking Condition</th>
+
 									<th className="text-left px-6 py-3">Daily Report</th>
 									<th className="text-right px-6 py-3">Action</th>
 								</tr>
@@ -220,6 +199,17 @@ function CoachingMember() {
 											</td>
 											<td className="px-6 py-3">{member.gender}</td>
 											<td className="px-6 py-3">
+												<button
+													onClick={() => {
+														setIsConditionModalOpen(true);
+														setSelectedMember(member);
+													}}
+													className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
+													<ClipboardList className="w-4 h-4" />
+													Smoking condition
+												</button>
+											</td>
+											<td className="px-6 py-3">
 												{member.quitPlan ? (
 													<span>
 														{member.quitPlan.startDate} to {member.quitPlan.goalDate}
@@ -240,27 +230,19 @@ function CoachingMember() {
 													</button>
 												)}
 											</td>
+
 											<td className="px-6 py-3">
-												<button
-													onClick={() => {
-														setIsConditionModalOpen(true);
-														setSelectedMember(member);
-													}}
-													className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
-													<ClipboardList className="w-4 h-4" />
-													Smoking condition
-												</button>
-											</td>
-											<td className="px-6 py-3">
-												<button
-													onClick={() => {
-														setIsViewDaily(true);
-														setSelectedMember(member);
-													}}
-													className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
-													<List className="w-4 h-4" />
-													Report
-												</button>
+												{member.quitPlan && (
+													<button
+														onClick={() => {
+															setIsViewDaily(true);
+															setSelectedMember(member);
+														}}
+														className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
+														<List className="w-4 h-4" />
+														Report
+													</button>
+												)}
 											</td>
 											<td className="px-6 py-3">
 												<div className="flex justify-end gap-2">
@@ -312,70 +294,80 @@ function CoachingMember() {
 					{filteredList.length > 0 && <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => setCurrentPage(page)} />}
 
 					{/* Create or Update plan popup modal */}
-					<PlanModal
-						isOpen={isModalOpen}
-						onClose={() => {
-							setIsModalOpen(false);
-							setSelectedMember(null);
-						}}
-						initialValues={selectedMember?.quitPlan || null}
-					/>
+					{isModalOpen && selectedMember && (
+						<PlanModal
+							isOpen={isModalOpen}
+							onClose={() => {
+								setIsModalOpen(false);
+								setSelectedMember(null);
+							}}
+							initialValues={selectedMember?.quitPlan || null}
+						/>
+					)}
 
 					{/* View member achievements */}
-					<MemberAchievements
-						isOpen={isViewAchievements}
-						member={selectedMember}
-						onClose={() => {
-							setIsViewAchievements(false);
-							setSelectedMember(null);
-						}}
-					/>
+					{isViewAchievements && selectedMember && (
+						<MemberAchievements
+							isOpen={isViewAchievements}
+							member={selectedMember}
+							onClose={() => {
+								setIsViewAchievements(false);
+								setSelectedMember(null);
+							}}
+						/>
+					)}
 
 					{/* View member daily report */}
-					<DailyReport
-						isOpen={isViewDaily}
-						member={selectedMember}
-						onClose={() => {
-							setIsViewDaily(false);
-							setSelectedMember(null);
-						}}
-					/>
+					{isViewDaily && selectedMember && (
+						<DailyReport
+							isOpen={isViewDaily}
+							member={selectedMember}
+							onClose={() => {
+								setIsViewDaily(false);
+								setSelectedMember(null);
+							}}
+						/>
+					)}
 
 					{/* View member plan modal */}
-					<ViewPlan isOpen={isViewPlanOpen} plan={selectedPlan} onClose={() => setIsViewPlanOpen(false)} />
+					{isViewPlanOpen && selectedPlan && <ViewPlan isOpen={isViewPlanOpen} plan={selectedPlan} onClose={() => setIsViewPlanOpen(false)} />}
 
 					{/* View member smoking condition modal */}
-					<SmokingCondition
-						isOpen={isConditionModalOpen}
-						onClose={() => {
-							setIsConditionModalOpen(false);
-							setSelectedMember(null);
-						}}
-						member={selectedMember}
-					/>
+					{isConditionModalOpen && selectedMember && (
+						<SmokingCondition
+							isOpen={isConditionModalOpen}
+							onClose={() => {
+								setIsConditionModalOpen(false);
+								setSelectedMember(null);
+							}}
+							member={selectedMember}
+						/>
+					)}
 
 					{/* Delete Confirmation popup modal */}
-					<DeleteConfirmation
-						isOpen={isConfirmDeleteOpen}
-						onCancel={() => {
-							setSelectedDeletePlan(null), setIsConfirmDeleteOpen(false);
-						}}
-						message={selectedDeletePlan ? `Do you want to remove plan for ${selectedDeletePlan.userName}?` : ""}
-						onConfirm={async () => {
-							try {
-								await deletePlan(selectedDeletePlan.planId, selectedDeletePlan.userId);
-								toast.success("Plan remove successfully!!!");
-								//Update member list
-								setUsers((prev) => prev.map((u) => (u.userId === selectedDeletePlan.userId ? { ...u, quitPlan: null } : u)));
-							} catch (error) {
-								console.error(error);
-								toast.error(error?.response?.data?.message || error.message || "Failed to delete plan.");
-							} finally {
-								setIsConfirmDeleteOpen(false);
-								setSelectedDeletePlan(null);
-							}
-						}}
-					/>
+					{isConfirmDeleteOpen && (
+						<DeleteConfirmation
+							isOpen={isConfirmDeleteOpen}
+							onCancel={() => {
+								setSelectedDeletePlan(null), setIsConfirmDeleteOpen(false);
+							}}
+							message={selectedDeletePlan ? `Do you want to remove plan for ${selectedDeletePlan.userName}?` : ""}
+							onConfirm={async () => {
+								try {
+									await deletePlan(selectedDeletePlan.planId, selectedDeletePlan.userId);
+									toast.success("Plan remove successfully!!!");
+									//Update member list
+									setUsers((prev) => prev.map((u) => (u.userId === selectedDeletePlan.userId ? { ...u, quitPlan: null } : u)));
+								} catch (error) {
+									console.error(error);
+									toast.error(error?.response?.data?.message || error.message || "Failed to delete plan.");
+								} finally {
+									setIsConfirmDeleteOpen(false);
+									setSelectedDeletePlan(null);
+								}
+							}}
+						/>
+					)}
 				</div>
 			</div>
 		</div>

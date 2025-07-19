@@ -3,10 +3,14 @@ import CoachTopbar from "../../components/CoachTopbar";
 import CoachSidebar from "../../components/CoachSidebar";
 import { getNotification } from "../../api/Notification";
 import { toast } from "react-toastify";
-import { Pencil, Trash2 } from "lucide-react";
+import { MessageCircleMore, Pencil, Trash2 } from "lucide-react";
 
 function CoachNotification() {
-	const [notifications, setNotifications] = useState([]);
+	const [notifications, setNotifications] = useState([
+		{ notificationId: 1, message: "You have a meeting tonight. Stay tune!", type: "Reminder" },
+		{ notificationId: 2, message: "You've done it. You complete a milestone", type: "Milestone" },
+		{ notificationId: 3, message: "New message from coach", type: "Notify" },
+	]);
 
 	// Get notification list function
 	const fetchNotifications = async () => {
@@ -49,6 +53,7 @@ function CoachNotification() {
 						<select className="border rounded px-3 py-2 w-40" value={filterType} onChange={(e) => setFilterType(e.target.value)}>
 							<option value="">All Type</option>
 							<option value="Milestone">Milestone</option>
+							<option value="Reminder">Reminder</option>
 							<option value="Notify">Notify</option>
 						</select>
 					</div>
@@ -84,6 +89,10 @@ function CoachNotification() {
 											<td className="px-6 py-3">{notification.type}</td>
 											<td className="px-6 py-3">
 												<div className="flex justify-end gap-2">
+													<button className="flex items-center gap-1 px-3 py-1 border rounded text-green-600 border-green-600 hover:bg-green-50 hover:cursor-pointer transition" onClick={() => {}}>
+														<MessageCircleMore className="w-4 h-4" />
+														Send to members
+													</button>
 													<button className="flex items-center gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 hover:cursor-pointer transition" onClick={() => {}}>
 														<Pencil className="w-4 h-4" />
 														Update

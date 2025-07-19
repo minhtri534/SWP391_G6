@@ -1,11 +1,31 @@
 import { useFormik } from "formik";
 import { X } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { addPlan, updatePlan } from "../api/Plan";
 import { toast } from "react-toastify";
+import { addMilestone, updateMilestone } from "../api/Milestone";
+import { getBadges } from "../api/Badges";
 
 function PlanModal({ isOpen, onClose, initialValues }) {
+	const [badges, setBadges] = useState([]);
+
+	const fetchBadges = async () => {
+		try {
+			const data = await getBadges();
+			//filtering if needed
+			//...
+			setBadges(data);
+		} catch (error) {
+			console.error(error);
+			toast.error(error?.response?.data?.message || error.message || "Failed to load badges.");
+		}
+	};
+
+	useEffect(() => {
+		fetchBadges();
+	}, []);
+
 	const validation = Yup.object({
 		reason: Yup.string().required("Reason is required"),
 		startDate: Yup.date().required("Start date is required"),
@@ -35,17 +55,73 @@ function PlanModal({ isOpen, onClose, initialValues }) {
 		},
 		onSubmit: async (values) => {
 			try {
-				console.log(values);
-				// const payload = values;
+				let planId;
+
 				if (isUpdating) {
-					// Do update plan
-					// await updatePlan(values);
-					toast.success("Update plan successfully!!!");
+					// UPDATE plan
+					await updatePlan({
+						planId: initialValues.planId,
+						userId: initialValues.userId,
+						coachId: initialValues.coachId,
+						statusId: initialValues.statusId,
+						reason: values.reason,
+						startDate: values.startDate,
+						goalDate: values.goalDate,
+					});
+					planId = initialValues.planId;
+
+					// Loop through milestones
+					for (const milestone of values.milestones) {
+						if (milestone.milestoneId) {
+							// Update existing milestone
+							await updateMilestone({
+								milestoneId: milestone.milestoneId,
+								planId,
+								badgeId: milestone.badge,
+								title: milestone.title,
+								description: milestone.description,
+								targetDate: milestone.targetDate,
+							});
+						} else {
+							// Add new milestone
+							await addMilestone({
+								planId,
+								badgeId: milestone.badge,
+								title: milestone.title,
+								description: milestone.description,
+								targetDate: milestone.targetDate,
+							});
+						}
+					}
+
+					toast.success("Update plan successfully!");
 				} else {
-					// Do create plan
-					// await addPlan(values);
-					toast.success("Add plan successfully!!!");
+					// CREATE plan
+					const result = await addPlan({
+						userId: initialValues.userId,
+						coachId: initialValues.coachId,
+						statusId: initialValues.statusId,
+						reason: values.reason,
+						startDate: values.startDate,
+						goalDate: values.goalDate,
+					});
+
+					planId = result.planId; // adjust if response is structured differently
+
+					// Add milestones
+					for (const milestone of values.milestones) {
+						await addMilestone({
+							planId,
+							badgeId: milestone.badge,
+							title: milestone.title,
+							description: milestone.description,
+							targetDate: milestone.targetDate,
+						});
+					}
+
+					toast.success("Add plan successfully!");
 				}
+
 				handleClose();
 			} catch (error) {
 				console.error(error);
@@ -126,67 +202,75 @@ function PlanModal({ isOpen, onClose, initialValues }) {
 							{formik.values.milestones.map((milestone, index) => (
 								<div key={index} className="border rounded p-4 bg-gray-50 relative">
 									{editingIndex !== index ? (
-										<div className="cursor-pointer" onClick={() => setEditingIndex(index)}>
-											<div className="flex justify-between items-center">
-												<div>
-													<strong>{milestone.title || "Untitled"}</strong>
-													<div className="text-sm text-gray-500">{milestone.badge}</div>
+										<>
+											{/* Display existing milestones */}
+											<div className="cursor-pointer" onClick={() => setEditingIndex(index)}>
+												<div className="flex justify-between items-center">
+													<div>
+														<strong>{milestone.title || "Untitled"}</strong>
+														<div className="text-sm text-gray-500">{badges.find((b) => b.badgeId === parseInt(milestone.badge))?.name || "Unknown badge"}</div>
+													</div>
+													<button
+														className="text-red-500 px-1 py-1 hover:border hover:rounded hover:bg-red-500 hover:text-white"
+														onClick={(e) => {
+															handleRemoveMilestone(index);
+															e.stopPropagation();
+														}}>
+														<X />
+													</button>
 												</div>
-												<button
-													className="text-red-500 px-1 py-1 hover:border hover:rounded hover:bg-red-500 hover:text-white"
-													onClick={(e) => {
-														handleRemoveMilestone(index);
-														e.stopPropagation();
-													}}>
-													<X />
-												</button>
 											</div>
-										</div>
+										</>
 									) : (
-										<div className="space-y-3">
-											<button type="button" className="absolute top-2 right-2 text-red-500 hover:cursor-pointer" onClick={() => handleRemoveMilestone(index)}>
-												Remove
-											</button>
-
-											<div>
-												<label className="block text-sm font-medium">Title</label>
-												<input type="text" name={`milestones[${index}].title`} className="w-full border rounded p-2" value={milestone.title} onChange={formik.handleChange} />
-												{formik.touched.milestones?.[index]?.title && formik.errors.milestones?.[index]?.title && <div className="text-red-500 text-sm mt-1">{formik.errors.milestones[index].title}</div>}
-											</div>
-
-											<div>
-												<label className="block text-sm font-medium">Description</label>
-												<textarea name={`milestones[${index}].description`} className="w-full border rounded p-2" value={milestone.description} onChange={formik.handleChange} />
-												{formik.touched.milestones?.[index]?.description && formik.errors.milestones?.[index]?.description && (
-													<div className="text-red-500 text-sm mt-1">{formik.errors.milestones[index].description}</div>
-												)}
-											</div>
-
-											<div>
-												<label className="block text-sm font-medium">Target Date</label>
-												<input type="date" name={`milestones[${index}].targetDate`} className="w-full border rounded p-2" value={milestone.targetDate} onChange={formik.handleChange} />
-												{formik.touched.milestones?.[index]?.targetDate && formik.errors.milestones?.[index]?.targetDate && (
-													<div className="text-red-500 text-sm mt-1">{formik.errors.milestones[index].targetDate}</div>
-												)}
-											</div>
-
-											<div>
-												<label className="block text-sm font-medium">Badge</label>
-												<select name={`milestones[${index}].badge`} className="w-full border rounded p-2" value={milestone.badge} onChange={formik.handleChange}>
-													<option value="">Select badge</option>
-													<option value="Easy">Easy</option>
-													<option value="Medium">Medium</option>
-													<option value="Hard">Hard</option>
-												</select>
-												{formik.touched.milestones?.[index]?.badge && formik.errors.milestones?.[index]?.badge && <div className="text-red-500 text-sm mt-1">{formik.errors.milestones[index].badge}</div>}
-											</div>
-											{/* Done editing */}
-											<div className="text-right">
-												<button type="button" onClick={() => setEditingIndex(null)} className="text-gray-700 px-2 py-1 border rounded bg-green-200 hover:bg-green-300">
-													Done
+										<>
+											{/* Milestone adding or updating form */}
+											<div className="space-y-3">
+												<button type="button" className="absolute top-2 right-2 text-red-500 hover:cursor-pointer" onClick={() => handleRemoveMilestone(index)}>
+													Remove
 												</button>
+
+												<div>
+													<label className="block text-sm font-medium">Title</label>
+													<input type="text" name={`milestones[${index}].title`} className="w-full border rounded p-2" value={milestone.title} onChange={formik.handleChange} />
+													{formik.touched.milestones?.[index]?.title && formik.errors.milestones?.[index]?.title && <div className="text-red-500 text-sm mt-1">{formik.errors.milestones[index].title}</div>}
+												</div>
+
+												<div>
+													<label className="block text-sm font-medium">Description</label>
+													<textarea name={`milestones[${index}].description`} className="w-full border rounded p-2" value={milestone.description} onChange={formik.handleChange} />
+													{formik.touched.milestones?.[index]?.description && formik.errors.milestones?.[index]?.description && (
+														<div className="text-red-500 text-sm mt-1">{formik.errors.milestones[index].description}</div>
+													)}
+												</div>
+
+												<div>
+													<label className="block text-sm font-medium">Target Date</label>
+													<input type="date" name={`milestones[${index}].targetDate`} className="w-full border rounded p-2" value={milestone.targetDate} onChange={formik.handleChange} />
+													{formik.touched.milestones?.[index]?.targetDate && formik.errors.milestones?.[index]?.targetDate && (
+														<div className="text-red-500 text-sm mt-1">{formik.errors.milestones[index].targetDate}</div>
+													)}
+												</div>
+
+												<div>
+													<label className="block text-sm font-medium">Badge</label>
+													<select name={`milestones[${index}].badge`} className="w-full border rounded p-2" value={milestone.badge} onChange={formik.handleChange}>
+														<option value="">Select badge</option>
+														{badges.map((badge) => (
+															<option key={badge.badgeId} value={badge.badgeId}>
+																{badge.badgeName}
+															</option>
+														))}
+													</select>
+													{formik.touched.milestones?.[index]?.badge && formik.errors.milestones?.[index]?.badge && <div className="text-red-500 text-sm mt-1">{formik.errors.milestones[index].badge}</div>}
+												</div>
+												{/* Done editing */}
+												<div className="text-right">
+													<button type="button" onClick={() => setEditingIndex(null)} className="text-gray-700 px-2 py-1 border rounded bg-green-200 hover:bg-green-300">
+														Done
+													</button>
+												</div>
 											</div>
-										</div>
+										</>
 									)}
 								</div>
 							))}
