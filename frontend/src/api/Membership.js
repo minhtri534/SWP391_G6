@@ -52,3 +52,17 @@ export async function deleteMembershipPlan(membershipId) {
 		throw new Error(msg);
 	}
 }
+
+export async function buyMembershipPlan({ UserId, MembershipId }) {
+	try {
+		const payload = {
+			UserId: UserId,
+			MembershipId: MembershipId
+		};
+		const response = await axios.post(`${baseApi}/Membership/Buy`, payload, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Buy membership failed!";
+		throw new Error(msg);
+	}
+}
