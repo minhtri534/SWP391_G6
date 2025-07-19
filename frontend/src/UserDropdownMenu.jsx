@@ -64,7 +64,7 @@ function UserDropdownMenu({ userName }) {
           }}
         >
           <MenuItem label="👤 Edit Profile" onClick={() => handleNavigate("/edit-profile")} />
-          <MenuItem label="🏆 View Achievements" onClick={() => handleNavigate("/achievements")} />
+          <MenuItem label="🏆 My Coach" onClick={() => handleNavigate("/mycoach")} />
           <MenuItem label="⚙️ Settings" onClick={() => handleNavigate("/settings")} />
           <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
           <MenuItem label="🔓 Logout" onClick={handleLogout} />

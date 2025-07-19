@@ -266,8 +266,8 @@ const Forums = () => {
                 onClick={() => navigate("/edit-profile")}
               />
               <MenuItem
-                label="🏆 View Achievements"
-                onClick={() => navigate("/achievements")}
+                label="🏆 My Coach"
+                onClick={() => navigate("/mycoach")}
               />
               <MenuItem
                 label="⚙️ Settings"

@@ -113,7 +113,7 @@ const DailyProgress = () => {
               }}
             >
               <MenuItem label="👤 Edit Profile" onClick={() => navigate("/edit-profile")} />
-              <MenuItem label="🏆 View Achievements" onClick={() => navigate("/achievements")} />
+              <MenuItem label="🏆 My Coach" onClick={() => navigate("/mycoach")} />
               <MenuItem label="⚙️ Settings" onClick={() => navigate("/settings")} />
               <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
               <MenuItem label="🔓 Logout" onClick={() => {
