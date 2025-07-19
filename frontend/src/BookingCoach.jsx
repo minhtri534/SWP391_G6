@@ -1,22 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
-import axios from "axios";
+import { getCoaches, getCoachPackagesByCoachId, bookCoaches } from "./api/BookCoach";
 import {
-  FaStar,
-  FaUserTie,
-  FaCalendarAlt,
-  FaRegCheckCircle,
-  FaTimesCircle,
   FaUserCheck,
   FaDollarSign,
-  FaLink,
   FaFileUpload,
-  FaUserCircle,
   FaSpinner,
+  FaUserCircle,
+  FaLink,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
 const BookingCoach = () => {
-  const [coaches, setCoaches] = useState([]);
+  const [coachPackages, setCoachPackages] = useState([]);
   const [selectedCoach, setSelectedCoach] = useState(null);
   const [receipt, setReceipt] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -25,67 +20,27 @@ const BookingCoach = () => {
   const menuRef = useRef();
   const navigate = useNavigate();
   const userName = localStorage.getItem("userName") || "User";
-  const token = localStorage.getItem("userToken"); // Lấy token từ localStorage
+  const token = localStorage.getItem("userToken");
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
-    const fetchCoaches = async () => {
-      if (!token) {
-        setError("No authentication token found. Please log in first.");
-        setLoading(false);
-        return;
-      }
-
-      console.log("Token being sent:", token); // Debug token
-      setLoading(true);
-      setError(null);
-      const endpoints = [
-        "http://localhost:5196/api/Booking/Package/1",
-        "http://localhost:5196/api/Booking/Package/2",
-        "http://localhost:5196/api/Booking/Package/3",
-        "http://localhost:5196/api/Booking/Package/4",
-        "http://localhost:5196/api/Booking/Package/5",
-        "http://localhost:5196/api/Booking/Package/6",
-      ];
-
-      const fetchWithRetry = async (url, retries = 2) => {
-        for (let i = 0; i < retries; i++) {
-          try {
-            const response = await axios.get(url, {
-              timeout: 5000,
-              headers: {
-                Authorization: `Bearer ${token}`, // Gửi token với định dạng Bearer
-              },
-            });
-            console.log(`Data from ${url}:`, response.data);
-            return response.data;
-          } catch (err) {
-            console.error(`Attempt ${i + 1} failed for ${url}:`, err.response?.status, err.message);
-            if (i === retries - 1) throw err;
-            await new Promise((resolve) => setTimeout(resolve, 1000)); // Chờ 1 giây trước khi retry
-          }
-        }
-      };
-
+    const fetchCoachPackages = async () => {
       try {
-        const coachPromises = endpoints.map((url) => fetchWithRetry(url));
-        const results = await Promise.all(coachPromises);
-        console.log("All results:", results);
-        const validCoaches = results.filter((coach) => coach && typeof coach === "object");
-        console.log("Valid coaches:", validCoaches);
-        setCoaches(validCoaches);
+        setLoading(true);
+        const allPackages = await getCoaches();
+        const coachData = await Promise.all(
+          allPackages.map((coach) => getCoachPackagesByCoachId(coach.id))
+        );
+        const flattened = coachData.flat();
+        setCoachPackages(flattened);
       } catch (err) {
-        const errorMsg = err.response?.status === 403
-          ? "Access denied (403). You may not have permission for this resource. Contact admin or log in with appropriate credentials."
-          : `Failed to load coaches: ${err.message}. Please check your network or try again later.`;
-        setError(errorMsg);
-        console.error("Fetch error:", err.response?.data || err);
+        setError(err.message || "Error fetching coach packages");
       } finally {
         setLoading(false);
       }
     };
-
-    fetchCoaches();
-  }, [token]);
+    fetchCoachPackages();
+  }, []);
 
   const handleBuyClick = (coach) => {
     setSelectedCoach(coach);
@@ -111,6 +66,20 @@ const BookingCoach = () => {
     navigate("/login");
   };
 
+  const handleSubmitReceipt = async () => {
+    try {
+      await bookCoaches({
+        userId: userId,
+        packageId: selectedCoach.id,
+        start_Date: new Date().toISOString(),
+      });
+      alert("Booking successful");
+      closePopup();
+    } catch (err) {
+      alert("Booking failed: " + err.message);
+    }
+  };
+
   return (
     <div
       style={{
@@ -119,7 +88,6 @@ const BookingCoach = () => {
         minHeight: "100vh",
       }}
     >
-      {/* Header */}
       <header
         style={{
           display: "flex",
@@ -169,21 +137,15 @@ const BookingCoach = () => {
                 width: "180px",
               }}
             >
-              <MenuItem label="👤 Edit Profile" onClick={() => navigate("/edit-profile")} />
-              <MenuItem label="🏆 View Achievements" onClick={() => navigate("/achievements")} />
-              <MenuItem label="⚙️ Settings" onClick={() => navigate("/settings")} />
-              <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
               <MenuItem label="🔓 Logout" onClick={handleLogout} />
             </ul>
           )}
         </div>
       </header>
 
-      {/* Main Content */}
       <div className="p-8">
         <h2 className="text-4xl font-bold text-center text-green-100 mb-10 flex items-center justify-center gap-2">
-          <FaUserCheck className="text-white" />
-          Buy a Coach
+          <FaUserCheck className="text-white" /> Book a Coach
         </h2>
 
         {loading && (
@@ -192,28 +154,24 @@ const BookingCoach = () => {
           </div>
         )}
         {error && <p className="text-center text-red-500">{error}</p>}
-        {!loading && !error && coaches.length === 0 && (
-          <p className="text-center text-white">No coaches available.</p>
+        {!loading && !error && coachPackages.length === 0 && (
+          <p className="text-center text-white">No coach packages available.</p>
         )}
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {coaches.map((coach) => (
+          {coachPackages.map((pkg) => (
             <div
-              key={coach.id || Math.random()}
+              key={pkg.id}
               className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition"
             >
               <h3 className="text-xl font-bold text-green-700 mb-2">
-                Coach: {coach.name || "Unnamed Coach"}
+                {pkg.name}
               </h3>
-              <div className="space-y-2">
-                {Object.entries(coach).map(([key, value]) => (
-                  <p key={key} className="text-gray-600 flex items-center gap-2">
-                    <strong>{key}:</strong> {value?.toString() || "N/A"}
-                  </p>
-                ))}
-              </div>
+              <p className="text-gray-600">Duration: {pkg.duration} days</p>
+              <p className="text-gray-600">Price: ${pkg.price}</p>
+              <p className="text-gray-600">Coach ID: {pkg.coachId}</p>
               <button
-                onClick={() => handleBuyClick(coach)}
+                onClick={() => handleBuyClick(pkg)}
                 className="w-full py-2 mt-4 rounded-lg font-semibold bg-green-600 text-white hover:bg-green-700 transition"
               >
                 Buy Coach
@@ -223,7 +181,6 @@ const BookingCoach = () => {
         </div>
       </div>
 
-      {/* Payment Popup */}
       {selectedCoach && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg relative">
@@ -233,17 +190,14 @@ const BookingCoach = () => {
             >
               ×
             </button>
-
             <h3 className="text-2xl font-bold text-green-700 mb-4 flex items-center gap-2">
-              <FaDollarSign />
-              Payment for {selectedCoach.name}
+              <FaDollarSign /> Book: {selectedCoach.name}
             </h3>
-
-            <p className="mb-4 text-gray-700">
-              Please complete your payment using the link below. After payment,
-              upload a receipt image as proof.
-            </p>
-
+            <div className="mb-4 text-gray-700">
+              <p>Duration: {selectedCoach.duration} days</p>
+              <p>Price: ${selectedCoach.price}</p>
+              <p>Coach ID: {selectedCoach.coachId}</p>
+            </div>
             <div className="mb-4 flex items-center gap-2">
               <FaLink className="text-blue-600" />
               <a
@@ -255,11 +209,9 @@ const BookingCoach = () => {
                 👉 Payment Link
               </a>
             </div>
-
             <div className="mb-4">
               <label className="block mb-1 font-semibold text-gray-700 flex items-center gap-2">
-                <FaFileUpload />
-                Upload Receipt:
+                <FaFileUpload /> Upload Receipt:
               </label>
               <input
                 type="file"
@@ -268,12 +220,8 @@ const BookingCoach = () => {
                 className="border p-2 rounded w-full"
               />
             </div>
-
             <button
-              onClick={() => {
-                alert("Receipt submitted (local only).");
-                closePopup();
-              }}
+              onClick={handleSubmitReceipt}
               className="w-full bg-green-600 text-white font-bold py-2 rounded-lg hover:bg-green-700 transition"
               disabled={!receipt}
             >

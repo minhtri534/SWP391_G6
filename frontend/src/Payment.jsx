@@ -129,7 +129,7 @@ function Payment() {
               }}
             >
               <MenuItem label="👤 Edit Profile" onClick={() => handleNavigate("/edit-profile")} />
-              <MenuItem label="🏆 View Achievements" onClick={() => handleNavigate("/achievements")} />
+              <MenuItem label="🏆 My Coach" onClick={() => handleNavigate("/mycoach")} />
               <MenuItem label="⚙️ Settings" onClick={() => handleNavigate("/settings")} />
               <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
               <MenuItem label="🔓 Logout" onClick={handleLogout} />
@@ -165,7 +165,7 @@ function Payment() {
             {membershipId === 1 ? "Basic" : membershipId === 2 ? "Standard" : "Premium"}
           </p>
           <p>
-            <b>Amount:</b> ${amount}
+            <b>Amount:</b> $89.99
           </p>
 
           <div style={{ margin: "20px 0" }}>
