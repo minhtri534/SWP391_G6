@@ -1,24 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaUserCircle, FaCrown } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-
-const allBadges = [
-  { id: 1, name: "Smoke-Free Week", description: "Completed one week without smoking.", issuedDate: "2025-06-01", achieved: true },
-  { id: 2, name: "30 Days Strong", description: "Completed 30 days smoke-free.", issuedDate: "2025-07-01", achieved: true },
-  { id: 3, name: "First Check-in", description: "Completed your first progress check-in.", issuedDate: "2025-06-05", achieved: true },
-  { id: 4, name: "Community Helper", description: "Helped someone in the forum.", achieved: false },
-  { id: 5, name: "Milestone Master", description: "Completed all milestones in your plan.", achieved: false },
-  { id: 6, name: "Motivation Speaker", description: "Shared motivation story in community.", achieved: false }
-];
+import { getBadgesByUserId, getUnearnedBadgesByUserId } from "./api/Badges2";
 
 const Badges = () => {
   const userName = localStorage.getItem("userName") || "User";
   const navigate = useNavigate();
+  const userId = localStorage.getItem("userId");
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
 
   const [showAchieved, setShowAchieved] = useState(true);
-  const filteredBadges = allBadges.filter(badge => badge.achieved === showAchieved);
+  const [earnedBadges, setEarnedBadges] = useState([]);
+  const [unearnedBadges, setUnearnedBadges] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -30,10 +26,33 @@ const Badges = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    const fetchBadges = async () => {
+      try {
+        setLoading(true);
+        if (userId) {
+          const [earned, unearned] = await Promise.all([
+            getBadgesByUserId(userId),
+            getUnearnedBadgesByUserId(userId),
+          ]);
+          setEarnedBadges(earned);
+          setUnearnedBadges(unearned);
+        }
+      } catch (err) {
+        setError(err.message || "Failed to load badges");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBadges();
+  }, [userId]);
+
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
   };
+
+  const filteredBadges = showAchieved ? earnedBadges : unearnedBadges;
 
   return (
     <div
@@ -120,19 +139,23 @@ const Badges = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredBadges.length > 0 ? (
+          {loading ? (
+            <div className="text-white text-center w-full text-md">Loading...</div>
+          ) : error ? (
+            <div className="text-white text-center w-full text-md">{error}</div>
+          ) : filteredBadges.length > 0 ? (
             filteredBadges.map((badge) => (
               <div
-                key={badge.id}
+                key={badge.badgeId}
                 className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition"
               >
                 <h3 className="text-xl font-bold text-green-700 mb-2">
-                  {badge.name}
+                  {badge.badgeName}
                 </h3>
                 <p className="text-gray-700 mb-2">{badge.description}</p>
-                {badge.issuedDate && (
+                {badge.date_awarded && (
                   <p className="text-gray-400 text-sm">
-                    <strong>Issued:</strong> {badge.issuedDate}
+                    <strong>Issued:</strong> {badge.date_awarded}
                   </p>
                 )}
               </div>
