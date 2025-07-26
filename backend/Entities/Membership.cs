@@ -8,16 +8,19 @@ namespace backend.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("membershipId")]
         public int MembershipId { get; set; }
 
-        [Required]
+        
         [MaxLength(100)]
-        public string MembershipName { get; set; }
+        [Column("membershipName")]
+        public string? MembershipName { get; set; }
 
-        [Column(TypeName = "decimal(10,2)")]
-        public decimal Price { get; set; }
+        [Column("price",TypeName = "decimal(10,2)")]
+        public decimal? Price { get; set; }
+        [Column("duration")]
 
-        public int Duration { get; set; }
+        public int? Duration { get; set; }
 
         
     }
