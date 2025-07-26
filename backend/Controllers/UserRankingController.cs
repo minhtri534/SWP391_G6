@@ -15,7 +15,7 @@ namespace backend.Controllers
             _rankingService = rankingService;
         }
 
-    
+        [Authorize(Roles = "3,4")]
         [HttpGet("top/{count}")]
         public async Task<IActionResult> GetTopUsers(int count)
         {

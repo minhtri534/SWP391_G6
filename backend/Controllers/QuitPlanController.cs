@@ -14,7 +14,7 @@ public class QuitPlanController : ControllerBase
         _context = context;
     }
 
-   
+    [Authorize]
     [HttpGet("user/{userId}")]
     public async Task<ActionResult<IEnumerable<QuitPlanDto>>> GetQuitPlansByUser(int userId)
     {
@@ -39,6 +39,7 @@ public class QuitPlanController : ControllerBase
 
         return Ok(plans);
     }
+    [Authorize(Roles = "3,4")]
     [HttpPost("create")]
     public async Task<IActionResult> CreateQuitPlan([FromBody] CreateQuitPlanRequest request)
     {
@@ -69,7 +70,7 @@ public class QuitPlanController : ControllerBase
 
         return CreatedAtAction(nameof(GetQuitPlanById), new { planId = quitPlan.PlanId }, quitPlan);
     }
-
+    [Authorize]
     [HttpGet("{planId}")]
     public async Task<IActionResult> GetQuitPlanById(int planId)
     {

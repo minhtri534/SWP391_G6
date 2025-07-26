@@ -1,14 +1,12 @@
 ﻿using backend.Data;
 using backend.Entities;
 using backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
         [ApiController]
         [Route("[controller]")]
-
-    
-    
-       
         public class CRUDMilestoneController : ControllerBase
         {
             private readonly AppDbContext _context;
@@ -16,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
             {
                 _context = context;
             }
+            [Authorize(Roles = "3,4")]
             [HttpPost("CreateMilestone")]
             public IActionResult CreateMilestone([FromBody] PlanMilestoneRequest request)
             {
@@ -35,6 +34,7 @@ using Microsoft.EntityFrameworkCore;
                 _context.SaveChanges();
                 return CreatedAtAction(nameof(GetMilestoneById), new { id = milestone.MilestoneId }, milestone);
             }
+            [Authorize]
             [HttpGet("ViewMilestoneById,{id}")]
             public IActionResult GetMilestoneById(int id)
             {
@@ -45,6 +45,7 @@ using Microsoft.EntityFrameworkCore;
                 }
                 return Ok(milestone);
             }
+            [Authorize(Roles = "3,4")]
             [HttpPut("UpdateMileStone{id}")]
             public IActionResult UpdateMilestone(int id, [FromBody] PlanMilestoneRequest request)
             {
@@ -63,6 +64,7 @@ using Microsoft.EntityFrameworkCore;
                 _context.SaveChanges();
                 return Ok("Updated Milestone successfull");
             }
+            [Authorize(Roles = "3,4")]
             [HttpDelete("DeleteMilestone{id}")]
             public IActionResult DeleteMilestone(int id)
             {

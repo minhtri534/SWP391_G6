@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/comments")]
     public class CommentController : ControllerBase

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class MembershipController : ControllerBase
