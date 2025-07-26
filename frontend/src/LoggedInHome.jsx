@@ -11,24 +11,26 @@ import Forums from "./assets/meeting.png";
 import Feedback from "./assets/talking.png";
 import QuitPlan from "./assets/project.png";
 import Progress from "./assets/progress.png";
+import { getUserNotification } from "./api/Notification"; // Sử dụng getUserNotification
 
 function LoggedInHome() {
   const navigate = useNavigate();
   const userName = localStorage.getItem("userName") || "User";
+  const userId = localStorage.getItem("userId") || "1"; // Giả định userId từ localStorage hoặc mặc định "1"
   // Kiểm tra trạng thái membership từ localStorage, mặc định là guest (false)
   const isMember = localStorage.getItem("isMember") === "true";
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const menuRef = useRef();
   const notifRef = useRef();
 
-  // Sample notifications data
-  const notifications = [
-    { id: 1, content: "Your coaching session is tomorrow at 2 PM!", date: "2025-07-17" },
-    { id: 2, content: "New community post in the forum!", date: "2025-07-16" },
-    { id: 3, content: "You achieved a new milestone: 7 days smoke-free!", date: "2025-07-15" },
-  ];
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -42,6 +44,20 @@ function LoggedInHome() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      setLoading(true);
+      const data = await getUserNotification(userId);
+      setNotifications(data || []);
+      setError(null);
+    } catch (err) {
+      setError(err.message || "Failed to load notifications!");
+      setNotifications([]); // Đặt mảng rỗng nếu lỗi
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleNavigate = (path) => {
     setMenuOpen(false);
@@ -218,7 +234,9 @@ function LoggedInHome() {
                 <h3 style={{ fontSize: "16px", padding: "10px", color: "#333", borderBottom: "1px solid #eee" }}>
                   Notifications
                 </h3>
-                {notifications.length === 0 ? (
+                {loading && <p style={{ padding: "10px", color: "#666", fontSize: "14px" }}>Loading...</p>}
+                {error && <p style={{ padding: "10px", color: "#ff0000", fontSize: "14px" }}>{error}</p>}
+                {!loading && !error && (notifications.length === 0 ? (
                   <p style={{ padding: "10px", color: "#666", fontSize: "14px" }}>No notifications</p>
                 ) : (
                   notifications.map((notif) => (
@@ -235,7 +253,7 @@ function LoggedInHome() {
                       <p style={{ fontSize: "12px", color: "#888", marginTop: "5px" }}>{notif.date}</p>
                     </div>
                   ))
-                )}
+                ))}
               </div>
             )}
           </div>
