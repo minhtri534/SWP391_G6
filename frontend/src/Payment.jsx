@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import momoQR from "./assets/momo-qr.png";
 import { FaUserCircle } from "react-icons/fa";
+import { getAuthConfig } from "./api/Auth";
 
 function Payment() {
   const location = useLocation();
@@ -35,28 +36,42 @@ function Payment() {
   }, [membershipId]);
 
   const handlePayment = async () => {
-    if (!userId) {
+    /*if (!userId) {
       toast.error("You must be logged in to proceed with payment.");
       navigate("/login");
       return;
-    }
+    }*/
 
     setLoading(true);
     try {
-      await axios.post("http://localhost:5196/api/Booking", {
+      /*await axios.post("http://localhost:5196/Membership/Buy", {
         userId: userId,
-        packageId: packageId,
+        membershipId: membershipId,
         start_Date: new Date().toISOString(),
-      });
+      }, getAuthConfig());*/
+
+      await axios(
+        {
+          method : "POST",
+          url : "http://localhost:5196/Membership/Buy",
+          headers : {'Content-Type': 'application/json'},
+          data : {
+            userId: userId,
+            membershipId: membershipId,
+            start_Date: new Date().toISOString(),
+          }
+        }
+      ).catch((error) => {toast.error(error.message);});
 
       toast.success("Payment successful! Welcome to your upgraded membership.");
       navigate("/home");
     } catch (error) {
-      toast.error("Payment failed. Please try again.");
-      console.error(error);
+      toast.error(error.message);
+      console.log(error);
     } finally {
       setLoading(false);
     }
+    
   };
 
   const handleNavigate = (path) => {

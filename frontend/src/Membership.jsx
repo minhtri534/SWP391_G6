@@ -46,8 +46,8 @@ const Membership = () => {
     navigate("/login");
   };
 
-  const handleBuy = (packageId) => {
-    navigate(`/payment?packageId=${packageId}`);
+  const handleBuy = (membershipId) => {
+    navigate(`/payment?packageId=${membershipId}`);
   };
 
   return (
