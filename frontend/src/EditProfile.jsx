@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import { getProfile, updateProfile, deleteAccount } from "./api/Profile";
 
 const EditProfile = () => {
   const navigate = useNavigate();
   const userName = localStorage.getItem("userName") || "User";
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -18,27 +20,65 @@ const EditProfile = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const profile = await getProfile(userId);
+        setFormData({
+          userName: profile.userName || "",
+          age: profile.age || "",
+          gender: profile.gender || "",
+          phoneNum: profile.phoneNum || "",
+        });
+      } catch (err) {
+        console.error("Failed to fetch profile:", err.message);
+      }
+    };
+    if (userId) fetchProfile();
+  }, [userId]);
+
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
   };
 
   const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
+    userName: "",
     age: "",
     gender: "",
-    address: "",
+    phoneNum: "",
   });
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    console.log("Saved data:", formData);
-    alert("Profile updated!");
+    try {
+      await updateProfile(userId, {
+        userName: formData.userName,
+        age: formData.age,
+        gender: formData.gender,
+        phoneNum: formData.phoneNum,
+      });
+      alert("Profile updated successfully!");
+    } catch (err) {
+      alert("Failed to update profile: " + err.message);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+      try {
+        await deleteAccount(userId);
+        alert("Account deleted successfully!");
+        localStorage.clear();
+        navigate("/login");
+      } catch (err) {
+        alert("Failed to delete account: " + err.message);
+      }
+    }
   };
 
   return (
@@ -113,17 +153,23 @@ const EditProfile = () => {
       <div className="max-w-xl mx-auto bg-white rounded-xl shadow-md p-8 mt-12">
         <h2 className="text-3xl font-bold text-center text-green-700 mb-6">Edit Profile</h2>
         <form onSubmit={handleSave} className="space-y-5">
-          <InputField label="Name" name="name" value={formData.name} onChange={handleChange} />
-          <InputField label="Phone Number" name="phone" value={formData.phone} onChange={handleChange} />
+          <InputField label="Name" name="userName" value={formData.userName} onChange={handleChange} />
+          <InputField label="Phone Number" name="phoneNum" value={formData.phoneNum} onChange={handleChange} />
           <InputField label="Age" name="age" value={formData.age} onChange={handleChange} />
           <InputField label="Gender" name="gender" value={formData.gender} onChange={handleChange} />
-          <InputField label="Password" name="password" value={formData.password} onChange={handleChange} />
 
           <button
             type="submit"
             className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition text-sm font-semibold"
           >
             Save Changes
+          </button>
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition text-sm font-semibold mt-4"
+          >
+            Delete Account
           </button>
         </form>
       </div>
