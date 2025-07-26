@@ -24,13 +24,14 @@ namespace backend.Controllers
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetBadgesByUser(int userId)
         {
-            var result = _context.UserBadges
+            var result = await _context.UserBadges
                 .Where(a => a.UserId == userId)
                 .Join(_context.Badges,
                     b => b.BadgeId,
                     c => c.BadgeId,
-                    (b, c) => new { BadgeName = c.BadgeName, Description = c.Description, Date_Awarded = b.Date_Awarded });
-            if (result == null)
+                    (b, c) => new { BadgeId = c.BadgeId, BadgeName = c.BadgeName, Description = c.Description, Date_Awarded = b.Date_Awarded })
+                    .ToListAsync();
+            if (result.IsNullOrEmpty())
             {
                 return NotFound();
             }
