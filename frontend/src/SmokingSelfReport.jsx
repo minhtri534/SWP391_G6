@@ -27,6 +27,8 @@ const SmokingSelfReport = () => {
   const [hasData, setHasData] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const menuRef = useRef();
   const navigate = useNavigate();
 
@@ -36,6 +38,7 @@ const SmokingSelfReport = () => {
   useEffect(() => {
     const fetchReport = async () => {
       try {
+        setLoading(true);
         const data = await getSmokingStatus(userId);
         if (data) {
           setReport({
@@ -46,10 +49,14 @@ const SmokingSelfReport = () => {
             description: data.description || "",
           });
           setHasData(true);
-          setIsEditing(false);
+        } else {
+          setHasData(false); // Không có dữ liệu, cho phép tạo mới
         }
       } catch (err) {
-        console.error("Error fetching report:", err.message);
+        setError(err.message || "Error fetching smoking status");
+        setHasData(false); // Nếu lỗi, vẫn cho phép tạo mới
+      } finally {
+        setLoading(false);
       }
     };
     fetchReport();
@@ -77,6 +84,7 @@ const SmokingSelfReport = () => {
 
   const handleSave = async () => {
     try {
+      setLoading(true);
       const payload = {
         userId: userId,
         timePeriod: report.time_period,
@@ -96,8 +104,10 @@ const SmokingSelfReport = () => {
       alert("Saved successfully!");
       setIsEditing(false);
     } catch (err) {
-      console.error(err);
+      setError(err.message || "Failed to save smoking status");
       alert("Failed to save: " + err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -174,49 +184,56 @@ const SmokingSelfReport = () => {
           Smoking Self Report
         </h2>
 
-        {isEditing ? (
-          <div className="space-y-4">
-            <InputField label="Time Period" icon={<FaClock />} name="time_period" value={report.time_period} onChange={handleChange} />
-            <InputField label="Amount per Day" icon={<FaSmoking />} name="amount_per_day" value={report.amount_per_day} onChange={handleChange} />
-            <InputField label="Frequency" icon={<FaCalendarAlt />} name="frequency" value={report.frequency} onChange={handleChange} />
-            <InputField label="Price per Pack" icon={<FaDollarSign />} name="price_per_pack" value={report.price_per_pack} onChange={handleChange} />
-            <div>
-              <label className="font-semibold flex items-center gap-2 mb-1">
-                <FaPen />
-                Description:
-              </label>
-              <textarea name="description" rows="4" value={report.description} onChange={handleChange} className="w-full p-2 border rounded" />
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-4 text-gray-800 text-lg">
-            <ReportView label="⏱ Time Period" value={report.time_period} />
-            <ReportView label="🚬 Amount per Day" value={report.amount_per_day} />
-            <ReportView label="📅 Frequency" value={report.frequency} />
-            <ReportView label="💵 Price per Pack" value={report.price_per_pack} />
-            <ReportView label="📝 Description" value={report.description} />
-          </div>
-        )}
+        {loading && <p style={{ textAlign: "center" }}>Loading...</p>}
+        {error && <p style={{ textAlign: "center", color: "#ff0000" }}>{error}</p>}
+        {!loading && !error && (
+          <>
+            {isEditing ? (
+              <div className="space-y-4">
+                <InputField label="Time Period" icon={<FaClock />} name="time_period" value={report.time_period} onChange={handleChange} />
+                <InputField label="Amount per Day" icon={<FaSmoking />} name="amount_per_day" value={report.amount_per_day} onChange={handleChange} />
+                <InputField label="Frequency" icon={<FaCalendarAlt />} name="frequency" value={report.frequency} onChange={handleChange} />
+                <InputField label="Price per Pack" icon={<FaDollarSign />} name="price_per_pack" value={report.price_per_pack} onChange={handleChange} />
+                <div>
+                  <label className="font-semibold flex items-center gap-2 mb-1">
+                    <FaPen />
+                    Description:
+                  </label>
+                  <textarea name="description" rows="4" value={report.description} onChange={handleChange} className="w-full p-2 border rounded" />
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4 text-gray-800 text-lg">
+                <ReportView label="⏱ Time Period" value={report.time_period} />
+                <ReportView label="🚬 Amount per Day" value={report.amount_per_day} />
+                <ReportView label="📅 Frequency" value={report.frequency} />
+                <ReportView label="💵 Price per Pack" value={report.price_per_pack} />
+                <ReportView label="📝 Description" value={report.description} />
+              </div>
+            )}
 
-        <div className="mt-6 flex justify-end gap-4">
-          {!isEditing ? (
-            <button
-              onClick={() => setIsEditing(true)}
-              className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-            >
-              <FaPen />
-              Edit
-            </button>
-          ) : (
-            <button
-              onClick={handleSave}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-            >
-              <FaSave />
-              Save
-            </button>
-          )}
-        </div>
+            <div className="mt-6 flex justify-end gap-4">
+              {!isEditing ? (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+                >
+                  <FaPen />
+                  Edit
+                </button>
+              ) : (
+                <button
+                  onClick={handleSave}
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+                  disabled={loading}
+                >
+                  <FaSave />
+                  Save
+                </button>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
