@@ -34,6 +34,7 @@ namespace backend.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<TransactionMoney> TransactionMoneys { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
