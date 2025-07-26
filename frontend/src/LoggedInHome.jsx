@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaUserCircle, FaBell } from "react-icons/fa";
-import { toast } from "react-toastify"; // Thêm react-toastify
-import "react-toastify/dist/ReactToastify.css"; // Import CSS cho toast
+import { FaUserCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import NoSmokingIcon from "./assets/no-smoking.png";
 import Coach from "./assets/instructor.png";
 import Report from "./assets/immigration.png";
@@ -11,53 +11,24 @@ import Forums from "./assets/meeting.png";
 import Feedback from "./assets/talking.png";
 import QuitPlan from "./assets/project.png";
 import Progress from "./assets/progress.png";
-import { getUserNotification } from "./api/Notification"; // Sử dụng getUserNotification
 
 function LoggedInHome() {
   const navigate = useNavigate();
   const userName = localStorage.getItem("userName") || "User";
-  const userId = localStorage.getItem("userId") || "1"; // Giả định userId từ localStorage hoặc mặc định "1"
-  // Kiểm tra trạng thái membership từ localStorage, mặc định là guest (false)
   const isMember = localStorage.getItem("isMember") === "true";
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
-  const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const menuRef = useRef();
-  const notifRef = useRef();
-
-  useEffect(() => {
-    fetchNotifications();
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setMenuOpen(false);
       }
-      if (notifRef.current && !notifRef.current.contains(e.target)) {
-        setNotifOpen(false);
-      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  const fetchNotifications = async () => {
-    try {
-      setLoading(true);
-      const data = await getUserNotification(userId);
-      setNotifications(data || []);
-      setError(null);
-    } catch (err) {
-      setError(err.message || "Failed to load notifications!");
-      setNotifications([]); // Đặt mảng rỗng nếu lỗi
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleNavigate = (path) => {
     setMenuOpen(false);
@@ -171,17 +142,16 @@ function LoggedInHome() {
     },
   ];
 
-  // Split articles for top (4) and bottom (3) rows
   const topRowArticles = [
     { title: "📝 Smoking Self-Report", desc: "Help us understand your smoking habits through a short form. It tailors your quitting journey more effectively.", img: Report, onClick: handleNavigateReport },
     { title: "🎯 Coaching Sessions", desc: "Book 1-on-1 time with certified coaches. Build a plan, stay motivated, and succeed in quitting smoking.", img: Coach, onClick: handleNavigateCoaching },
-    articleItems[0], // Achievements Overview
-    articleItems[1], // Community Forums
+    articleItems[0],
+    articleItems[1],
   ];
   const bottomRowArticles = [
-    articleItems[2], // Feedback & Reviews
-    articleItems[3], // Start with Quitplan now
-    articleItems[4], // Daily Progress
+    articleItems[2],
+    articleItems[3],
+    articleItems[4],
   ];
 
   return (
@@ -193,111 +163,46 @@ function LoggedInHome() {
             <span style={{ color: "#f57c00" }}>Quit</span><span style={{ color: "#69c770" }}>Smoking.com</span>
           </h1>
         </Link>
-        <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-          <div style={{ position: "relative" }} ref={notifRef}>
-            <div
-              onClick={() => setNotifOpen(!notifOpen)}
-              style={{ cursor: "pointer", position: "relative", padding: "8px", borderRadius: "50%", background: "white", boxShadow: "0 2px 6px rgba(0,0,0,0.1)" }}
-            >
-              <FaBell size={22} color="#4CAF50" />
-              {notifications.length > 0 && (
-                <span
-                  style={{
-                    position: "absolute",
-                    top: "2px",
-                    right: "2px",
-                    width: "10px",
-                    height: "10px",
-                    background: "red",
-                    borderRadius: "50%",
-                    border: "1px solid white",
-                  }}
-                ></span>
-              )}
-            </div>
-            {notifOpen && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: "110%",
-                  right: 0,
-                  background: "white",
-                  boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
-                  borderRadius: "8px",
-                  zIndex: 999,
-                  width: "300px",
-                  maxHeight: "400px",
-                  overflowY: "auto",
-                  padding: "10px",
-                }}
-              >
-                <h3 style={{ fontSize: "16px", padding: "10px", color: "#333", borderBottom: "1px solid #eee" }}>
-                  Notifications
-                </h3>
-                {loading && <p style={{ padding: "10px", color: "#666", fontSize: "14px" }}>Loading...</p>}
-                {error && <p style={{ padding: "10px", color: "#ff0000", fontSize: "14px" }}>{error}</p>}
-                {!loading && !error && (notifications.length === 0 ? (
-                  <p style={{ padding: "10px", color: "#666", fontSize: "14px" }}>No notifications</p>
-                ) : (
-                  notifications.map((notif) => (
-                    <div
-                      key={notif.id}
-                      style={{
-                        padding: "10px",
-                        borderBottom: "1px solid #eee",
-                        fontSize: "14px",
-                        color: "#333",
-                      }}
-                    >
-                      <p style={{ margin: 0 }}>{notif.content}</p>
-                      <p style={{ fontSize: "12px", color: "#888", marginTop: "5px" }}>{notif.date}</p>
-                    </div>
-                  ))
-                ))}
-              </div>
-            )}
+        <div style={{ position: "relative" }} ref={menuRef}>
+          <div
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              cursor: "pointer",
+              background: "white",
+              padding: "8px 12px",
+              borderRadius: "20px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+              fontWeight: "500",
+            }}
+          >
+            <FaUserCircle size={22} color="#4CAF50" />
+            <span>{userName}</span>
           </div>
-          <div style={{ position: "relative" }} ref={menuRef}>
-            <div
-              onClick={() => setMenuOpen(!menuOpen)}
+          {menuOpen && (
+            <ul
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                cursor: "pointer",
+                position: "absolute",
+                top: "110%",
+                right: 0,
                 background: "white",
-                padding: "8px 12px",
-                borderRadius: "20px",
-                boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-                fontWeight: "500",
+                listStyle: "none",
+                padding: "10px 0",
+                boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
+                borderRadius: "8px",
+                zIndex: 999,
+                width: "180px",
               }}
             >
-              <FaUserCircle size={22} color="#4CAF50" />
-              <span>{userName}</span>
-            </div>
-            {menuOpen && (
-              <ul
-                style={{
-                  position: "absolute",
-                  top: "110%",
-                  right: 0,
-                  background: "white",
-                  listStyle: "none",
-                  padding: "10px 0",
-                  boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
-                  borderRadius: "8px",
-                  zIndex: 999,
-                  width: "180px",
-                }}
-              >
-                <MenuItem label="👤 Edit Profile" onClick={() => handleNavigate("/edit-profile")} />
-                <MenuItem label="🏆 My Coach" onClick={() => handleNavigate("/mycoach")} />
-                <MenuItem label="⚙️ Settings" onClick={() => handleNavigate("/settings")} />
-                <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
-                <MenuItem label="🔓 Logout" onClick={handleLogout} />
-              </ul>
-            )}
-          </div>
+              <MenuItem label="👤 Edit Profile" onClick={() => handleNavigate("/edit-profile")} />
+              <MenuItem label="🏆 My Coach" onClick={() => handleNavigate("/mycoach")} />
+              <MenuItem label="⚙️ Settings" onClick={() => handleNavigate("/settings")} />
+              <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
+              <MenuItem label="🔓 Logout" onClick={handleLogout} />
+            </ul>
+          )}
         </div>
       </header>
 

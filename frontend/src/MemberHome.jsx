@@ -9,21 +9,20 @@ import Forums from "./assets/meeting.png";
 import Feedback from "./assets/talking.png";
 import QuitPlan from "./assets/project.png";
 import Progress from "./assets/progress.png";
+import { getNotifications } from "./api/Notification2";
 
 function MemberHome() {
   const navigate = useNavigate();
   const userName = localStorage.getItem("userName") || "User";
+  const userId = localStorage.getItem("userId");
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const menuRef = useRef();
   const notifRef = useRef();
-
-  const notifications = [
-    { id: 1, content: "Your coaching session is tomorrow at 2 PM!", date: "2025-07-17" },
-    { id: 2, content: "New community post in the forum!", date: "2025-07-16" },
-    { id: 3, content: "You achieved a new milestone: 7 days smoke-free!", date: "2025-07-15" },
-  ];
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -37,6 +36,23 @@ function MemberHome() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        setLoading(true);
+        if (userId) {
+          const data = await getNotifications(userId);
+          setNotifications(data);
+        }
+      } catch (err) {
+        setError(err.message || "Failed to load notifications");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchNotifications();
+  }, [userId]);
 
   const handleNavigate = (path) => {
     setMenuOpen(false);
@@ -96,6 +112,11 @@ function MemberHome() {
     articleItems[4],
   ];
 
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    return isNaN(date) ? "Invalid Date" : date.toLocaleDateString();
+  };
+
   return (
     <div style={{ fontFamily: '"Segoe UI", sans-serif', background: "linear-gradient(to bottom, #a8e063, #56ab2f)", color: "#111", minHeight: "100vh" }}>
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "15px 30px", background: "white", borderBottom: "2px solid #ccc" }}>
@@ -143,16 +164,20 @@ function MemberHome() {
                 }}
               >
                 <h3 style={{ fontSize: "16px", padding: "10px", color: "#333", borderBottom: "1px solid #eee" }}>Notifications</h3>
-                {notifications.length === 0 ? (
+                {loading ? (
+                  <p style={{ padding: "10px", color: "#666", fontSize: "14px" }}>Loading...</p>
+                ) : error ? (
+                  <p style={{ padding: "10px", color: "#666", fontSize: "14px" }}>{error}</p>
+                ) : notifications.length === 0 ? (
                   <p style={{ padding: "10px", color: "#666", fontSize: "14px" }}>No notifications</p>
                 ) : (
                   notifications.map((notif) => (
                     <div
-                      key={notif.id}
+                      key={notif.notificationId}
                       style={{ padding: "10px", borderBottom: "1px solid #eee", fontSize: "14px", color: "#333" }}
                     >
-                      <p style={{ margin: 0 }}>{notif.content}</p>
-                      <p style={{ fontSize: "12px", color: "#888", marginTop: "5px" }}>{notif.date}</p>
+                      <p style={{ margin: 0 }}>{notif.message}</p>
+                      <p style={{ fontSize: "12px", color: "#888", marginTop: "5px" }}>{formatDate(notif.send_date)}</p>
                     </div>
                   ))
                 )}
