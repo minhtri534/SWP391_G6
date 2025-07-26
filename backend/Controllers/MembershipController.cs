@@ -3,6 +3,7 @@ using backend.Entities;
 using Microsoft.AspNetCore.Mvc;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 [Authorize]
 [ApiController]
