@@ -31,7 +31,9 @@ const MyCoach = () => {
       try {
         setLoading(true);
         const data = await getChats(userId, coachId);
-        setMessages(data);
+        // Sắp xếp tin nhắn từ cũ đến mới dựa trên chat_date
+        const sortedMessages = data.sort((a, b) => new Date(a.chat_date) - new Date(b.chat_date));
+        setMessages(sortedMessages);
       } catch (err) {
         setError(err.message || "Error fetching chats");
       } finally {
@@ -61,7 +63,7 @@ const MyCoach = () => {
     try {
       setLoading(true);
       await createChat(newMessage);
-      const updatedMessages = [...messages, newMessage];
+      const updatedMessages = [...messages, newMessage].sort((a, b) => new Date(a.chat_date) - new Date(b.chat_date));
       setMessages(updatedMessages);
       setChatInput("");
     } catch (err) {
@@ -203,7 +205,7 @@ const MyCoach = () => {
                   background: "#f9f9f9",
                 }}
               >
-                {messages.map((msg) => (
+                {messages.map((msg, index) => (
                   <div
                     key={msg.chatId}
                     style={{
@@ -223,6 +225,11 @@ const MyCoach = () => {
                     >
                       {msg.content}
                     </span>
+                    {index > 0 && (
+                      <div style={{ fontSize: "0.7em", color: "#666", marginTop: "2px" }}>
+                        Previous: {new Date(messages[index - 1].chat_date).toLocaleTimeString()}
+                      </div>
+                    )}
                     <div style={{ fontSize: "0.7em", color: "#666" }}>
                       {msg.status === "Replied" && " (Replied)"}
                     </div>
