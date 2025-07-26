@@ -29,10 +29,10 @@ namespace backend.Entities
         [Column("description")]
         public required string? Description { get; set; }
         [ForeignKey (nameof (UserId))]
-        public required User User { get; set; }
+        public User? User { get; set; }
 
         [ForeignKey(nameof (MilestoneId))]
-        public required PlanMilestone PlanMilestone { get; set; }
+        public PlanMilestone? PlanMilestone { get; set; }
 
     }
 }

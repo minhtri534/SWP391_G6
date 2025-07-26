@@ -20,7 +20,7 @@ namespace backend.Entities
         public decimal? Price { get; set; }
         [Column("duration")]
 
-        public int? Duration { get; set; }
+        public int Duration { get; set; }
 
         
     }

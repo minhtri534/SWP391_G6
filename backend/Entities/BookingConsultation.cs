@@ -14,7 +14,7 @@ namespace backend.Entities
         [ForeignKey("coachId")]
         public int? CoachId { get; set; }
         [Column("date")]
-        public DateTime? Date { get; set; }
+        public DateTime Date { get; set; }
         [Column("type")]
         public string? Type { get; set; }
         [Column("status")]

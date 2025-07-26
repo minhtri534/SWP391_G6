@@ -22,7 +22,7 @@ public class User
     [StringLength(100)]
 	public string? Password { get; set; }
 	[Column("roleId")]
-    public int? RoleId { get; set; }
+    public int RoleId { get; set; }
 	[Column("status")]
     [MaxLength(100)]
 	public string? Status { get; set; }
