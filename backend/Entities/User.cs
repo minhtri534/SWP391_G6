@@ -12,24 +12,23 @@ public class User
     public int UserId { get; set; }
 	[StringLength(100)]
 	[Column("userName")]
-    public string UserName { get; set; }
+    public string? UserName { get; set; }
 	[Column("age")]
-    public int Age { get; set; } = default(int);
+    public int? Age { get; set; } 
 	[Column("gender")]
-    public string Gender { get; set; } = String.Empty;
-	[Column("phoneNum")]
-    public string PhoneNum { get; set; }
+    public string? Gender { get; set; }
+    public string? PhoneNum { get; set; }
 	[Column("password")]
     [StringLength(100)]
-	public string Password { get; set; }
+	public string? Password { get; set; }
 	[Column("roleId")]
-    public int RoleId { get; set; }
+    public int? RoleId { get; set; }
 	[Column("status")]
     [MaxLength(100)]
-	public string Status { get; set; }
+	public string? Status { get; set; }
 	[Column("joinDate")]
-    public DateTime JoinDate { get; set; }
+    public DateTime? JoinDate { get; set; }
 	[ForeignKey(nameof(RoleId))]
-	public Role Role { get; set; }
+	public Role? Role { get; set; }
 }
 

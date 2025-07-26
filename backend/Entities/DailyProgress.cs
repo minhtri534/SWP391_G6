@@ -9,15 +9,15 @@ namespace backend.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("progressId")]
         public int ProgressId { get; set; }
-        public int MilestoneId { get; set; }
         public string? Note { get; set; }
         public bool No_Smoking { get; set; }
         public string? Symptoms { get; set; }
         public DateTime Date { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         
-        [ForeignKey("userId")]
+        [ForeignKey(nameof(UserId))]
         public User? User { get; set; }
     }
 }

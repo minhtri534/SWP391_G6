@@ -10,11 +10,11 @@ namespace backend.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BookingId { get; set; }
         [ForeignKey("userId")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         [ForeignKey("coachId")]
-        public int CoachId { get; set; }
+        public int? CoachId { get; set; }
         [Column("date")]
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
         [Column("type")]
         public string? Type { get; set; }
         [Column("status")]

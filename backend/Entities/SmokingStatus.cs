@@ -10,30 +10,29 @@ namespace backend.Entities
         [Column("statusId")]
         public int StatusId { get; set; }
         [Column("userId")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         [Column("milestoneId")]
-        public int MilestoneId { get; set; }
+        public int? MilestoneId { get; set; }
         [MaxLength (50)]
         [Column("time_period")]
         
-        public string TimePeriod { get; set; }
+        public string? TimePeriod { get; set; }
         [Column("amount_per_day")]
-        public int AmountPerDay { get; set; }
+        public int? AmountPerDay { get; set; }
         [MaxLength (50)]
         [Column("frequency")]
-        public string Frequency { get; set; }
+        public string? Frequency { get; set; }
 
-        [Column(TypeName = "decimal(10, 2)")]
-        [Column("price_per_pack")]
-        public Decimal PricePerPack { get; set; }
-        [Column(TypeName = "text")]
+        [Column("price_per_pack", TypeName = "decimal(10, 2)")]
+        
+        public decimal PricePerPack { get; set; }
         [Column("description")]
-        public string Description { get; set; }
+        public required string? Description { get; set; }
         [ForeignKey (nameof (UserId))]
-        public User User { get; set; }
+        public required User User { get; set; }
 
         [ForeignKey(nameof (MilestoneId))]
-        public PlanMilestone PlanMilestone { get; set; }
+        public required PlanMilestone PlanMilestone { get; set; }
 
     }
 }

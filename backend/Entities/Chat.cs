@@ -9,11 +9,11 @@ namespace backend.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("chatId")]
-        public int ChatId { get; set; }
+        public int? ChatId { get; set; }
         [Column("userId")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         [Column("coachId")]
-        public int CoachId { get; set; }
+        public int? CoachId { get; set; }
         [Column("content")]
         public string? Content { get; set; }
         [Column("type")]
@@ -21,7 +21,7 @@ namespace backend.Entities
         [Column("status")]
         public string? Status { get; set; }
         [Column("chat_date")]
-        public DateTime Chat_Date { get; set; }
+        public DateTime? Chat_Date { get; set; }
         [Column("sender")]
         public string? Sender { get; set; }
     }

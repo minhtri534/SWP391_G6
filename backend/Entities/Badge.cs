@@ -19,6 +19,6 @@ namespace backend.Entities
         [Column("condition_type")]
         public string? Condition_Type { get; set; }
         [Column("value")]
-        public int Value { get; set; }
+        public int? Value { get; set; }
     }
 }

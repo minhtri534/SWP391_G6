@@ -3,8 +3,24 @@
   "WorkspaceRootPath": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\coachplanbadge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\coachplanbadge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\paymentmembership.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\paymentmembership.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\transactionmoney.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\transactionmoney.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\membership.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\membership.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\coachinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -13,6 +29,26 @@
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\coachpackage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\coachpackage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\feedback.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\feedback.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\dailyprogress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\dailyprogress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\coachplanbadge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\coachplanbadge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\chat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -33,10 +69,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\smokingstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\smokingstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\userbadge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -67,10 +99,6 @@
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\planmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\quitplancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\quitplancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -93,14 +121,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\trackprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\trackprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\paymentmembership.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\paymentmembership.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\feedback.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\feedback.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\quitplan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -141,120 +161,211 @@
   ],
   "DocumentGroupContainers": [
     {
-      "Orientation": 0,
+      "Orientation": 1,
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "DockedHeight": 200,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "CoachPlanBadge.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachPlanBadge.cs",
-              "RelativeDocumentMoniker": "Entities\\CoachPlanBadge.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachPlanBadge.cs",
-              "RelativeToolTip": "Entities\\CoachPlanBadge.cs",
-              "ViewState": "AgIAAAYAAACgZmZmZuYswBQAAAABAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "TransactionMoney.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\TransactionMoney.cs",
+              "RelativeDocumentMoniker": "Entities\\TransactionMoney.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\TransactionMoney.cs",
+              "RelativeToolTip": "Entities\\TransactionMoney.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAA8wBkAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-26T09:20:27.306Z",
+              "WhenOpened": "2025-07-26T11:25:36.737Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
+              "Title": "Membership.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Membership.cs",
+              "RelativeDocumentMoniker": "Entities\\Membership.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Membership.cs",
+              "RelativeToolTip": "Entities\\Membership.cs",
+              "ViewState": "AgIAAAgAAADAZWZmZuYTwBQAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T10:44:29.265Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PaymentMemberShip.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PaymentMemberShip.cs",
+              "RelativeDocumentMoniker": "Entities\\PaymentMemberShip.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PaymentMemberShip.cs",
+              "RelativeToolTip": "Entities\\PaymentMemberShip.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:17:20.771Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AppDBContext.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Data\\AppDBContext.cs",
+              "RelativeDocumentMoniker": "Data\\AppDBContext.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Data\\AppDBContext.cs",
+              "RelativeToolTip": "Data\\AppDBContext.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAA9wCgAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:30:28.421Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Notification.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Notification.cs",
+              "RelativeDocumentMoniker": "Entities\\Notification.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Notification.cs",
+              "RelativeToolTip": "Entities\\Notification.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T11:24:32.332Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "CoachPackage.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachPackage.cs",
               "RelativeDocumentMoniker": "Entities\\CoachPackage.cs",
               "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachPackage.cs",
               "RelativeToolTip": "Entities\\CoachPackage.cs",
-              "ViewState": "AgIAAAQAAADgAQAAAAAIwBcAAAAwAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAASwBcAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-26T09:14:52.531Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CoachInfo.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachInfo.cs",
-              "RelativeDocumentMoniker": "Entities\\CoachInfo.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachInfo.cs",
-              "RelativeToolTip": "Entities\\CoachInfo.cs",
-              "ViewState": "AgIAAA8AAACAmJmZmZkUwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-26T09:14:49.131Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Chat.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Chat.cs",
-              "RelativeDocumentMoniker": "Entities\\Chat.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Chat.cs",
-              "RelativeToolTip": "Entities\\Chat.cs",
-              "ViewState": "AgIAAAwAAADAMzMzM3MmwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-26T09:14:46.317Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Badge.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Badge.cs",
-              "RelativeDocumentMoniker": "Entities\\Badge.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Badge.cs",
-              "RelativeToolTip": "Entities\\Badge.cs",
-              "ViewState": "AgIAAA0AAADAMzMzM7MRwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-26T09:14:36.047Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "UserCoachPackage.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserCoachPackage.cs",
-              "RelativeDocumentMoniker": "Entities\\UserCoachPackage.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserCoachPackage.cs",
-              "RelativeToolTip": "Entities\\UserCoachPackage.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-26T09:10:28.513Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "UserBadge.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserBadge.cs",
-              "RelativeDocumentMoniker": "Entities\\UserBadge.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserBadge.cs",
-              "RelativeToolTip": "Entities\\UserBadge.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-26T09:10:25.723Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "User.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\User.cs",
               "RelativeDocumentMoniker": "Entities\\User.cs",
               "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\User.cs",
               "RelativeToolTip": "Entities\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAABAAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-26T09:10:22.577Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Feedback.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Feedback.cs",
+              "RelativeDocumentMoniker": "Entities\\Feedback.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Feedback.cs",
+              "RelativeToolTip": "Entities\\Feedback.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAuwB4AAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:20:21.477Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CoachInfo.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachInfo.cs",
+              "RelativeDocumentMoniker": "Entities\\CoachInfo.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachInfo.cs",
+              "RelativeToolTip": "Entities\\CoachInfo.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAIwAwAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T09:14:49.131Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "DailyProgress.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\DailyProgress.cs",
+              "RelativeDocumentMoniker": "Entities\\DailyProgress.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\DailyProgress.cs",
+              "RelativeToolTip": "Entities\\DailyProgress.cs",
+              "ViewState": "AgIAABAAAACAMTMzMzMGwBEAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T10:42:46.127Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Comment.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Comment.cs",
+              "RelativeDocumentMoniker": "Entities\\Comment.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Comment.cs",
+              "RelativeToolTip": "Entities\\Comment.cs",
+              "ViewState": "AgIAAAQAAABAZmZmZqYwwBYAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T10:42:40.961Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 11,
+              "Title": "CoachPlanBadge.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachPlanBadge.cs",
+              "RelativeDocumentMoniker": "Entities\\CoachPlanBadge.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachPlanBadge.cs",
+              "RelativeToolTip": "Entities\\CoachPlanBadge.cs",
+              "ViewState": "AgIAAAYAAACOmZmZmZknwBQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T09:20:27.306Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Chat.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Chat.cs",
+              "RelativeDocumentMoniker": "Entities\\Chat.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Chat.cs",
+              "RelativeToolTip": "Entities\\Chat.cs",
+              "ViewState": "AgIAAA0AAAAAa2ZmZmbwvxcAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T09:14:46.317Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "BookingConsultation.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\BookingConsultation.cs",
+              "RelativeDocumentMoniker": "Entities\\BookingConsultation.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\BookingConsultation.cs",
+              "RelativeToolTip": "Entities\\BookingConsultation.cs",
+              "ViewState": "AgIAAAgAAAAAAgAAAAAAwBAAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:21:33.68Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Badge.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Badge.cs",
+              "RelativeDocumentMoniker": "Entities\\Badge.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Badge.cs",
+              "RelativeToolTip": "Entities\\Badge.cs",
+              "ViewState": "AgIAAAYAAAAAb2ZmZmb0vxMAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T09:14:36.047Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
               "Title": "Role.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Role.cs",
               "RelativeDocumentMoniker": "Entities\\Role.cs",
@@ -262,12 +373,11 @@
               "RelativeToolTip": "Entities\\Role.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-26T09:10:19.412Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-26T09:10:19.412Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 16,
               "Title": "SmokingStatus.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\SmokingStatus.cs",
               "RelativeDocumentMoniker": "Entities\\SmokingStatus.cs",
@@ -275,12 +385,35 @@
               "RelativeToolTip": "Entities\\SmokingStatus.cs",
               "ViewState": "AgIAABoAAAAANDMzM7MtwA0AAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-26T09:10:01.412Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-26T09:10:01.412Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 17,
+              "Title": "UserBadge.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserBadge.cs",
+              "RelativeDocumentMoniker": "Entities\\UserBadge.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserBadge.cs",
+              "RelativeToolTip": "Entities\\UserBadge.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T09:10:25.723Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "UserCoachPackage.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserCoachPackage.cs",
+              "RelativeDocumentMoniker": "Entities\\UserCoachPackage.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserCoachPackage.cs",
+              "RelativeToolTip": "Entities\\UserCoachPackage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T09:10:28.513Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
               "Title": "CRUDMilestone.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\CRUDMilestone.cs",
               "RelativeDocumentMoniker": "Controllers\\CRUDMilestone.cs",
@@ -288,12 +421,11 @@
               "RelativeToolTip": "Controllers\\CRUDMilestone.cs",
               "ViewState": "AgIAABIAAABg0MzMzIw1wB8AAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-19T05:57:48.852Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-19T05:57:48.852Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 26,
               "Title": "BookingPaymentController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\BookingPaymentController.cs",
               "RelativeDocumentMoniker": "Controllers\\BookingPaymentController.cs",
@@ -305,7 +437,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 15,
               "Title": "AccountManage(Admin)cs.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManage(Admin)cs.cs",
               "RelativeDocumentMoniker": "Controllers\\AccountManage(Admin)cs.cs",
@@ -313,25 +445,11 @@
               "RelativeToolTip": "Controllers\\AccountManage(Admin)cs.cs",
               "ViewState": "AgIAAAwAAACAzczMzMwnwBcAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-18T16:06:36.806Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-18T16:06:36.806Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "BookingConsultation.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\BookingConsultation.cs",
-              "RelativeDocumentMoniker": "Entities\\BookingConsultation.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\BookingConsultation.cs",
-              "RelativeToolTip": "Entities\\BookingConsultation.cs",
-              "ViewState": "AgIAAAgAAAAAAgAAAAAAwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-19T02:21:33.68Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 22,
               "Title": "SmokingStatusRequest.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\SmokingStatusRequest.cs",
               "RelativeDocumentMoniker": "Models\\SmokingStatusRequest.cs",
@@ -343,7 +461,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 25,
               "Title": "QuiltPlanDTO.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\QuiltPlanDTO.cs",
               "RelativeDocumentMoniker": "Models\\QuiltPlanDTO.cs",
@@ -355,7 +473,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 24,
               "Title": "QuitPlanController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\QuitPlanController.cs",
               "RelativeDocumentMoniker": "Controllers\\QuitPlanController.cs",
@@ -367,7 +485,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 21,
               "Title": "PlanMilestoneRequest.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\PlanMilestoneRequest.cs",
               "RelativeDocumentMoniker": "Models\\PlanMilestoneRequest.cs",
@@ -379,7 +497,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 23,
               "Title": "PlanMilestone.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PlanMilestone.cs",
               "RelativeDocumentMoniker": "Entities\\PlanMilestone.cs",
@@ -391,19 +509,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "AppDBContext.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Data\\AppDBContext.cs",
-              "RelativeDocumentMoniker": "Data\\AppDBContext.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Data\\AppDBContext.cs",
-              "RelativeToolTip": "Data\\AppDBContext.cs",
-              "ViewState": "AgIAACsAAACAnJmZmdkowAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-19T02:30:28.421Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 28,
               "Title": "ChatController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\ChatController.cs",
               "RelativeDocumentMoniker": "Controllers\\ChatController.cs",
@@ -415,7 +521,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 29,
               "Title": "TrackProgressController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\TrackProgressController.cs",
               "RelativeDocumentMoniker": "Controllers\\TrackProgressController.cs",
@@ -427,7 +533,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 27,
               "Title": "CreateQuitPlanRequest.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\CreateQuitPlanRequest.cs",
               "RelativeDocumentMoniker": "Models\\CreateQuitPlanRequest.cs",
@@ -439,19 +545,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "Feedback.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Feedback.cs",
-              "RelativeDocumentMoniker": "Entities\\Feedback.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Feedback.cs",
-              "RelativeToolTip": "Entities\\Feedback.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-19T02:20:21.477Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 30,
               "Title": "QuitPlan.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\QuitPlan.cs",
               "RelativeDocumentMoniker": "Entities\\QuitPlan.cs",
@@ -463,19 +557,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "PaymentMemberShip.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PaymentMemberShip.cs",
-              "RelativeDocumentMoniker": "Entities\\PaymentMemberShip.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PaymentMemberShip.cs",
-              "RelativeToolTip": "Entities\\PaymentMemberShip.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-19T02:17:20.771Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 33,
               "Title": "AuthController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
@@ -487,7 +569,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 32,
               "Title": "ReportController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\ReportController.cs",
               "RelativeDocumentMoniker": "Controllers\\ReportController.cs",
@@ -499,7 +581,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 31,
               "Title": "SmokingStatusController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\SmokingStatusController.cs",
               "RelativeDocumentMoniker": "Controllers\\SmokingStatusController.cs",
@@ -511,7 +593,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 34,
               "Title": "LoginResponse.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\LoginResponse.cs",
               "RelativeDocumentMoniker": "Models\\LoginResponse.cs",
@@ -523,7 +605,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 36,
               "Title": "MembershipController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\MembershipController.cs",
               "RelativeDocumentMoniker": "Controllers\\MembershipController.cs",
@@ -535,7 +617,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 38,
               "Title": "BadgeManagementController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\BadgeManagementController.cs",
               "RelativeDocumentMoniker": "Controllers\\BadgeManagementController.cs",
@@ -547,7 +629,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 37,
               "Title": "BadgeController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\BadgeController.cs",
               "RelativeDocumentMoniker": "Controllers\\BadgeController.cs",
@@ -559,7 +641,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 35,
               "Title": "LoginRequest.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\LoginRequest.cs",
               "RelativeDocumentMoniker": "Models\\LoginRequest.cs",
@@ -568,6 +650,16 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-18T16:21:24.701Z"
+            }
+          ]
+        },
+        {
+          "DockedHeight": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             }
           ]
         }
