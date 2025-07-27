@@ -27,11 +27,11 @@ const BookingCoach = () => {
         setLoading(true);
         const coaches = await getCoaches();
         const packages = await Promise.all(
-          coaches.map((coach) => getCoachPackagesByCoachId(coach.id))
+          coaches.map((coach) => getCoachPackagesByCoachId(coach.coachId))
         );
         const flattenedPackages = packages.flat().map(pkg => ({
           ...pkg,
-          duration: `${pkg.duration} days`, // Convert duration to readable format
+          duration: `${pkg.duration_Months} month(s)`, // Convert duration to readable format
           price: `$${pkg.price}`, // Add $ symbol to price
         }));
         setCoachPackages(flattenedPackages);

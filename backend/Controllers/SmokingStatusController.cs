@@ -28,7 +28,7 @@ namespace backend.Controllers
             {
                 return NotFound();
             }
-            return Ok();
+            return Ok(result);
         }
         [HttpPost]
         [Authorize(Roles = "2")]

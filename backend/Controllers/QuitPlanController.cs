@@ -17,7 +17,7 @@ public class QuitPlanController : ControllerBase
 
     [Authorize]
     [HttpGet("user/{userId}")]
-    public async Task<ActionResult<IEnumerable<QuitPlanDto>>> GetQuitPlansByUser(int userId)
+    public async Task<ActionResult<IEnumerable<QuitPlanDto>>> GetQuitPlansByUserId(int userId)
     {
         var plans = await _context.QuitPlans
             .Where(q => q.UserId == userId)

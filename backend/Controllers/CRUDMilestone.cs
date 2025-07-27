@@ -57,7 +57,7 @@ public class CRUDMilestoneController : ControllerBase
 
         if (milestones.IsNullOrEmpty())
         {
-            return NotFound(milestones);
+            return NotFound();
         }
         return Ok(milestones);
     }
