@@ -55,7 +55,7 @@ namespace backend.Controllers
             {
                 var results = await _context.ChatLog
                     .Where(a => a.UserId == request.UserId && a.CoachId == request.CoachId)
-                    .OrderByDescending(a => a.Chat_Date)
+                    //.OrderByDescending(a => a.Chat_Date)
                     .ToListAsync();
 
                 if (results.IsNullOrEmpty())

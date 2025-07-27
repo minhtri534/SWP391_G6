@@ -9,7 +9,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "4")]
+    [Authorize(Roles = "3,4")]
     public class NotificationManagementController : ControllerBase
     {
         private readonly AppDbContext _context;
