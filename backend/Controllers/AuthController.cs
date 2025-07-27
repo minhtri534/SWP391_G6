@@ -49,7 +49,7 @@ namespace backend.Controllers
                 Age = user.Age,
                 Gender = user.Gender,
                 Status = "Active",
-                RoleId = 2,
+                RoleId = 1,
                 JoinDate = DateTime.Now
 
             };

@@ -47,7 +47,7 @@ const Membership = () => {
   };
 
   const handleBuy = (membershipId) => {
-    navigate(`/payment?packageId=${membershipId}`);
+    navigate(`/payment?membershipId=${membershipId}`);
   };
 
   return (
@@ -145,7 +145,7 @@ const Membership = () => {
           }}>
             {memberships.map((m) => (
               <div
-                key={m.id}
+                key={m.membershipId}
                 style={{
                   background: "white",
                   borderRadius: "0.75rem",
@@ -183,7 +183,7 @@ const Membership = () => {
                 </p>
                 <div style={{ display: "flex", gap: "0.5rem" }}>
                   <button
-                    onClick={() => handleBuy(m.id)}
+                    onClick={() => handleBuy(m.membershipId)}
                     style={{
                       flex: 1,
                       padding: "0.5rem",

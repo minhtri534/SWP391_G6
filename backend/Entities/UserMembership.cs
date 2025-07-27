@@ -16,10 +16,10 @@ namespace backend.Entities
         public int MembershipId { get; set; }
 
         [Required]
-        public DateTime StartDate { get; set; }
+        public DateTime Start_Date { get; set; }
 
         [Required]
-        public DateTime EndDate { get; set; }
+        public DateTime End_Date { get; set; }
 
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }

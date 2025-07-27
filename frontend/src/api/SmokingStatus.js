@@ -41,7 +41,7 @@ export async function updateSmokingStatus({ userId, timePeriod, amountPerDay, fr
 			pricePerPack: pricePerPack,
 			description: description,
 		};
-		const response = await axios.patch(`${baseApi}/api/SmokingStatus`, payload, getAuthConfig());
+		const response = await axios.put(`${baseApi}/api/SmokingStatus`, payload, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Update smoking status failed!";

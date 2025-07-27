@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import momoQR from "./assets/momo-qr.png";
 import { FaUserCircle } from "react-icons/fa";
 import { getAuthConfig } from "./api/Auth";
+import { buyMembershipPlan } from "./api/Membership"
 
 function Payment() {
   const location = useLocation();
   const navigate = useNavigate();
-  const membershipId = location.state?.membershipId;
+  const queryParams = new URLSearchParams(location.search);
+  const membershipId = queryParams.get("membershipId");
   const userName = localStorage.getItem("userName") || "User";
   const userId = localStorage.getItem("userId");
-
+  
   const [amount, setAmount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -36,11 +38,11 @@ function Payment() {
   }, [membershipId]);
 
   const handlePayment = async () => {
-    /*if (!userId) {
+    if (!userId) {
       toast.error("You must be logged in to proceed with payment.");
       navigate("/login");
       return;
-    }*/
+    }
 
     setLoading(true);
     try {
@@ -50,7 +52,7 @@ function Payment() {
         start_Date: new Date().toISOString(),
       }, getAuthConfig());*/
 
-      await axios(
+      /*await axios(
         {
           method : "POST",
           url : "http://localhost:5196/Membership/Buy",
@@ -62,12 +64,21 @@ function Payment() {
           }
         }
       ).catch((error) => {toast.error(error.message);});
+      */
+      
+      const payload = {
+        UserId: userId,
+        MembershipId: membershipId,
+        Start_Date: new Date().toISOString()
+      };
 
+      await buyMembershipPlan(payload);
       toast.success("Payment successful! Welcome to your upgraded membership.");
-      navigate("/home");
+      navigate("/memberhome");
     } catch (error) {
       toast.error(error.message);
       console.log(error);
+      console.log(membershipId);
     } finally {
       setLoading(false);
     }

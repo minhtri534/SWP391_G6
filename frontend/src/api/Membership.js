@@ -53,11 +53,12 @@ export async function deleteMembershipPlan(membershipId) {
 	}
 }
 
-export async function buyMembershipPlan({ UserId, MembershipId }) {
+export async function buyMembershipPlan({ UserId, MembershipId, Start_Date }) {
 	try {
 		const payload = {
-			UserId: UserId,
-			MembershipId: MembershipId
+			userId: UserId,
+			membershipId: MembershipId,
+			start_Date: Start_Date
 		};
 		const response = await axios.post(`${baseApi}/Membership/Buy`, payload, getAuthConfig());
 		return response.data;

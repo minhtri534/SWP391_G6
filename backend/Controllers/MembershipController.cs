@@ -71,7 +71,7 @@ public class MembershipController : ControllerBase
         return Ok("Membership plan deleted successfully");
     }
     [HttpPost("Buy")]
-    public async Task<IActionResult> BuyMembership([FromBody] MemebrshipBuyRequest request)
+    public async Task<IActionResult> BuyMembership([FromBody] MembershipBuyRequest request)
     {
         var membership = await _context.Memberships
         .Where(a => a.MembershipId == request.MembershipId)
@@ -79,16 +79,16 @@ public class MembershipController : ControllerBase
 
         if (membership == null)
         {
-            return BadRequest();
+            return BadRequest(request.MembershipId + " MembershipId doesnt exist");
         }
 
         var check = await _context.UserMemberships
-            .Where(a => a.UserId == request.UserId && a.MembershipId == request.MembershipId && a.EndDate.CompareTo(DateTime.Now) > 0)
+            .Where(a => a.UserId == request.UserId && a.End_Date.CompareTo(DateTime.Now) > 0)
             .FirstOrDefaultAsync();
 
         if (check != null)
         {
-            return BadRequest();
+            return BadRequest("User already has an existing membership");
         }
 
         var endDate = DateTime.Now.AddDays(membership.Duration);
@@ -97,9 +97,15 @@ public class MembershipController : ControllerBase
         {
             UserId = request.UserId,
             MembershipId = request.MembershipId,
-            StartDate = DateTime.Now,
-            EndDate = endDate
+            Start_Date = DateTime.Now,
+            End_Date = endDate
         };
+
+        var user =  await _context.Users
+            .Where(a => a.UserId == request.UserId)
+            .FirstAsync();
+
+        user.RoleId = 2;
 
         await _context.UserMemberships.AddAsync(result);
         await _context.SaveChangesAsync();
