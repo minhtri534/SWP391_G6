@@ -60,7 +60,7 @@ namespace backend.Controllers
                     .Where(a => a.UserId == userId)
                     .Select(a => a.BadgeId)
                     .Contains(a.BadgeId))
-                .Select(a => new { BadgeName = a.BadgeName, Description = a.Description })
+                .Select(a => new { BadgeId = a.BadgeId, BadgeName = a.BadgeName, Description = a.Description })
                 .ToListAsync();
             if (results == null)
             {
