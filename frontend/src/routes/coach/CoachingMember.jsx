@@ -68,39 +68,6 @@ function CoachingMember() {
 			toast.error(error?.response?.data?.message || error.message || "Failed to load members.");
 		}
 	};
-	// useEffect(() => {
-	// 	if (coachId) {
-	// 		const fetchMembers = async () => {
-	// 			try {
-	// 				const data = await getCoachMember(coachId);
-	// 				const filtered = data.filter((user) => user.roleId !== 3);
-
-	// 				// Fetch each member's plan in parallel
-	// 				const membersWithPlans = await Promise.all(
-	// 					filtered.map(async (member) => {
-	// 						try {
-	// 							const plan = await getMemberPlan(member.userId);
-	// 							return { ...member, quitPlan: plan || null };
-	// 						} catch (err) {
-	// 							// Silently ignore 404 (not found) or null
-	// 							if (err.message.includes("404")) return { ...member, quitPlan: null };
-	// 							if (err.message.includes("Get member plan failed")) return { ...member, quitPlan: null };
-	// 							console.error(`Error fetching plan for ${member.userId}:`, err);
-	// 							return { ...member, quitPlan: null }; // fallback
-	// 						}
-	// 					})
-	// 				);
-
-	// 				setMembers(membersWithPlans);
-	// 			} catch (error) {
-	// 				console.error(error);
-	// 				toast.error(error?.response?.data?.message || error.message || "Failed to load members.");
-	// 			}
-	// 		};
-
-	// 		fetchMembers();
-	// 	}
-	// }, [coachId]);
 
 	// For filter and sort
 	const [searchName, setSearchName] = useState("");
