@@ -5,10 +5,10 @@ const baseApi = "http://localhost:5196";
 
 export async function getMilestoneByPlanId(planId) {
 	try {
-		const response = await axios.get(`${baseApi}/api/CRUDMilestone/ViewMilestoneById/${planId}`, getAuthConfig());
+		const response = await axios.get(`${baseApi}/api/CRUDMilestone/ViewMilestonesByPlanId/${planId}`, getAuthConfig());
 		return response.data;
 	} catch (error) {
-		const msg = error.response?.data?.message || "Failed to fetch milestone details!";
+		const msg = error.response?.data?.message || "Failed to fetch milestones details!";
 		throw new Error(msg);
 	}
 }

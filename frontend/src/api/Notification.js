@@ -39,12 +39,14 @@ export async function addNotification(params) {
 	}
 }
 
-export async function updateNotification(params) {
+export async function updateNotification({ notificationId, type, message }) {
 	try {
 		const payload = {
-			params,
+			notificationId: notificationId,
+			type: type,
+			message: message,
 		};
-		const response = await axios.put(`${baseApi}/api/Notification`, payload, getAuthConfig());
+		const response = await axios.put(`${baseApi}/api/NotificationManagement`, payload, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Update notification failed!!!";
@@ -54,7 +56,7 @@ export async function updateNotification(params) {
 
 export async function deleteNotification(notificationId) {
 	try {
-		const response = await axios.get(`${baseApi}/api/NotificationManagement${notificationId}`, getAuthConfig());
+		const response = await axios.get(`${baseApi}/api/NotificationManagement/${notificationId}`, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Remove notifications failed!!!";
