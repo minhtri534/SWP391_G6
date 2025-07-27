@@ -39,14 +39,14 @@ const SmokingSelfReport = () => {
     const fetchReport = async () => {
       try {
         setLoading(true);
-        const data = await getSmokingStatus(userId);
-        if (data) {
+        const report = await getSmokingStatus(userId);
+        if (report) {
           setReport({
-            time_period: data.timePeriod || "",
-            amount_per_day: data.amountPerDay || "",
-            frequency: data.frequency || "",
-            price_per_pack: data.pricePerPack || "",
-            description: data.description || "",
+            time_period: report.timePeriod || "",
+            amount_per_day: report.amountPerDay || "",
+            frequency: report.frequency || "",
+            price_per_pack: report.pricePerPack || "",
+            description: report.description || "",
           });
           setHasData(true);
         } else {

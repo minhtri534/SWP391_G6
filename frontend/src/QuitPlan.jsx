@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaUserCircle, FaEye, FaWindowClose } from "react-icons/fa";
-import { getQuitPlanByUserId, getMilestoneById } from "./api/Plan2";
+import { getQuitPlanById, getQuitPlanByUserId, getMilestoneById, getMilestonesByPlanId } from "./api/Plan2";
 
 const QuitPlan = () => {
   const userId = localStorage.getItem("userId");
@@ -18,10 +18,10 @@ const QuitPlan = () => {
       try {
         setLoading(true);
         if (userId) {
-          const data = await getQuitPlanByUserId(userId);
+          const data = await getQuitPlanById(userId);
           setPlan(data);
           if (data.planId) {
-            const milestoneData = await getMilestoneById(data.planId); // Giả định lấy milestone đầu tiên
+            const milestoneData = await getMilestonesByPlanId(data.planId); // Giả định lấy milestone đầu tiên
             setMilestones(Array.isArray(milestoneData) ? milestoneData : [milestoneData]);
           }
         }

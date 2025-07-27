@@ -12,12 +12,12 @@ namespace backend.Entities
         public int PlanId { get; set; }
         public int BadgeId { get; set; }
         [MaxLength(100)]
-        public string Title { get; set; }
+        public string? Title { get; set; }
         [Column(TypeName = "text")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
         [Column("target_date")]
         public DateTime TargetDate { get; set; }
         [ForeignKey(nameof(BadgeId))]
-        public Badge Badge { get; set; }
+        public Badge? Badge { get; set; }
     }
 }
