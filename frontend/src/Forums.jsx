@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, Component } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   FaUserCircle,
@@ -7,107 +7,136 @@ import {
   FaLightbulb,
   FaPaperPlane,
   FaExclamationCircle,
+  FaEdit,
+  FaTrash,
 } from "react-icons/fa";
+import {
+  getPosts,
+  createPost,
+  updatePost,
+  deletePost,
+} from "./api/forum";
+import { getProfile } from "./api/Profile";
+import {
+  createComment,
+  getComments, // Giả sử getComments có thể lấy tất cả comments hoặc theo postId
+  updateComment,
+  deleteComment,
+} from "./api/Comment";
 
-// Initial state for posts with sample data including author
-const initialPosts = {
-  support: [
-    {
-      id: 1,
-      title: "Struggling with cravings today",
-      content: "I’ve been trying to quit for a week, but the cravings are intense. Any tips?",
-      author: "Nguyen Van A",
-      comments: [
-        { name: "Nguyen Van A", content: "Try chewing gum, it worked for me!", time: "2025-07-17 14:20" },
-      ],
-      created_at: "2025-07-16 10:30",
-    },
-    {
-      id: 2,
-      title: "Need motivation to keep going",
-      content: "Feeling down after a slip-up. How do you stay motivated?",
-      author: "Tran Thi B",
-      comments: [
-        { name: "Tran Thi B", content: "Focus on your health benefits!", time: "2025-07-18 09:10" },
-      ],
-      created_at: "2025-07-17 15:45",
-    },
-  ],
-  tips: [
-    {
-      id: 3,
-      title: "Best ways to distract from smoking",
-      content: "I found exercise helps a lot. What works for you?",
-      author: "Le Van C",
-      comments: [
-        { name: "Le Van C", content: "Deep breathing exercises are great!", time: "2025-07-17 11:00" },
-        { name: "Nguyen Van A", content: "I agree, plus some music!", time: "2025-07-17 12:30" },
-      ],
-      created_at: "2025-07-15 09:15",
-    },
-    {
-      id: 4,
-      title: "Herbal teas that helped me",
-      content: "Drinking chamomile tea reduced my urge to smoke. Anyone else try this?",
-      author: "Tran Thi B",
-      comments: [
-        { name: "Tran Thi B", content: "Yes, peppermint tea works too!", time: "2025-07-18 08:45" },
-      ],
-      created_at: "2025-07-16 14:20",
-    },
-  ],
-  general: [
-    {
-      id: 5,
-      title: "Share your success stories",
-      content: "I’ve been smoke-free for 30 days! What’s your story?",
-      author: "Nguyen Van A",
-      comments: [
-        { name: "Le Van C", content: "Amazing! I hit 15 days yesterday.", time: "2025-07-17 16:00" },
-        { name: "Nguyen Van A", content: "Congrats! I’m at 10 days.", time: "2025-07-18 07:30" },
-        { name: "Tran Thi B", content: "Great job everyone!", time: "2025-07-18 09:00" },
-      ],
-      created_at: "2025-07-14 11:45",
-    },
-    {
-      id: 6,
-      title: "How smoking affects family",
-      content: "I’m quitting for my kids. Has anyone else felt this pressure?",
-      author: "Le Van C",
-      comments: [
-        { name: "Le Van C", content: "Yes, my family motivated me too!", time: "2025-07-17 13:20" },
-      ],
-      created_at: "2025-07-15 16:30",
-    },
-  ],
-};
+class ErrorBoundary extends Component {
+  state = { hasError: false, error: null };
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ textAlign: "center", color: "#fff", padding: "20px" }}>
+          <h3>Something went wrong in the forum.</h3>
+          <p>{this.state.error.message}</p>
+          <button
+            onClick={() => this.setState({ hasError: false, error: null })}
+            style={{
+              background: "#16a34a",
+              color: "white",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.375rem",
+              border: "none",
+              cursor: "pointer",
+              marginTop: "10px",
+            }}
+          >
+            Try Again
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const Forums = () => {
   const userName = localStorage.getItem("userName") || "User";
+  const userId = localStorage.getItem("userId");
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
   const navigate = useNavigate();
 
-  const [posts, setPosts] = useState(initialPosts);
-  const [comments, setComments] = useState({
-    support: [],
-    tips: [],
-    general: [],
-  });
-  const [inputs, setInputs] = useState({
-    support: "",
-    tips: "",
-    general: "",
-  });
+  const [posts, setPosts] = useState({ support: [], tips: [], general: [] });
+  const [commentInputs, setCommentInputs] = useState({});
   const [postInputs, setPostInputs] = useState({
-    support: { title: "", content: "" },
-    tips: { title: "", content: "" },
-    general: { title: "", content: "" },
+    support: { postId: null, title: "", content: "" },
+    tips: { postId: null, title: "", content: "" },
+    general: { postId: null, title: "", content: "" },
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [editingPostType, setEditingPostType] = useState(null);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingCommentContent, setEditingCommentContent] = useState("");
+
+  const fetchUserName = async (userId) => {
+    try {
+      const profile = await getProfile(userId);
+      return profile.userName || "Unknown User";
+    } catch (err) {
+      console.error("Failed to fetch user name:", err);
+      return "Unknown User";
+    }
+  };
 
   useEffect(() => {
-    console.log("Initial posts:", posts); // Debug initial state
-  }, []);
+    const fetchPosts = async () => {
+      // DEBUG: Kiểm tra userId từ localStorage
+      console.log("Current userId from localStorage:", userId);
+
+      if (!userId || !localStorage.getItem("userToken")) {
+        setError("Please log in to view forums.");
+        setLoading(false);
+        return;
+      }
+      try {
+        setLoading(true);
+        const data = await getPosts();
+        const allCommentsData = await getComments(); // Fetch ALL comments once
+
+        const categorizedPosts = { support: [], tips: [], general: [] };
+        const initialCommentInputs = {};
+
+        for (let post of data) {
+          const userName = await fetchUserName(post.userId);
+          post.userName = userName;
+
+          // Filter comments relevant to the current post from all comments data
+          const postComments = allCommentsData.filter(comment => comment.postId === post.postId);
+          post.comments = await Promise.all(postComments.map(async (comment) => ({
+            ...comment,
+            name: await fetchUserName(comment.userId),
+          })));
+
+          if (post.title.toLowerCase().includes("support")) categorizedPosts.support.push(post);
+          else if (post.title.toLowerCase().includes("tips")) categorizedPosts.tips.push(post);
+          else categorizedPosts.general.push(post);
+
+          initialCommentInputs[post.postId] = ""; // Initialize comment input for each post
+        }
+        setPosts(categorizedPosts);
+        setCommentInputs(initialCommentInputs);
+      } catch (err) {
+        if (err.message.includes("401")) {
+          setError("Session expired. Please log in again.");
+        } else {
+          setError(err.message || "Failed to load posts");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPosts();
+  }, [userId]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -124,25 +153,11 @@ const Forums = () => {
     navigate("/login");
   };
 
-  const handleCommentChange = (type, value) => {
-    setInputs((prev) => ({ ...prev, [type]: value }));
-  };
-
-  const handleCommentSubmit = (type) => {
-    if (inputs[type].trim() === "") return;
-
-    const newComment = {
-      name: userName,
-      content: inputs[type],
-      time: new Date().toLocaleString(),
-    };
-
-    setComments((prev) => ({
+  const handleCommentInputChange = (postId, value) => {
+    setCommentInputs(prev => ({
       ...prev,
-      [type]: [...prev[type], newComment],
+      [postId]: value,
     }));
-
-    setInputs((prev) => ({ ...prev, [type]: "" }));
   };
 
   const handlePostChange = (type, field, value) => {
@@ -152,54 +167,262 @@ const Forums = () => {
     }));
   };
 
-  const handlePostSubmit = (type) => {
-    const { title, content } = postInputs[type];
+  const handlePostSubmit = async (type) => {
+    const { postId, title, content } = postInputs[type];
     if (title.trim() === "" || content.trim() === "") return;
 
-    const newPost = {
-      id: Date.now(), // Unique ID based on timestamp
-      title,
-      content,
-      author: userName, // Set current user as author
-      comments: [],
-      created_at: new Date().toLocaleString(),
-    };
+    const postData = { userId, title, content };
+    try {
+      if (postId) {
+        const updatedPost = await updatePost(postId, postData);
+        updatedPost.userName = await fetchUserName(userId);
+        setPosts((prev) => ({
+          ...prev,
+          [type]: prev[type].map((p) => (p.postId === postId ? updatedPost : p)),
+        }));
+      } else {
+        const newPost = await createPost(postData);
+        newPost.userName = await fetchUserName(userId);
+        newPost.comments = []; // Initialize comments for new post
+        setPosts((prev) => ({
+          ...prev,
+          [type]: [...prev[type], newPost],
+        }));
+        setCommentInputs(prev => ({ // Initialize comment input for the new post
+          ...prev,
+          [newPost.postId]: "",
+        }));
+      }
+      setPostInputs((prev) => ({
+        ...prev,
+        [type]: { postId: null, title: "", content: "" },
+      }));
+      setEditingPostType(null);
+    } catch (err) {
+      setError(err.message || "Failed to save post");
+    }
+  };
 
-    setPosts((prev) => ({
-      ...prev,
-      [type]: [...prev[type], newPost],
-    }));
-
+  const handleEditPost = (type, post) => {
+    setEditingPostType(type);
     setPostInputs((prev) => ({
       ...prev,
-      [type]: { title: "", content: "" },
+      [type]: { postId: post.postId, title: post.title, content: post.content },
     }));
+  };
+
+  const handleDeletePost = async (type, postId) => {
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      try {
+        await deletePost(postId);
+        setPosts((prev) => ({
+          ...prev,
+          [type]: prev[type].filter((p) => p.postId !== postId),
+        }));
+      } catch (err) {
+        setError(err.message || "Failed to delete post");
+      }
+    }
   };
 
   const handleReport = (type, postId) => {
     console.log(`Reported post ${postId} in ${type} forum`);
-    // Add your report logic here (e.g., API call)
   };
 
-  const renderComments = (type) =>
-    comments[type].map((c, index) => (
-      <div key={index} style={{ marginBottom: "8px" }}>
-        <span style={{ fontWeight: "bold", color: "#2e7d32" }}>{c.name}:</span>{" "}
-        <span>{c.content}</span>
-        <div style={{ fontSize: "12px", color: "#888", marginLeft: "10px" }}>
-          {c.time}
-        </div>
-      </div>
-    ));
+  const handleCommentSubmit = async (postId) => {
+    const content = commentInputs[postId];
+    if (!content || content.trim() === "") return;
 
-  const renderPostComments = (postComments) =>
-    postComments.map((c, index) => (
-      <div key={index} style={{ marginBottom: "8px" }}>
-        <span style={{ fontWeight: "bold", color: "#2e7d32" }}>{c.name}:</span>{" "}
-        <span>{c.content}</span>
+    try {
+      await createComment(postId, userId, content);
+
+      const allCommentsAfterNew = await getComments();
+
+      const commentsForThisPost = allCommentsAfterNew.filter(
+        (comment) => comment.postId === postId
+      );
+
+      const commentsWithNamesPromises = commentsForThisPost.map(async (comment) => ({
+        ...comment,
+        name: await fetchUserName(comment.userId),
+      }));
+
+      const finalCommentsForPost = await Promise.all(commentsWithNamesPromises);
+
+
+      setPosts((prev) => {
+        const updatedPosts = { ...prev };
+        let postFound = false;
+
+        for (const category of Object.keys(updatedPosts)) {
+          const postIndex = updatedPosts[category].findIndex((p) => p.postId === postId);
+
+          if (postIndex !== -1) {
+            updatedPosts[category][postIndex] = {
+              ...updatedPosts[category][postIndex],
+              comments: finalCommentsForPost,
+            };
+            postFound = true;
+            break;
+          }
+        }
+        return updatedPosts;
+      });
+
+      handleCommentInputChange(postId, "");
+    } catch (err) {
+      setError(err.message || "Failed to add comment");
+      console.error("Error submitting comment:", err);
+    }
+  };
+
+
+  const handleEditComment = (comment) => {
+    setEditingCommentId(comment.commentId);
+    setEditingCommentContent(comment.content);
+  };
+
+  const handleUpdateComment = async (postId, commentId) => {
+    if (!editingCommentContent.trim()) return;
+
+    try {
+      const updatedComment = await updateComment(commentId, postId, userId, editingCommentContent);
+      updatedComment.name = await fetchUserName(userId);
+
+      setPosts((prev) => {
+        const updatedPosts = { ...prev };
+        for (const category of Object.keys(updatedPosts)) {
+          const postIndex = updatedPosts[category].findIndex((p) => p.postId === postId);
+          if (postIndex !== -1) {
+            const commentIndex = updatedPosts[category][postIndex].comments.findIndex(c => c.commentId === commentId);
+            if (commentIndex !== -1) {
+              updatedPosts[category][postIndex].comments[commentIndex] = updatedComment;
+            }
+            break;
+          }
+        }
+        return updatedPosts;
+      });
+      setEditingCommentId(null);
+      setEditingCommentContent("");
+    } catch (err) {
+      setError(err.message || "Failed to update comment");
+    }
+  };
+
+  const handleDeleteComment = async (postId, commentId) => {
+    if (window.confirm("Are you sure you want to delete this comment?")) {
+      try {
+        await deleteComment(commentId);
+        setPosts((prev) => {
+          const updatedPosts = { ...prev };
+          for (const category of Object.keys(updatedPosts)) {
+            const postIndex = updatedPosts[category].findIndex((p) => p.postId === postId);
+            if (postIndex !== -1) {
+              updatedPosts[category][postIndex] = {
+                ...updatedPosts[category][postIndex],
+                comments: updatedPosts[category][postIndex].comments.filter(c => c.commentId !== commentId),
+              };
+              break;
+            }
+          }
+          return updatedPosts;
+        });
+      } catch (err) {
+        setError(err.message || "Failed to delete comment");
+      }
+    }
+  };
+
+  const renderPostComments = (post) =>
+    (post.comments || []).map((c) => (
+      <div key={c.commentId} style={{ marginBottom: "8px" }}>
+        <span style={{ fontWeight: "bold", color: "#2e7d32" }}>{c.name || "Unknown User"}:</span>{" "}
+        {editingCommentId === c.commentId ? (
+          <input
+            type="text"
+            value={editingCommentContent}
+            onChange={(e) => setEditingCommentContent(e.target.value)}
+            style={{ padding: "4px", border: "1px solid #ccc", borderRadius: "4px", fontSize: "0.875rem", width: "calc(100% - 100px)" }}
+          />
+        ) : (
+          <span>{c.content}</span>
+        )}
         <div style={{ fontSize: "12px", color: "#888", marginLeft: "10px" }}>
-          {c.time}
+          {c.created_date || "N/A"}
         </div>
+        {/* DEBUG: Kiểm tra userId hiện tại và userId của comment */}
+        {console.log(`Comment ID: ${c.commentId}, Current User ID: ${userId}, Comment User ID: ${c.userId}`)}
+        {/* Điều kiện hiển thị nút Edit/Delete Comment */}
+        {userId && c.userId === userId && (
+          <div style={{ display: "flex", gap: "8px", marginTop: "0.25rem" }}>
+            {editingCommentId === c.commentId ? (
+              <button
+                onClick={() => handleUpdateComment(post.postId, c.commentId)}
+                style={{
+                  background: "#16a34a",
+                  color: "white",
+                  padding: "0.25rem 0.75rem",
+                  borderRadius: "0.375rem",
+                  fontSize: "0.75rem",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.25rem",
+                  transition: "background 0.3s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#15803d")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "#16a34a")}
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                onClick={() => handleEditComment(c)}
+                style={{
+                  background: "#eab308",
+                  color: "white",
+                  padding: "0.25rem 0.75rem",
+                  borderRadius: "0.375rem",
+                  fontSize: "0.75rem",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.25rem",
+                  transition: "background 0.3s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#ca8a04")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "#eab308")}
+              >
+                <FaEdit />
+                Edit
+              </button>
+            )}
+            <button
+              onClick={() => handleDeleteComment(post.postId, c.commentId)}
+              style={{
+                background: "#ef4444",
+                color: "white",
+                padding: "0.25rem 0.75rem",
+                borderRadius: "0.375rem",
+                fontSize: "0.75rem",
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.25rem",
+                transition: "background 0.3s",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#dc2626")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "#ef4444")}
+            >
+              <FaTrash />
+              Delete
+            </button>
+          </div>
+        )}
       </div>
     ));
 
@@ -305,21 +528,29 @@ const Forums = () => {
           margin: "0 auto",
         }}>
           {["support", "tips", "general"].map((type) => (
-            <ForumCard
-              key={type}
-              type={type}
-              title={type === "support" ? "Support Group" : type === "tips" ? "Tips & Advice" : "General Discussion"}
-              icon={type === "support" ? <FaUserFriends /> : type === "tips" ? <FaLightbulb /> : <FaComments />}
-              posts={posts[type]}
-              postInputs={postInputs[type]}
-              onPostChange={handlePostChange}
-              onPostSubmit={handlePostSubmit}
-              onCommentChange={handleCommentChange}
-              onCommentSubmit={handleCommentSubmit}
-              renderComments={renderPostComments}
-              onReport={handleReport}
-              userName={userName}
-            />
+            <ErrorBoundary key={type}>
+              <ForumCard
+                type={type}
+                title={type === "support" ? "Support Group" : type === "tips" ? "Tips & Advice" : "General Discussion"}
+                icon={type === "support" ? <FaUserFriends /> : type === "tips" ? <FaLightbulb /> : <FaComments />}
+                posts={posts[type]}
+                postInputs={postInputs[type]}
+                onPostChange={handlePostChange}
+                onPostSubmit={handlePostSubmit}
+                renderComments={renderPostComments}
+                onReport={handleReport}
+                onEdit={handleEditPost}
+                onDelete={handleDeletePost}
+                userName={userName}
+                userId={userId} // Truyền userId xuống ForumCard
+                editing={editingPostType === type}
+                loading={loading}
+                error={error}
+                onCommentSubmit={handleCommentSubmit}
+                commentInputs={commentInputs}
+                onCommentInputChange={handleCommentInputChange}
+              />
+            </ErrorBoundary>
           ))}
         </div>
       </div>
@@ -335,36 +566,20 @@ function ForumCard({
   postInputs,
   onPostChange,
   onPostSubmit,
-  onCommentChange,
-  onCommentSubmit,
   renderComments,
   onReport,
-  userName,
+  onEdit,
+  onDelete,
+  userId, // Nhận userId từ Forums component
+  editing,
+  loading,
+  error,
+  onCommentSubmit,
+  commentInputs,
+  onCommentInputChange,
 }) {
-  const [commentInput, setCommentInput] = useState("");
-
-  const handleCommentChangeLocal = (value) => {
-    setCommentInput(value);
-  };
-
-  const handleCommentSubmitLocal = (postId) => {
-    if (commentInput.trim() === "") return;
-
-    const newComment = {
-      name: userName,
-      content: commentInput,
-      time: new Date().toLocaleString(),
-    };
-
-    setPosts((prev) => ({
-      ...prev,
-      [type]: prev[type].map((post) =>
-        post.id === postId ? { ...post, comments: [...post.comments, newComment] } : post
-      ),
-    }));
-
-    setCommentInput("");
-  };
+  if (loading) return <div style={{ textAlign: "center", color: "#fff" }}>Loading...</div>;
+  if (error) return <div style={{ textAlign: "center", color: "#fff" }}>{error}</div>;
 
   return (
     <div style={{
@@ -374,8 +589,8 @@ function ForumCard({
       padding: "1.5rem",
       transition: "box-shadow 0.3s",
     }}
-    onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")}
-    onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")}>
+      onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")}
+      onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")}>
       <h3 style={{
         fontSize: "1.25rem",
         fontWeight: "bold",
@@ -389,7 +604,7 @@ function ForumCard({
         {title}
       </h3>
 
-      {/* Create Post Form */}
+      {/* Create/Edit Post Form */}
       <div style={{ marginBottom: "1rem" }}>
         <input
           type="text"
@@ -422,76 +637,130 @@ function ForumCard({
           onMouseEnter={(e) => (e.currentTarget.style.background = "#15803d")}
           onMouseLeave={(e) => (e.currentTarget.style.background = "#16a34a")}
         >
-          Create Post
+          {editing ? "Save Changes" : "Create Post"}
         </button>
       </div>
 
       {/* Posts List */}
       {posts.length > 0 ? (
         posts.map((post) => (
-          <div key={post.id} style={{ marginBottom: "1.5rem", padding: "1rem", border: "1px solid #eee", borderRadius: "0.375rem" }}>
-            <h4 style={{ fontSize: "1rem", fontWeight: "bold", color: "#2e7d32", marginBottom: "0.25rem" }}>{post.title}</h4>
-            <p style={{ fontSize: "0.875rem", color: "#666", marginBottom: "0.25rem" }}>
-              By {post.author || "Unknown Author"} {/* Enhanced fallback */}
-            </p>
-            <p style={{ fontSize: "0.875rem", color: "#4b5563", marginBottom: "0.5rem" }}>{post.content}</p>
-            <div style={{ fontSize: "0.75rem", color: "#666", marginBottom: "0.5rem" }}>
-              Created: {post.created_at}
-            </div>
-            <div style={{ marginBottom: "0.5rem" }}>
-              {renderComments(post.comments)}
-            </div>
-            <div style={{ display: "flex", gap: "8px", marginBottom: "0.5rem" }}>
-              <input
-                type="text"
-                placeholder="Add a comment..."
-                value={commentInput}
-                onChange={(e) => handleCommentChangeLocal(e.target.value)}
-                style={{ flex: 1, padding: "0.5rem", border: "1px solid #ccc", borderRadius: "0.375rem", fontSize: "0.875rem" }}
-              />
-              <button
-                onClick={() => handleCommentSubmitLocal(post.id)}
-                style={{
-                  background: "#16a34a",
-                  color: "white",
-                  padding: "0.5rem",
-                  borderRadius: "0.375rem",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.25rem",
-                  fontSize: "0.875rem",
-                  border: "none",
-                  cursor: "pointer",
-                  transition: "background 0.3s",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#15803d")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#16a34a")}
-              >
-                <FaPaperPlane />
-                Send
-              </button>
-            </div>
-            <button
-              onClick={() => onReport(type, post.id)}
-              style={{
-                background: "#ef4444",
-                color: "white",
-                padding: "0.25rem 0.75rem",
-                borderRadius: "0.375rem",
-                fontSize: "0.75rem",
-                border: "none",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.25rem",
-                transition: "background 0.3s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#dc2626")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "#ef4444")}
-            >
-              <FaExclamationCircle />
-              Report
-            </button>
+          <div key={post.postId} style={{ marginBottom: "1.5rem", padding: "1rem", border: "1px solid #eee", borderRadius: "0.375rem" }}>
+            {post && post.postId && (
+              <>
+                <h4 style={{ fontSize: "1rem", fontWeight: "bold", color: "#2e7d32", marginBottom: "0.25rem" }}>{post.title}</h4>
+                <p style={{ fontSize: "0.875rem", color: "#666", marginBottom: "0.25rem" }}>
+                  By {post.userName || "Unknown User"}
+                </p>
+                <p style={{ fontSize: "0.875rem", color: "#4b5563", marginBottom: "0.5rem" }}>{post.content}</p>
+                <div style={{ fontSize: "0.75rem", color: "#666", marginBottom: "0.5rem" }}>
+                  Created: {post.create_date || post.created_at || "N/A"}
+                </div>
+                <div style={{ marginBottom: "0.5rem" }}>
+                  {renderComments(post)}
+                </div>
+                <div style={{ display: "flex", gap: "8px", marginBottom: "0.5rem" }}>
+                  <input
+                    type="text"
+                    placeholder="Add a comment..."
+                    value={commentInputs[post.postId] || ""}
+                    onChange={(e) => onCommentInputChange(post.postId, e.target.value)}
+                    style={{ flex: 1, padding: "0.5rem", border: "1px solid #ccc", borderRadius: "0.375rem", fontSize: "0.875rem" }}
+                  />
+                  <button
+                    onClick={() => onCommentSubmit(post.postId)}
+                    style={{
+                      background: "#16a34a",
+                      color: "white",
+                      padding: "0.5rem",
+                      borderRadius: "0.375rem",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.25rem",
+                      fontSize: "0.875rem",
+                      border: "none",
+                      cursor: "pointer",
+                      transition: "background 0.3s",
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "#15803d")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "#16a34a")}
+                  >
+                    <FaPaperPlane />
+                    Send
+                  </button>
+                </div>
+                {/* DEBUG: Kiểm tra userId hiện tại và userId của bài post */}
+                {console.log(`Post ID: ${post.postId}, Current User ID: ${userId}, Post User ID: ${post.userId}`)}
+                {/* Điều kiện hiển thị nút Edit/Delete Post */}
+                {userId && post.userId === userId && (
+                  <div style={{ display: "flex", gap: "8px", marginTop: "0.5rem" }}>
+                    <button
+                      onClick={() => onEdit(type, post)}
+                      style={{
+                        background: "#eab308",
+                        color: "white",
+                        padding: "0.25rem 0.75rem",
+                        borderRadius: "0.375rem",
+                        fontSize: "0.75rem",
+                        border: "none",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.25rem",
+                        transition: "background 0.3s",
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "#ca8a04")}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = "#eab308")}
+                    >
+                      <FaEdit />
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => onDelete(type, post.postId)}
+                      style={{
+                        background: "#ef4444",
+                        color: "white",
+                        padding: "0.25rem 0.75rem",
+                        borderRadius: "0.375rem",
+                        fontSize: "0.75rem",
+                        border: "none",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.25rem",
+                        transition: "background 0.3s",
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "#dc2626")}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = "#ef4444")}
+                    >
+                      <FaTrash />
+                      Delete
+                    </button>
+                  </div>
+                )}
+                <button
+                  onClick={() => onReport(type, post.postId)}
+                  style={{
+                    background: "#ef4444",
+                    color: "white",
+                    padding: "0.25rem 0.75rem",
+                    borderRadius: "0.375rem",
+                    fontSize: "0.75rem",
+                    border: "none",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.25rem",
+                    transition: "background 0.3s",
+                    marginTop: "0.5rem",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#dc2626")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "#ef4444")}
+                >
+                  <FaExclamationCircle />
+                  Report
+                </button>
+              </>
+            )}
           </div>
         ))
       ) : (
