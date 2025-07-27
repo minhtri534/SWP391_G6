@@ -45,7 +45,7 @@ namespace backend.Controllers
         }
 
         [HttpGet("coach/{id}")]
-        [Authorize(Roles = "3")]
+        [Authorize(Roles = "3,4")]
         public async Task<IActionResult> GetSentNotifications(int id)
         {
             var results = _context.Notifications
