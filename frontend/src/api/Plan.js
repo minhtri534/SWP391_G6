@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAuthConfig } from "./Auth";
 
-const baseApi = "http://localhost:5000";
+const baseApi = "http://localhost:5196";
 
 export async function getMemberPlan(userId) {
 	try {
@@ -33,6 +33,7 @@ export async function addPlan({ userId, coachId, statusId, reason, startDate, go
 			startDate: startDate,
 			goalDate: goalDate,
 		};
+		console.log("Payload: ", payload);
 		const response = await axios.post(`${baseApi}/api/QuitPlan/create`, payload, getAuthConfig());
 		return response.data;
 	} catch (error) {

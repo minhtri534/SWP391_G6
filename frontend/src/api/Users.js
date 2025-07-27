@@ -85,7 +85,7 @@ export async function unlockUser(userId) {
 
 export async function getCoachMember(coachId) {
 	try {
-		const response = await axios.put(`${baseApi}/AccountManageAdmin/${coachId}`, getAuthConfig());
+		const response = await axios.get(`${baseApi}/api/Coach/Member/${coachId}`, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Get member list failed";

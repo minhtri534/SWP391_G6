@@ -18,11 +18,11 @@ function AdminTopbar({ title }) {
 	]);
 	const userName = localStorage.getItem("userName") || "Admin";
 
-	useEffect(() => {
-		if (userId) {
-			console.log("User role:", userId);
-		}
-	});
+	// useEffect(() => {
+	// 	if (userId) {
+	// 		console.log("User role:", userId);
+	// 	}
+	// });
 
 	useEffect(() => {
 		const fetchNotification = async (userId) => {

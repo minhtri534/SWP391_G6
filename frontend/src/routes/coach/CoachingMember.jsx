@@ -3,7 +3,7 @@ import CoachSidebar from "../../components/CoachSidebar";
 import CoachTopbar from "../../components/CoachTopbar";
 import { ClipboardList, List, Pencil, Trash2 } from "lucide-react";
 import PlanModal from "../../components/PlanModal";
-import { deletePlan } from "../../api/Plan";
+import { deletePlan, getMemberPlan } from "../../api/Plan";
 import { getCoachMember } from "../../api/Users";
 import { toast } from "react-toastify";
 import DeleteConfirmation from "../../components/DeleteConfirmation";
@@ -12,65 +12,95 @@ import ViewPlan from "../../components/ViewPlan";
 import SmokingCondition from "../../components/SmokingCondition";
 import MemberAchievements from "../../components/MemberAchievements";
 import DailyReport from "../../components/DailyReport";
+import { getCoachId } from "../../api/Coach";
 
 function CoachingMember() {
-	//Fake data
-	const [users, setUsers] = useState([
-		{
-			userId: 1,
-			userName: "Jane Doe",
-			gender: "Female",
-			quitPlan: {
-				planId: 101,
-				coachId: 10,
-				statusId: 2,
-				reason: "Wants to improve health and be a good example for family.",
-				startDate: "2025-07-10",
-				goalDate: "2025-09-01",
-				milestones: [{ milestoneId: 1, title: "test", description: "test", targetDate: "19/07/2025", badgeId: 1 }],
-			},
-		},
-		{
-			userId: 2,
-			userName: "John Doe",
-			gender: "Male",
-			quitPlan: null, // has no quit plan yet
-		},
-		{
-			userId: 3,
-			userName: "Joe Mami",
-			gender: "Male",
-			quitPlan: {
-				planId: 102,
-				coachId: 10,
-				statusId: 1,
-				reason: "Doctor recommendation after a health scare.",
-				startDate: "2025-06-15",
-				goalDate: "2025-08-01",
-				milestones: [
-					{ milestoneId: 1, title: "test", description: "test", targetDate: "19/07/2025", badgeId: 1 },
-					{ milestoneId: 2, title: "test2", description: "test", targetDate: "19/07/2025", badgeId: 2 },
-				],
-			},
-		},
-	]);
+	const userId = localStorage.getItem("userId");
+	const [coachId, setCoachId] = useState(null);
+	const [members, setMembers] = useState([]);
 
-	const fetchMembers = async (coachId) => {
+	// Get coachId
+	useEffect(() => {
+		if (userId) {
+			const fetchCoachId = async () => {
+				try {
+					const data = await getCoachId(userId);
+					// console.log(data);
+					setCoachId(data.coachId);
+				} catch (error) {
+					console.error(error);
+					toast.error(error?.response?.data?.message || error.message || "Failed to get coachId");
+				}
+			};
+
+			fetchCoachId();
+		}
+	}, [userId]);
+
+	// Get member list
+	useEffect(() => {
+		if (coachId) {
+			fetchMembers(coachId);
+		}
+	}, [coachId]);
+
+	const fetchMembers = async (cid = coachId) => {
 		try {
-			const data = await getCoachMember(coachId);
-			//some filtering if needed
-			//...
-			setUsers(data);
+			const data = await getCoachMember(cid);
+			const filtered = data.filter((user) => user.roleId !== 3);
+
+			const membersWithPlans = await Promise.all(
+				filtered.map(async (member) => {
+					try {
+						const plan = await getMemberPlan(member.userId);
+						return { ...member, quitPlan: Array.isArray(plan) ? plan[0] : plan || null };
+					} catch (err) {
+						if (err.message.includes("404") || err.message.includes("Get member plan failed")) return { ...member, quitPlan: null };
+						console.error(`Error fetching plan for ${member.userId}:`, err);
+						return { ...member, quitPlan: null };
+					}
+				})
+			);
+
+			setMembers(membersWithPlans);
 		} catch (error) {
 			console.error(error);
 			toast.error(error?.response?.data?.message || error.message || "Failed to load members.");
 		}
 	};
+	// useEffect(() => {
+	// 	if (coachId) {
+	// 		const fetchMembers = async () => {
+	// 			try {
+	// 				const data = await getCoachMember(coachId);
+	// 				const filtered = data.filter((user) => user.roleId !== 3);
 
-	// Get member list
-	useEffect(() => {
-		fetchMembers();
-	}, []);
+	// 				// Fetch each member's plan in parallel
+	// 				const membersWithPlans = await Promise.all(
+	// 					filtered.map(async (member) => {
+	// 						try {
+	// 							const plan = await getMemberPlan(member.userId);
+	// 							return { ...member, quitPlan: plan || null };
+	// 						} catch (err) {
+	// 							// Silently ignore 404 (not found) or null
+	// 							if (err.message.includes("404")) return { ...member, quitPlan: null };
+	// 							if (err.message.includes("Get member plan failed")) return { ...member, quitPlan: null };
+	// 							console.error(`Error fetching plan for ${member.userId}:`, err);
+	// 							return { ...member, quitPlan: null }; // fallback
+	// 						}
+	// 					})
+	// 				);
+
+	// 				setMembers(membersWithPlans);
+	// 			} catch (error) {
+	// 				console.error(error);
+	// 				toast.error(error?.response?.data?.message || error.message || "Failed to load members.");
+	// 			}
+	// 		};
+
+	// 		fetchMembers();
+	// 	}
+	// }, [coachId]);
 
 	// For filter and sort
 	const [searchName, setSearchName] = useState("");
@@ -78,7 +108,7 @@ function CoachingMember() {
 	const [filterHasPlan, setFilterHasPlan] = useState("");
 	const [sortOption, setSortOption] = useState("");
 
-	const filteredList = users.filter((member) => {
+	const filteredList = members.filter((member) => {
 		return (
 			member.userName.toLowerCase().includes(searchName.toLowerCase()) &&
 			(filterGender ? member.gender === filterGender : true) &&
@@ -124,6 +154,16 @@ function CoachingMember() {
 		setCurrentPage(1);
 	}, [searchName, filterGender, filterHasPlan, sortOption]);
 
+	//Format date
+	const formatDate = (isoDateString) => {
+		if (!isoDateString) return "";
+		const date = new Date(isoDateString);
+		const day = String(date.getDate()).padStart(2, "0");
+		const month = String(date.getMonth() + 1).padStart(2, "0");
+		const year = date.getFullYear();
+		return `${day}/${month}/${year}`;
+	};
+
 	return (
 		<div className="flex">
 			<CoachSidebar />
@@ -134,6 +174,7 @@ function CoachingMember() {
 					style={{
 						background: "linear-gradient(to bottom, #98fcb1, #d0f3a3)",
 					}}>
+					{console.log("Member list: ", members)}
 					{/* Filter and sort */}
 					<div className="bg-green-50 p-4 rounded-lg shadow flex flex-wrap gap-4">
 						<input type="text" placeholder="Search name..." className="border rounded px-3 py-2 w-48" value={searchName} onChange={(e) => setSearchName(e.target.value)} />
@@ -173,7 +214,7 @@ function CoachingMember() {
 								</tr>
 							</thead>
 							<tbody>
-								{users.length === 0 ? (
+								{members.length === 0 ? (
 									<tr>
 										<td colSpan="6" className="text-center text-lg px-6 py-4 text-red-500">
 											No users retrieved. Check your network or database.
@@ -212,7 +253,7 @@ function CoachingMember() {
 											<td className="px-6 py-3">
 												{member.quitPlan ? (
 													<span>
-														{member.quitPlan.startDate} to {member.quitPlan.goalDate}
+														{formatDate(member.quitPlan.startDate)} to {formatDate(member.quitPlan.goalDate)}
 													</span>
 												) : (
 													<span className="text-red-400">No plan</span>
@@ -301,7 +342,9 @@ function CoachingMember() {
 								setIsModalOpen(false);
 								setSelectedMember(null);
 							}}
-							initialValues={selectedMember?.quitPlan || null}
+							initialValues={selectedMember || null}
+							coachId={coachId}
+							onPlanChange={fetchMembers}
 						/>
 					)}
 
@@ -357,7 +400,7 @@ function CoachingMember() {
 									await deletePlan(selectedDeletePlan.planId, selectedDeletePlan.userId);
 									toast.success("Plan remove successfully!!!");
 									//Update member list
-									setUsers((prev) => prev.map((u) => (u.userId === selectedDeletePlan.userId ? { ...u, quitPlan: null } : u)));
+									setMembers((prev) => prev.map((u) => (u.userId === selectedDeletePlan.userId ? { ...u, quitPlan: null } : u)));
 								} catch (error) {
 									console.error(error);
 									toast.error(error?.response?.data?.message || error.message || "Failed to delete plan.");
