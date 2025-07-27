@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaUserCircle, FaEye, FaWindowClose } from "react-icons/fa";
+<<<<<<< HEAD
 import { getQuitPlanByUserId, getMilestoneById } from "./api/Plan2";
+=======
+import { getQuitPlanById, getQuitPlanByUserId, getMilestoneById, getMilestonesByPlanId } from "./api/Plan2";
+>>>>>>> parent of 49f745b (API FORUM, API COMMENT)
 
 const QuitPlan = () => {
   const userId = localStorage.getItem("userId");
@@ -18,10 +22,17 @@ const QuitPlan = () => {
       try {
         setLoading(true);
         if (userId) {
+<<<<<<< HEAD
           const data = await getQuitPlanByUserId(userId);
           setPlan(data);
           if (data.planId) {
             const milestoneData = await getMilestoneById(data.planId); // Giả định lấy milestone đầu tiên
+=======
+          const data = await getQuitPlanById(userId);
+          setPlan(data);
+          if (data.planId) {
+            const milestoneData = await getMilestonesByPlanId(data.planId); // Giả định lấy milestone đầu tiên
+>>>>>>> parent of 49f745b (API FORUM, API COMMENT)
             setMilestones(Array.isArray(milestoneData) ? milestoneData : [milestoneData]);
           }
         }
