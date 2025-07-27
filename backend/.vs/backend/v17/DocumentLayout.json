@@ -3,6 +3,34 @@
   "WorkspaceRootPath": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\crudmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\crudmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\planmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\planmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\accountmanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\accountmanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\updateprofilerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\updateprofilerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\services\\feedbackservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:services\\feedbackservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\smokingstatuscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\smokingstatuscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\dailyprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\dailyprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -13,10 +41,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\dailyprogressrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\dailyprogressrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\smokingstatuscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\smokingstatuscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\dailyprogress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -41,10 +65,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\coachinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\coachinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\services\\feedbackservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:services\\feedbackservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\smokingstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -91,20 +111,12 @@
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\crudmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\crudmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\planmilestonerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\planmilestonerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\smokingstatusrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\smokingstatusrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\planmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\planmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\quitplancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -162,7 +174,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -170,20 +182,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "DailyProgressController.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\DailyProgressController.cs",
-              "RelativeDocumentMoniker": "Controllers\\DailyProgressController.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\DailyProgressController.cs",
-              "RelativeToolTip": "Controllers\\DailyProgressController.cs",
-              "ViewState": "AgIAAAcAAADA/v////8gwBEAAAAZAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "AccountManagement.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManagement.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountManagement.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManagement.cs",
+              "RelativeToolTip": "Controllers\\AccountManagement.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwD0AAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-27T14:41:58.754Z",
+              "WhenOpened": "2025-07-27T23:45:37.219Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAgwBsAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-27T23:33:59.552Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "Feedback.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Feedback.cs",
               "RelativeDocumentMoniker": "Entities\\Feedback.cs",
@@ -196,7 +221,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 12,
               "Title": "Membership.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Membership.cs",
               "RelativeDocumentMoniker": "Entities\\Membership.cs",
@@ -208,7 +233,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 14,
               "Title": "Comment.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Comment.cs",
               "RelativeDocumentMoniker": "Entities\\Comment.cs",
@@ -220,7 +245,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 15,
               "Title": "CoachInfo.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachInfo.cs",
               "RelativeDocumentMoniker": "Entities\\CoachInfo.cs",
@@ -232,7 +257,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 5,
               "Title": "FeedbackService.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Services\\FeedbackService.cs",
               "RelativeDocumentMoniker": "Services\\FeedbackService.cs",
@@ -240,11 +265,64 @@
               "RelativeToolTip": "Services\\FeedbackService.cs",
               "ViewState": "AgIAAFoAAAAAAAAAAAAUwD8AAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-26T12:28:12.636Z"
+              "WhenOpened": "2025-07-26T12:28:12.636Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DailyProgressController.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\DailyProgressController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DailyProgressController.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\DailyProgressController.cs",
+              "RelativeToolTip": "Controllers\\DailyProgressController.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAzwCAAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-27T14:41:58.754Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PlanMilestone.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PlanMilestone.cs",
+              "RelativeDocumentMoniker": "Entities\\PlanMilestone.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PlanMilestone.cs",
+              "RelativeToolTip": "Entities\\PlanMilestone.cs",
+              "ViewState": "AgIAAAgAAAAAOjMzMzP5vw0AAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T06:05:28.474Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CRUDMilestone.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\CRUDMilestone.cs",
+              "RelativeDocumentMoniker": "Controllers\\CRUDMilestone.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\CRUDMilestone.cs*",
+              "RelativeToolTip": "Controllers\\CRUDMilestone.cs*",
+              "ViewState": "AgIAABMAAAAAQjMzMzMSwCAAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T05:57:48.852Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "UpdateProfileRequest.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\UpdateProfileRequest.cs",
+              "RelativeDocumentMoniker": "Models\\UpdateProfileRequest.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\UpdateProfileRequest.cs",
+              "RelativeToolTip": "Models\\UpdateProfileRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-27T23:46:39.686Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "SmokingStatusController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\SmokingStatusController.cs",
               "RelativeDocumentMoniker": "Controllers\\SmokingStatusController.cs",
@@ -257,7 +335,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 10,
               "Title": "DailyProgress.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\DailyProgress.cs",
               "RelativeDocumentMoniker": "Entities\\DailyProgress.cs",
@@ -270,7 +348,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 8,
               "Title": "AccountManage(Admin)cs.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManage(Admin)cs.cs",
               "RelativeDocumentMoniker": "Controllers\\AccountManage(Admin)cs.cs",
@@ -283,7 +361,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 9,
               "Title": "DailyProgressRequest.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\DailyProgressRequest.cs",
               "RelativeDocumentMoniker": "Models\\DailyProgressRequest.cs",
@@ -296,7 +374,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 13,
               "Title": "AuthController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
@@ -308,7 +386,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 17,
               "Title": "PaymentMemberShip.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PaymentMemberShip.cs",
               "RelativeDocumentMoniker": "Entities\\PaymentMemberShip.cs",
@@ -320,7 +398,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 16,
               "Title": "SmokingStatus.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\SmokingStatus.cs",
               "RelativeDocumentMoniker": "Entities\\SmokingStatus.cs",
@@ -332,7 +410,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 18,
               "Title": "MembershipBuyRequest.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\MembershipBuyRequest.cs",
               "RelativeDocumentMoniker": "Models\\MembershipBuyRequest.cs",
@@ -344,7 +422,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 19,
               "Title": "AppDBContext.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Data\\AppDBContext.cs",
               "RelativeDocumentMoniker": "Data\\AppDBContext.cs",
@@ -356,7 +434,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 20,
               "Title": "TransactionMoney.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\TransactionMoney.cs",
               "RelativeDocumentMoniker": "Entities\\TransactionMoney.cs",
@@ -368,7 +446,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 21,
               "Title": "Notification.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Notification.cs",
               "RelativeDocumentMoniker": "Entities\\Notification.cs",
@@ -380,7 +458,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 22,
               "Title": "CoachPlanBadge.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachPlanBadge.cs",
               "RelativeDocumentMoniker": "Entities\\CoachPlanBadge.cs",
@@ -392,7 +470,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 23,
               "Title": "Badge.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Badge.cs",
               "RelativeDocumentMoniker": "Entities\\Badge.cs",
@@ -404,7 +482,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 26,
               "Title": "Role.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Role.cs",
               "RelativeDocumentMoniker": "Entities\\Role.cs",
@@ -416,7 +494,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 24,
               "Title": "UserBadge.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserBadge.cs",
               "RelativeDocumentMoniker": "Entities\\UserBadge.cs",
@@ -428,7 +506,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 25,
               "Title": "UserCoachPackage.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserCoachPackage.cs",
               "RelativeDocumentMoniker": "Entities\\UserCoachPackage.cs",
@@ -440,19 +518,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "CRUDMilestone.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\CRUDMilestone.cs",
-              "RelativeDocumentMoniker": "Controllers\\CRUDMilestone.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\CRUDMilestone.cs",
-              "RelativeToolTip": "Controllers\\CRUDMilestone.cs",
-              "ViewState": "AgIAABIAAABg0MzMzIw1wB8AAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-19T05:57:48.852Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 31,
               "Title": "BookingPaymentController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\BookingPaymentController.cs",
               "RelativeDocumentMoniker": "Controllers\\BookingPaymentController.cs",
@@ -464,7 +530,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 28,
               "Title": "SmokingStatusRequest.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\SmokingStatusRequest.cs",
               "RelativeDocumentMoniker": "Models\\SmokingStatusRequest.cs",
@@ -476,7 +542,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 30,
               "Title": "QuiltPlanDTO.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\QuiltPlanDTO.cs",
               "RelativeDocumentMoniker": "Models\\QuiltPlanDTO.cs",
@@ -488,7 +554,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 29,
               "Title": "QuitPlanController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\QuitPlanController.cs",
               "RelativeDocumentMoniker": "Controllers\\QuitPlanController.cs",
@@ -500,7 +566,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 27,
               "Title": "PlanMilestoneRequest.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\PlanMilestoneRequest.cs",
               "RelativeDocumentMoniker": "Models\\PlanMilestoneRequest.cs",
@@ -512,19 +578,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
-              "Title": "PlanMilestone.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PlanMilestone.cs",
-              "RelativeDocumentMoniker": "Entities\\PlanMilestone.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PlanMilestone.cs",
-              "RelativeToolTip": "Entities\\PlanMilestone.cs",
-              "ViewState": "AgIAAAgAAAAAOjMzMzP5vw0AAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-19T06:05:28.474Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 33,
               "Title": "ChatController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\ChatController.cs",
               "RelativeDocumentMoniker": "Controllers\\ChatController.cs",
@@ -536,7 +590,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 34,
               "Title": "TrackProgressController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\TrackProgressController.cs",
               "RelativeDocumentMoniker": "Controllers\\TrackProgressController.cs",
@@ -548,7 +602,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 32,
               "Title": "CreateQuitPlanRequest.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\CreateQuitPlanRequest.cs",
               "RelativeDocumentMoniker": "Models\\CreateQuitPlanRequest.cs",
@@ -560,7 +614,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 35,
               "Title": "QuitPlan.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\QuitPlan.cs",
               "RelativeDocumentMoniker": "Entities\\QuitPlan.cs",
@@ -572,7 +626,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 36,
               "Title": "ReportController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\ReportController.cs",
               "RelativeDocumentMoniker": "Controllers\\ReportController.cs",
@@ -584,7 +638,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 37,
               "Title": "LoginResponse.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\LoginResponse.cs",
               "RelativeDocumentMoniker": "Models\\LoginResponse.cs",
@@ -596,7 +650,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 40,
               "Title": "BadgeManagementController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\BadgeManagementController.cs",
               "RelativeDocumentMoniker": "Controllers\\BadgeManagementController.cs",
@@ -608,7 +662,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 39,
               "Title": "BadgeController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\BadgeController.cs",
               "RelativeDocumentMoniker": "Controllers\\BadgeController.cs",
@@ -620,7 +674,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 38,
               "Title": "LoginRequest.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\LoginRequest.cs",
               "RelativeDocumentMoniker": "Models\\LoginRequest.cs",
