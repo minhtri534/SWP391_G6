@@ -26,10 +26,10 @@ export async function getUserNotification(userId) {
 	}
 }
 
-export async function addNotification(params) {
+export async function addNotification({userId, relatedLogId, relatedMilestoneId, message, sendDate, type}) {
 	try {
 		const payload = {
-			params,
+			userId:userId, relatedLogId:relatedLogId, relatedMilestoneId:relatedMilestoneId, message:message, sendDate: sendDate, type:type,
 		};
 		const response = await axios.post(`${baseApi}/api/Notification`, payload, getAuthConfig());
 		return response.data;

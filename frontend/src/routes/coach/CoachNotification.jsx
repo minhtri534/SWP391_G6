@@ -61,6 +61,9 @@ function CoachNotification() {
 							<option value="Reminder">Reminder</option>
 							<option value="Notify">Notify</option>
 						</select>
+						<button onClick={() => setIsModalOpen(true)} className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 hover:cursor-pointer transition">
+							Add Notification
+						</button>
 					</div>
 					{/* Notification table */}
 					<div className="bg-white rounded-xl shadow-md overflow-x-auto">
@@ -126,7 +129,7 @@ function CoachNotification() {
 					</div>
 
 					{/* Create or Update notification modal */}
-					{isModalOpen && selectedItem && (
+					{isModalOpen && (
 						<NotificationModal
 							key={selectedItem ? selectedItem.notificationId : "new"}
 							isOpen={isModalOpen}

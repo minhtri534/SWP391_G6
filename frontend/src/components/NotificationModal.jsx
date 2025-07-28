@@ -18,6 +18,7 @@ function NotificationModal({ isOpen, onClose, initialValues, onSuccess }) {
 	const formik = useFormik({
 		enableReinitialize: true,
 		initialValues: initialValues || {
+			userId: 2,
 			relatedLogId: 1,
 			relatedMilestoneId: 1,
 			message: "",
@@ -38,6 +39,7 @@ function NotificationModal({ isOpen, onClose, initialValues, onSuccess }) {
 				} else {
 					// Do adding notification
 					const payload = {
+						userId: values.userId,
 						relatedLogId: values.relatedLogId,
 						relatedMilestoneId: values.relatedMilestoneId,
 						message: values.message,
