@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaUserCircle, FaEye, FaWindowClose } from "react-icons/fa";
-import { getQuitPlanById, getQuitPlanByUserId, getMilestoneById, getMilestonesByPlanId } from "./api/Plan2";
+import { getQuitPlanById, getQuitPlanByUserId } from "./api/Plan2";
+import { getMilestonesByPlanId } from "./api/Milestone2";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const QuitPlan = () => {
@@ -22,16 +23,15 @@ const QuitPlan = () => {
       try {
         setLoading(true);
         if (userId) {
-          var data;
-          if (planId != 5) {
+          let data;
+          if (planId !== "5") {
             data = await getQuitPlanById(planId);
           } else {
             data = await getQuitPlanByUserId(userId);
           }
-          
           setPlan(data);
-          if (data.planId) {
-            const milestoneData = await getMilestonesByPlanId(data.planId); // Giả định lấy milestone đầu tiên
+          if (data && data.planId) {
+            const milestoneData = await getMilestonesByPlanId(data.planId);
             setMilestones(Array.isArray(milestoneData) ? milestoneData : [milestoneData]);
           }
         }
@@ -42,27 +42,30 @@ const QuitPlan = () => {
       }
     };
     fetchQuitPlan();
-  }, [userId]);
+  }, [userId, planId]);
 
   const fetchMilestoneDetail = async (milestoneId) => {
     try {
-      const data = await getMilestoneById(milestoneId);
-      setSelectedMilestone(data);
-      setShowAll(true);
+      const milestone = milestones.find(m => m.milestoneId === milestoneId);
+      setSelectedMilestone(milestone || null);
+      setShowAll(false); // Đảm bảo không mở popup "View All" khi xem chi tiết
     } catch (err) {
       setError(err.message || "Failed to load milestone details");
     }
   };
 
-  //Format date
-	const formatDate = (isoDateString) => {
-		if (!isoDateString) return "";
-		const date = new Date(isoDateString);
-		const day = String(date.getDate()).padStart(2, "0");
-		const month = String(date.getMonth() + 1).padStart(2, "0");
-		const year = date.getFullYear();
-		return `${day}/${month}/${year}`;
-	};
+  const handleViewAllMilestones = () => {
+    setShowAll(true);
+  };
+
+  const formatDate = (isoDateString) => {
+    if (!isoDateString) return "";
+    const date = new Date(isoDateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
 
   if (!userId) {
     return (
@@ -147,12 +150,12 @@ const QuitPlan = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Milestone list */}
           <div className="bg-white p-6 rounded-xl text-gray-800 shadow-md">
-            <h3 className="text-xl font-semibold mb-4 text-green-700">Current Milestone</h3>
+            <h3 className="text-xl font-semibold mb-4 text-green-700">Current Milestones</h3>
             <ul className="list-disc list-inside">
               {milestones.length > 0 ? (
-                milestones.slice(0, 1).map((milestone) => (
-                  <li key={milestone.milestoneId}>
-                    <strong>{milestone.title}</strong> - {milestone.description}
+                milestones.map((milestone) => (
+                  <li key={milestone.milestoneId} onClick={() => fetchMilestoneDetail(milestone.milestoneId)} style={{ cursor: "pointer" }}>
+                    <strong>{milestone.title}</strong> (Target: {formatDate(milestone.target_date)})
                   </li>
                 ))
               ) : (
@@ -160,7 +163,7 @@ const QuitPlan = () => {
               )}
             </ul>
             <button
-              onClick={() => milestones.length > 0 && fetchMilestoneDetail(milestones[0].milestoneId)}
+              onClick={handleViewAllMilestones}
               className="mt-4 text-sm text-green-600 flex items-center gap-1 hover:underline"
               disabled={milestones.length === 0}
             >
@@ -180,7 +183,26 @@ const QuitPlan = () => {
       </div>
 
       {/* Popup for selected milestone */}
-      {showAll && selectedMilestone && (
+      {selectedMilestone && !showAll && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-8 w-[90%] max-w-lg relative">
+            <button
+              onClick={() => setSelectedMilestone(null)}
+              className="absolute top-3 right-3 text-red-500 hover:text-red-700"
+            >
+              <FaWindowClose size={24} />
+            </button>
+            <h3 className="text-xl font-bold mb-4 text-green-700">{selectedMilestone.title}</h3>
+            <ul className="list-decimal list-inside text-gray-800 space-y-2">
+              <li><strong>Description:</strong> {selectedMilestone.description}</li>
+              <li><strong>Target Date:</strong> {formatDate(selectedMilestone.target_date)}</li>
+            </ul>
+          </div>
+        </div>
+      )}
+
+      {/* Popup for all milestones */}
+      {showAll && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-8 w-[90%] max-w-lg relative">
             <button
@@ -189,10 +211,13 @@ const QuitPlan = () => {
             >
               <FaWindowClose size={24} />
             </button>
-            <h3 className="text-xl font-bold mb-4 text-green-700">{selectedMilestone.title}</h3>
+            <h3 className="text-xl font-bold mb-4 text-green-700">All Milestones</h3>
             <ul className="list-decimal list-inside text-gray-800 space-y-2">
-              <li><strong>Description:</strong> {selectedMilestone.description}</li>
-              <li><strong>Target Date:</strong> {selectedMilestone.target_date}</li>
+              {milestones.map((milestone) => (
+                <li key={milestone.milestoneId}>
+                  <strong>{milestone.title}</strong> (Target Date: {formatDate(milestone.target_date)}, Description: {milestone.description})
+                </li>
+              ))}
             </ul>
           </div>
         </div>
