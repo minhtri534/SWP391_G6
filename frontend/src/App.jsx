@@ -35,15 +35,59 @@ import CoachHome from "./routes/coach/CoachHome";
 import CoachingMember from "./routes/coach/CoachingMember";
 import CoachFeedback from "./routes/coach/CoachFeedback";
 import CoachNotification from "./routes/coach/CoachNotification";
+import { getTokenData } from "./api/Auth";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
+	const AlreadyLoggedIn = ({ children }) => {
+		const token = localStorage.getItem("userToken");
+		if (token) {
+			try {
+				const payload = getTokenData(token);
+				const now = Math.floor(Date.now() / 1000);
+				if (payload.exp > now) {
+					// Redirect based on role
+					const role = parseInt(payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
+					if (role === 4) return <Navigate to="/Admin/Dashboard" />;
+					if (role === 3) return <Navigate to="/Coach/Home" />;
+					return <Navigate to="/memberhome" />;
+				}
+			} catch (e) {
+				localStorage.clear();
+			}
+		}
+		return children;
+	};
+
 	return (
 		<Router>
 			<>
 				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/signup" element={<Signup />} />
+					<Route
+						path="/"
+						element={
+							<AlreadyLoggedIn>
+								<Home />
+							</AlreadyLoggedIn>
+						}
+					/>
+					<Route
+						path="/login"
+						element={
+							<AlreadyLoggedIn>
+								<Login />
+							</AlreadyLoggedIn>
+						}
+					/>
+					<Route
+						path="/signup"
+						element={
+							<AlreadyLoggedIn>
+								<Signup />
+							</AlreadyLoggedIn>
+						}
+					/>
+
 					<Route path="/membership" element={<Membership />} />
 					<Route path="/coaching" element={<BookingCoach />} />
 					<Route path="/report" element={<SmokingSelfReport />} />
@@ -58,21 +102,84 @@ function App() {
 					<Route path="/quitplan/:level" element={<QuitPlan />} />
 					<Route path="/mycoach" element={<MyCoach />} />
 					<Route path="/badges" element={<Badges />} />
-          			<Route path="/dailyprogress" element={<DailyProgress />} />
-          			<Route path="/memberhome" element={<MemberHome />} />
+					<Route path="/dailyprogress" element={<DailyProgress />} />
+					<Route path="/memberhome" element={<MemberHome />} />
 
-					{/* Admin routing */}
-					<Route path="/Admin/Dashboard" element={<AdminDashboard />} />
-					<Route path="/Admin/ManageAccounts" element={<ManageAccounts />} />
-					<Route path="/Admin/ManageBadges" element={<ManageBadges />} />
-					<Route path="/Admin/ManageReport" element={<ManageReport />} />
-					<Route path="/Admin/ManageIncome" element={<ManageIncome />} />
+					{/* Admin routing. Need to have role Admin to use  */}
+					<Route
+						path="/Admin/Dashboard"
+						element={
+							<ProtectedRoute allowedRoles={[4]}>
+								<AdminDashboard />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/Admin/ManageAccounts"
+						element={
+							<ProtectedRoute allowedRoles={[4]}>
+								<ManageAccounts />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/Admin/ManageBadges"
+						element={
+							<ProtectedRoute allowedRoles={[4]}>
+								<ManageBadges />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/Admin/ManageReport"
+						element={
+							<ProtectedRoute allowedRoles={[4]}>
+								<ManageReport />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/Admin/ManageIncome"
+						element={
+							<ProtectedRoute allowedRoles={[4]}>
+								<ManageIncome />
+							</ProtectedRoute>
+						}
+					/>
 
-					{/* Coach routing. Need to have role COACH to use */}
-					<Route path="/Coach/Home" element={<CoachHome />} />
-					<Route path="/Coach/Member" element={<CoachingMember />} />
-					<Route path="/Coach/Notification" element={<CoachNotification />} />
-					<Route path="/Coach/Feedback" element={<CoachFeedback />} />
+					{/* Coach routing. Need to have role Coach to use */}
+					<Route
+						path="/Coach/Home"
+						element={
+							<ProtectedRoute allowedRoles={[3]}>
+								<CoachHome />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/Coach/Member"
+						element={
+							<ProtectedRoute allowedRoles={[3]}>
+								<CoachingMember />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/Coach/Notification"
+						element={
+							<ProtectedRoute allowedRoles={[3]}>
+								<CoachNotification />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/Coach/Feedback"
+						element={
+							<ProtectedRoute allowedRoles={[3]}>
+								<CoachFeedback />
+							</ProtectedRoute>
+						}
+					/>
 				</Routes>
 
 				{/* Toast hiển thị thông báo ở góc dưới bên phải */}

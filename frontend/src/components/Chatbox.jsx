@@ -51,7 +51,7 @@ function ChatBox({ member, coachId, onClose }) {
 	};
 
 	return (
-		<div className="fixed bottom-4 right-4 w-80 bg-white rounded-xl shadow-lg z-50 border border-gray-300 flex flex-col max-h-[80vh]">
+		<div className="fixed bottom-4 right-4 w-80 bg-white rounded-xl shadow-lg z-50 border border-gray-300 flex flex-col max-h-[40vh]">
 			<div className="p-3 border-b font-semibold flex justify-between items-center bg-green-100">
 				<span>Chat with {member.memberName}</span>
 				<button onClick={onClose} className="text-gray-500 hover:text-red-500 hover:cursor-pointer">

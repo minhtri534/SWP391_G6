@@ -150,6 +150,7 @@ function BadgeModal({ isOpen, onClose, initialValues, onSuccess }) {
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
 								className="w-full border p-2 rounded focus:ring-2 focus:ring-green-300"
+								disabled
 							/>
 							{formik.touched.imageUrl && formik.errors.imageUrl && <div className="text-red-500 text-sm mt-1">{formik.errors.imageUrl}</div>}
 						</div>

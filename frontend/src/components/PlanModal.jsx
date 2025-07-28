@@ -27,7 +27,6 @@ function PlanModal({ isOpen, onClose, initialValues, coachId, onPlanChange }) {
 	}, []);
 
 	// If there is a quitPlan in the init value, run the fetchMilestone
-
 	const fetchMilestone = async (planId) => {
 		try {
 			const data = await getMilestoneByPlanId(planId);

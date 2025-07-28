@@ -59,6 +59,7 @@ namespace backend.Controllers
 
             user.Age = request.Age;
             user.Gender = request.Gender.ToString();
+            user.PhoneNum = request.PhoneNum;
             user.JoinDate = DateTime.UtcNow;
 
             _context.SaveChanges();

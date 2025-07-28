@@ -30,7 +30,7 @@ public class CRUDMilestoneController : ControllerBase
             BadgeId = request.BadgeId,
             Title = request.Title,
             Description = request.Description,
-            TargetDate = DateTime.Now,
+            TargetDate = DateTime.UtcNow,
         };
         _context.PlanMilestones.Add(milestone);
         _context.SaveChanges();

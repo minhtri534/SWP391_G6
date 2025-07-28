@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import CoachTopbar from "../../components/CoachTopbar";
 import CoachSidebar from "../../components/CoachSidebar";
-import { getNotification } from "../../api/Notification";
+import { deleteNotification, getNotification } from "../../api/Notification";
 import { toast } from "react-toastify";
 import { MessageCircleMore, Pencil, Trash2 } from "lucide-react";
+import NotificationModal from "../../components/NotificationModal";
+import DeleteConfirmation from "../../components/DeleteConfirmation";
 
 function CoachNotification() {
 	const [notifications, setNotifications] = useState([
-		{ notificationId: 1, message: "You have a meeting tonight. Stay tune!", type: "Reminder" },
-		{ notificationId: 2, message: "You've done it. You complete a milestone", type: "Milestone" },
-		{ notificationId: 3, message: "New message from coach", type: "Notify" },
+		// { notificationId: 1, message: "You have a meeting tonight. Stay tune!", type: "Reminder" },
+		// { notificationId: 2, message: "You've done it. You complete a milestone", type: "Milestone" },
+		// { notificationId: 3, message: "New message from coach", type: "Notify" },
 	]);
 
 	// Get notification list function
@@ -37,6 +39,9 @@ function CoachNotification() {
 	});
 
 	// For popup modal
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isConfirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+	const [selectedItem, setSelectedItem] = useState(null);
 
 	return (
 		<div className="flex">
@@ -93,11 +98,21 @@ function CoachNotification() {
 														<MessageCircleMore className="w-4 h-4" />
 														Send to members
 													</button>
-													<button className="flex items-center gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 hover:cursor-pointer transition" onClick={() => {}}>
+													<button
+														onClick={() => {
+															setIsModalOpen(true);
+															setSelectedItem(notification);
+														}}
+														className="flex items-center gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 hover:cursor-pointer transition">
 														<Pencil className="w-4 h-4" />
 														Update
 													</button>
-													<button className="flex items-center gap-1 px-3 py-1 border rounded text-red-600 border-red-600 hover:bg-red-50 hover:cursor-pointer transition" onClick={() => {}}>
+													<button
+														className="flex items-center gap-1 px-3 py-1 border rounded text-red-600 border-red-600 hover:bg-red-50 hover:cursor-pointer transition"
+														onClick={() => {
+															setConfirmDeleteOpen(true);
+															setSelectedItem(notification);
+														}}>
 														<Trash2 className="w-4 h-4" />
 														Remove
 													</button>
@@ -109,6 +124,49 @@ function CoachNotification() {
 							</tbody>
 						</table>
 					</div>
+
+					{/* Create or Update notification modal */}
+					{isModalOpen && (
+						<NotificationModal
+							key={selectedItem ? selectedItem.notificationId : "new"}
+							isOpen={isModalOpen}
+							onClose={() => {
+								setIsModalOpen(false);
+								setSelectedItem(null);
+							}}
+							initialValues={selectedItem}
+							onSuccess={() => {
+								fetchNotifications();
+								setIsModalOpen(false);
+								setSelectedItem(null);
+							}}
+						/>
+					)}
+
+					{/* Delete confirmation */}
+					{isConfirmDeleteOpen && (
+						<DeleteConfirmation
+							isOpen={isConfirmDeleteOpen}
+							onClose={() => {
+								setConfirmDeleteOpen(false);
+								setSelectedItem(null);
+							}}
+							message={"Do you want to delete this notification?"}
+							onConfirm={async () => {
+								try {
+									await deleteNotification(selectedItem.notificationId);
+									toast.success("Remove notification successfully");
+									setNotifications((prev) => prev.filter((n) => n.notificationId !== selectedItem.notificationId));
+								} catch (error) {
+									console.error(error);
+									toast.error(error?.response?.data?.message || error.message || "Failed to remove notification.");
+								} finally {
+									setConfirmDeleteOpen(false);
+									setSelectedItem(null);
+								}
+							}}
+						/>
+					)}
 				</div>
 			</div>
 		</div>
