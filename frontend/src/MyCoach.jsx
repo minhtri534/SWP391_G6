@@ -35,7 +35,7 @@ const MyCoach = () => {
 				const sortedMessages = data.sort((a, b) => new Date(a.chat_date) - new Date(b.chat_date));
 				setMessages(sortedMessages);
 			} catch (err) {
-				setError(err.message || "Error fetching chats");
+				//setError(err.message || "Error fetching chats");
 			} finally {
 				setLoading(false);
 			}
