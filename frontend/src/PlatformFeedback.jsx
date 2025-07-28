@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
 import { FaUserCircle, FaPenFancy, FaStar } from "react-icons/fa";
+import { createFeedback } from "./api/Feedback"
 
 const PlatformFeedback = () => {
   const [content, setContent] = useState("");
@@ -41,11 +42,24 @@ const PlatformFeedback = () => {
       coachId: null,
       planId: null,
     });
+    /*
+    try {
+      var package = {
+        userId: 
+      }
+      createFeedback(package);
+
+
+      
+    } catch {
+      toast.error(error.message);
+      console.log(error);
+    }*/
 
     toast.success("Thank you for your feedback!");
-    setContent("");
-    setRating(0);
-    setAnonymous(false);
+      setContent("");
+      setRating(0);
+      setAnonymous(false);
   };
 
   return (

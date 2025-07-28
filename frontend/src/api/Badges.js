@@ -47,7 +47,7 @@ export async function updateBadge({ badgeId, badgeName, description, conditionTy
 			condition_Type: conditionType,
 			value: value,
 		};
-		const response = await axios.patch(`${baseApi}/api/BadgeManagement/${badgeId}`, payload, getAuthConfig());
+		const response = await axios.put(`${baseApi}/api/BadgeManagement/${badgeId}`, payload, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Update badge failed!!!";
