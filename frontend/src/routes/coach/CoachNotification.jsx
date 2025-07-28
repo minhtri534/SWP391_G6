@@ -40,7 +40,7 @@ function CoachNotification() {
 
 	// For popup modal
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [isConfirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+	const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
 	const [selectedItem, setSelectedItem] = useState(null);
 
 	return (
@@ -110,7 +110,7 @@ function CoachNotification() {
 													<button
 														className="flex items-center gap-1 px-3 py-1 border rounded text-red-600 border-red-600 hover:bg-red-50 hover:cursor-pointer transition"
 														onClick={() => {
-															setConfirmDeleteOpen(true);
+															setIsConfirmDeleteOpen(true);
 															setSelectedItem(notification);
 														}}>
 														<Trash2 className="w-4 h-4" />
@@ -126,7 +126,7 @@ function CoachNotification() {
 					</div>
 
 					{/* Create or Update notification modal */}
-					{isModalOpen && (
+					{isModalOpen && selectedItem && (
 						<NotificationModal
 							key={selectedItem ? selectedItem.notificationId : "new"}
 							isOpen={isModalOpen}
@@ -144,11 +144,11 @@ function CoachNotification() {
 					)}
 
 					{/* Delete confirmation */}
-					{isConfirmDeleteOpen && (
+					{isConfirmDeleteOpen && selectedItem && (
 						<DeleteConfirmation
 							isOpen={isConfirmDeleteOpen}
-							onClose={() => {
-								setConfirmDeleteOpen(false);
+							onCancel={() => {
+								setIsConfirmDeleteOpen(false);
 								setSelectedItem(null);
 							}}
 							message={"Do you want to delete this notification?"}
@@ -161,7 +161,7 @@ function CoachNotification() {
 									console.error(error);
 									toast.error(error?.response?.data?.message || error.message || "Failed to remove notification.");
 								} finally {
-									setConfirmDeleteOpen(false);
+									setIsConfirmDeleteOpen(false);
 									setSelectedItem(null);
 								}
 							}}

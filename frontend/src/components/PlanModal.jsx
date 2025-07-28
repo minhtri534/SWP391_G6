@@ -50,7 +50,7 @@ function PlanModal({ isOpen, onClose, initialValues, coachId, onPlanChange }) {
 					title: Yup.string().required("Title is required"),
 					description: Yup.string().required("Description is required"),
 					targetDate: Yup.date().required("Target date is required"),
-					badgeId: Yup.string().required("Badge is required"),
+					// badgeId: Yup.string().required("Badge is required"),
 				})
 			),
 	});

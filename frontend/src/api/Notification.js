@@ -56,7 +56,7 @@ export async function updateNotification({ notificationId, type, message }) {
 
 export async function deleteNotification(notificationId) {
 	try {
-		const response = await axios.get(`${baseApi}/api/NotificationManagement/${notificationId}`, getAuthConfig());
+		const response = await axios.delete(`${baseApi}/api/NotificationManagement/${notificationId}`,null, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Remove notifications failed!!!";

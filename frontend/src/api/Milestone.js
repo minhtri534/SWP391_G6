@@ -23,7 +23,7 @@ export async function addMilestone({ planId, badgeId, title, description, target
 			targetDate: targetDate,
 		};
 		console.log("Milestone payload: ", payload);
-		const response = await axios.post(`${baseApi}/CRUDMilestone/CreateMilestone`, payload, getAuthConfig());
+		const response = await axios.post(`${baseApi}/api/CRUDMilestone/CreateMilestone`, payload, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Add milestone failed!!!";

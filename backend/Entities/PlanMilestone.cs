@@ -10,7 +10,7 @@ namespace backend.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MilestoneId { get; set; }
         public int PlanId { get; set; }
-        public int BadgeId { get; set; }
+        public int? BadgeId { get; set; }
         [MaxLength(100)]
         public string? Title { get; set; }
         [Column(TypeName = "text")]
