@@ -23,6 +23,11 @@ const quitPlans = [
     level: "Severe Addiction",
     description: "You are highly dependent on nicotine, possibly chain-smoking. This plan provides intensive quit support, daily coaching, and relapse prevention strategies.",
   },
+  {
+    id:5,
+    level: "Custom",
+    description: "Your very own custom quit plan tailored to your own needs by your coach."
+  }
 ];
 
 const ChooseQuitPlan = () => {

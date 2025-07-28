@@ -22,7 +22,13 @@ const QuitPlan = () => {
       try {
         setLoading(true);
         if (userId) {
-          const data = await getQuitPlanById(planId);
+          var data;
+          if (planId != 5) {
+            data = await getQuitPlanById(planId);
+          } else {
+            data = await getQuitPlanByUserId(userId);
+          }
+          
           setPlan(data);
           if (data.planId) {
             const milestoneData = await getMilestonesByPlanId(data.planId); // Giả định lấy milestone đầu tiên
