@@ -37,7 +37,6 @@ namespace backend.Controllers
                     u.Role,
                     u.Status,
                     u.JoinDate,
-                    //LOCK ACCOUNT//
                 })
                 .ToList();
 
@@ -67,7 +66,7 @@ namespace backend.Controllers
                 return NotFound("User not exist");
 
             if (user.Status == "Locked")
-                user.Status = "Unlocked";
+                user.Status = "Active";
 
             _context.SaveChanges();
 

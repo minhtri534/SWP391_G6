@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\accountmanage(admin)cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\accountmanage(admin)cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\crudmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\crudmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -33,10 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\dailyprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\dailyprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\accountmanage(admin)cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\accountmanage(admin)cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\dailyprogressrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -182,20 +182,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AccountManagement.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManagement.cs",
-              "RelativeDocumentMoniker": "Controllers\\AccountManagement.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManagement.cs",
-              "RelativeToolTip": "Controllers\\AccountManagement.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAAQwD0AAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-27T23:45:37.219Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -257,7 +244,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "FeedbackService.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Services\\FeedbackService.cs",
               "RelativeDocumentMoniker": "Services\\FeedbackService.cs",
@@ -270,7 +257,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "DailyProgressController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\DailyProgressController.cs",
               "RelativeDocumentMoniker": "Controllers\\DailyProgressController.cs",
@@ -283,7 +270,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "PlanMilestone.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PlanMilestone.cs",
               "RelativeDocumentMoniker": "Entities\\PlanMilestone.cs",
@@ -296,20 +283,46 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "CRUDMilestone.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\CRUDMilestone.cs",
               "RelativeDocumentMoniker": "Controllers\\CRUDMilestone.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\CRUDMilestone.cs*",
-              "RelativeToolTip": "Controllers\\CRUDMilestone.cs*",
-              "ViewState": "AgIAABMAAAAAQjMzMzMSwCAAAAAoAAAAAAAAAA==",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\CRUDMilestone.cs",
+              "RelativeToolTip": "Controllers\\CRUDMilestone.cs",
+              "ViewState": "AgIAAA4AAAAAhGZmZmYEwBsAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-19T05:57:48.852Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AccountManage(Admin)cs.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManage(Admin)cs.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountManage(Admin)cs.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManage(Admin)cs.cs",
+              "RelativeToolTip": "Controllers\\AccountManage(Admin)cs.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAgwEQAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T16:06:36.806Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "AccountManagement.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManagement.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountManagement.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManagement.cs",
+              "RelativeToolTip": "Controllers\\AccountManagement.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwD0AAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-27T23:45:37.219Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "UpdateProfileRequest.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\UpdateProfileRequest.cs",
               "RelativeDocumentMoniker": "Models\\UpdateProfileRequest.cs",
@@ -322,7 +335,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "SmokingStatusController.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\SmokingStatusController.cs",
               "RelativeDocumentMoniker": "Controllers\\SmokingStatusController.cs",
@@ -344,19 +357,6 @@
               "ViewState": "AgIAAAcAAACgZmZmZgY9wBkAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-26T10:42:46.127Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "AccountManage(Admin)cs.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManage(Admin)cs.cs",
-              "RelativeDocumentMoniker": "Controllers\\AccountManage(Admin)cs.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManage(Admin)cs.cs",
-              "RelativeToolTip": "Controllers\\AccountManage(Admin)cs.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGsAAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-18T16:06:36.806Z",
               "EditorCaption": ""
             },
             {

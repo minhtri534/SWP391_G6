@@ -10,7 +10,7 @@ function AdminSidebar() {
 		{ name: "Accounts", icon: <CircleUser />, path: "/Admin/ManageAccounts" },
 		{ name: "Badges", icon: <Award />, path: "/Admin/ManageBadges" },
 		{ name: "Report & Feedback", icon: <MessageSquareText />, path: "/Admin/ManageReport" },
-		{ name: "Income", icon: <CircleDollarSign />, path: "/admin/ManageIncome" },
+	//	{ name: "Income", icon: <CircleDollarSign />, path: "/admin/ManageIncome" },
 		// { name: "Promote", path: "/admin/promote" },
 	];
 
