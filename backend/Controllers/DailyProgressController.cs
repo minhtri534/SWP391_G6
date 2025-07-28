@@ -15,14 +15,14 @@ public class DailyProgressController : ControllerBase
     {
         _context = context;
     }
-    [Authorize(Roles = "4")]
+    [Authorize(Roles = "3,4")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<DailyProgress>>> GetAll()
     {
         return await _context.DailyProgresses.ToListAsync();
     }
 
-    [Authorize(Roles = "2,3")]
+    [Authorize(Roles = "2,3,4")]
     [HttpGet("{id}")]
     public async Task<ActionResult<DailyProgress>> GetById(int id)
     {

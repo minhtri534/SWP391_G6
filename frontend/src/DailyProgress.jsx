@@ -8,6 +8,7 @@ import {
   createDailyProgress,
   updateDailyProgress,
 } from "./api/DailyProgress"; // Đảm bảo đường dẫn này đúng
+import { getDailyProgress } from "./api/Progress";
 
 const DailyProgress = () => {
   const userName = localStorage.getItem("userName") || "User";
@@ -36,21 +37,18 @@ const DailyProgress = () => {
       try {
         setLoading(true);
         // Lấy tất cả progress của người dùng
-        const userProgressList = await getDailyProgressByUserId(userId);
+        // const userProgressList = await getDailyProgressByUserId(userId);
+        const today = new Date().toISOString().slice(0, 10);
+        const todayProgress = (await getDailyProgress(userId, today))[0];
+        console.log(todayProgress)
         
         // Tìm tiến độ của ngày hôm nay
-        const today = new Date().toISOString().slice(0, 10);
-        const todayProgress = userProgressList.find(p => p.date === today);
+        
+        //const todayProgress = userProgressList.find(p => p.date == today);
 
         if (todayProgress) {
           // Nếu có tiến độ cho ngày hôm nay, tải nó vào form
-          setProgress({
-            progressId: todayProgress.progressId,
-            note: todayProgress.note || "",
-            no_smoking: todayProgress.no_smoking || false,
-            symptoms: todayProgress.symptoms || "",
-            date: todayProgress.date,
-          });
+          setProgress(todayProgress );
         } else {
           // Nếu không có tiến độ cho ngày hôm nay, reset form và đặt ngày hiện tại
           setProgress({

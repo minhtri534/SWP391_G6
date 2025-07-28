@@ -29,7 +29,7 @@ export async function getDailyProgress() {
 export async function getDailyProgressByUserId(userId) {
     try {
         // Sử dụng getAuthConfig() vì đây là dữ liệu cá nhân của người dùng
-        const response = await axios.get(`${baseApi}/api/DailyProgress?userId=${userId}`, getAuthConfig());
+        const response = await axios.get(`${baseApi}/api/DailyProgress/${userId}`, getAuthConfig());
         return response.data;
     } catch (error) {
         const msg = error.response?.data?.message || `Get daily progress for user ${userId} failed!!!`;
