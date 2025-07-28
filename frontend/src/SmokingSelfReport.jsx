@@ -53,7 +53,8 @@ const SmokingSelfReport = () => {
           setHasData(false); // Không có dữ liệu, cho phép tạo mới
         }
       } catch (err) {
-        setError(err.message || "Error fetching smoking status");
+        //setError(err.message || "Error fetching smoking status");
+
         setHasData(false); // Nếu lỗi, vẫn cho phép tạo mới
       } finally {
         setLoading(false);

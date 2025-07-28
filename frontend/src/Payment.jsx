@@ -46,26 +46,6 @@ function Payment() {
 
     setLoading(true);
     try {
-      /*await axios.post("http://localhost:5196/Membership/Buy", {
-        userId: userId,
-        membershipId: membershipId,
-        start_Date: new Date().toISOString(),
-      }, getAuthConfig());*/
-
-      /*await axios(
-        {
-          method : "POST",
-          url : "http://localhost:5196/Membership/Buy",
-          headers : {'Content-Type': 'application/json'},
-          data : {
-            userId: userId,
-            membershipId: membershipId,
-            start_Date: new Date().toISOString(),
-          }
-        }
-      ).catch((error) => {toast.error(error.message);});
-      */
-      
       const payload = {
         UserId: userId,
         MembershipId: membershipId,
@@ -74,7 +54,8 @@ function Payment() {
 
       await buyMembershipPlan(payload);
       toast.success("Payment successful! Welcome to your upgraded membership.");
-      navigate("/memberhome");
+      localStorage.clear();
+      navigate("/login");
     } catch (error) {
       toast.error(error.message);
       console.log(error);

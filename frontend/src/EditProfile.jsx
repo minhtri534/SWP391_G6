@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { getProfile, updateProfile, deleteAccount } from "./api/Profile";
+import { getProfile, updateProfile, deleteAccount } from "./api/Profile"; // Đảm bảo đường dẫn đúng
 
 const EditProfile = () => {
   const navigate = useNavigate();
@@ -10,6 +10,18 @@ const EditProfile = () => {
   const menuRef = useRef();
   const userId = localStorage.getItem("userId");
 
+  // State để lưu trữ toàn bộ dữ liệu profile gốc từ backend
+  const [fullProfileData, setFullProfileData] = useState({});
+
+  // State cho dữ liệu form mà người dùng có thể chỉnh sửa
+  const [formData, setFormData] = useState({
+    userName: "",
+    age: "",
+    gender: "",
+    phoneNum: "",
+  });
+
+  // Xử lý đóng menu khi click ra ngoài
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -20,10 +32,14 @@ const EditProfile = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Fetch dữ liệu profile khi component mount hoặc userId thay đổi
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const profile = await getProfile(userId);
+        // Lưu toàn bộ đối tượng profile nhận được từ API
+        setFullProfileData(profile);
+        // Điền dữ liệu vào form chỉ với các trường cần chỉnh sửa
         setFormData({
           userName: profile.userName || "",
           age: profile.age || "",
@@ -42,13 +58,6 @@ const EditProfile = () => {
     navigate("/login");
   };
 
-  const [formData, setFormData] = useState({
-    userName: "",
-    age: "",
-    gender: "",
-    phoneNum: "",
-  });
-
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -56,15 +65,29 @@ const EditProfile = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      await updateProfile(userId, {
+      // Chuẩn bị payload để gửi đi
+      // Kết hợp dữ liệu từ form (formData) và các trường gốc không thay đổi (fullProfileData)
+      const payload = {
+        userId: userId, // Luôn đảm bảo userId được gửi
         userName: formData.userName,
-        age: formData.age,
+        // Đảm bảo age là số nếu backend yêu cầu, nếu không thì gửi string hoặc null nếu cần
+        age: formData.age === "" ? null : parseInt(formData.age), // Gửi null nếu rỗng, hoặc chuyển đổi sang số
         gender: formData.gender,
         phoneNum: formData.phoneNum,
-      });
+        // Các trường này không được chỉnh sửa trên form, lấy từ dữ liệu gốc
+        password: fullProfileData.password, // Cần cẩn thận với password
+        roleId: fullProfileData.roleId,
+        status: fullProfileData.status,
+        joinDate: fullProfileData.joinDate,
+      };
+
+      console.log("Sending payload to updateProfile:", payload); // Debug: Kiểm tra payload trước khi gửi
+
+      await updateProfile(userId, payload);
       alert("Profile updated successfully!");
     } catch (err) {
       alert("Failed to update profile: " + err.message);
+      console.error("Update profile error:", err); // Debug: In lỗi chi tiết từ catch
     }
   };
 
@@ -170,13 +193,14 @@ const EditProfile = () => {
             className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition text-sm font-semibold mt-4"
           >
             Delete Account
-          </button>
+          L</button>
         </form>
       </div>
     </div>
   );
 };
 
+// Component con cho Input Field
 function InputField({ label, name, value, onChange }) {
   return (
     <div>
@@ -192,6 +216,7 @@ function InputField({ label, name, value, onChange }) {
   );
 }
 
+// Component con cho Menu Item
 function MenuItem({ label, onClick }) {
   return (
     <li

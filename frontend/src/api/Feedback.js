@@ -22,3 +22,46 @@ export async function getFeedbacksByCoachId(coachId) {
 		throw new Error(msg);
 	}
 }
+
+
+export async function createFeedback({ userId, coachId, planId, content, rating }) {
+	try {
+		const payload = {
+			userId: userId,
+			coachId: coachId,
+			planId: planId,
+			content: content,
+			rating: rating
+		};
+		const response = await axios.post(`${baseApi}/api/Feedback`, payload, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Create feedback failed!!!";
+		throw new Error(msg);
+	}
+}
+
+export async function updateBadge({ feedbackId, userId, content, rating }) {
+	try {
+		const payload = {
+			userId: userId,
+			content: content,
+			rating: rating
+		};
+		const response = await axios.put(`${baseApi}/api/Feedback/${feedbackId}`, payload, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Update feedback failed!!!";
+		throw new Error(msg);
+	}
+}
+
+export async function deleteBadge(feedbackId) {
+	try {
+		const response = await axios.delete(`${baseApi}/api/Feedback/${feedbackId}`, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Remove feedback failed!!!";
+		throw new Error(msg);
+	}
+}

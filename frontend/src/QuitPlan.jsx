@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaUserCircle, FaEye, FaWindowClose } from "react-icons/fa";
 import { getQuitPlanById, getQuitPlanByUserId, getMilestoneById, getMilestonesByPlanId } from "./api/Plan2";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const QuitPlan = () => {
   const userId = localStorage.getItem("userId");
@@ -12,13 +13,16 @@ const QuitPlan = () => {
   const [showAll, setShowAll] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const planId = queryParams.get("planId");
 
   useEffect(() => {
     const fetchQuitPlan = async () => {
       try {
         setLoading(true);
         if (userId) {
-          const data = await getQuitPlanById(userId);
+          const data = await getQuitPlanById(planId);
           setPlan(data);
           if (data.planId) {
             const milestoneData = await getMilestonesByPlanId(data.planId); // Giả định lấy milestone đầu tiên
@@ -43,6 +47,16 @@ const QuitPlan = () => {
       setError(err.message || "Failed to load milestone details");
     }
   };
+
+  //Format date
+	const formatDate = (isoDateString) => {
+		if (!isoDateString) return "";
+		const date = new Date(isoDateString);
+		const day = String(date.getDate()).padStart(2, "0");
+		const month = String(date.getMonth() + 1).padStart(2, "0");
+		const year = date.getFullYear();
+		return `${day}/${month}/${year}`;
+	};
 
   if (!userId) {
     return (
@@ -152,8 +166,8 @@ const QuitPlan = () => {
           {/* Plan info */}
           <div className="bg-white p-6 rounded-xl text-gray-800 shadow-md">
             <h3 className="text-xl font-semibold mb-4 text-green-700">Plan Details</h3>
-            <p><strong>Start Date:</strong> {plan.start_date}</p>
-            <p><strong>Goal Date:</strong> {plan.goal_date}</p>
+            <p><strong>Start Date:</strong> {formatDate(plan.start_Date)}</p>
+            <p><strong>Goal Date:</strong> {formatDate(plan.goal_Date)}</p>
             <p><strong>Reason:</strong> {plan.reason}</p>
           </div>
         </div>

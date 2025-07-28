@@ -2,33 +2,88 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUserCircle, FaStickyNote, FaSmileBeam, FaHeartbeat, FaCalendarAlt } from "react-icons/fa";
 
-// Initial mock data
-const initialProgressData = {
-  note: "",
-  no_smoking: false,
-  symptoms: "",
-  date: new Date().toISOString().slice(0, 10), // Default to current date
-};
+// Import các hàm API từ DailyProgress.js
+import {
+  getDailyProgressByUserId,
+  createDailyProgress,
+  updateDailyProgress,
+} from "./api/DailyProgress"; // Đảm bảo đường dẫn này đúng
 
 const DailyProgress = () => {
   const userName = localStorage.getItem("userName") || "User";
+  const userId = localStorage.getItem("userId"); // Lấy userId từ localStorage
   const [menuOpen, setMenuOpen] = useState(false);
-  const [progress, setProgress] = useState(initialProgressData);
+  const [progress, setProgress] = useState({
+    progressId: null, // Thêm trường progressId để theo dõi mục tiến độ hiện tại
+    note: "",
+    no_smoking: false,
+    symptoms: "",
+    date: new Date().toISOString().slice(0, 10), // Default to current date
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const menuRef = useRef();
   const navigate = useNavigate();
 
-  // Load data from localStorage on mount
+  // --- Logic tải Daily Progress hiện tại của người dùng ---
   useEffect(() => {
-    const savedProgress = localStorage.getItem("dailyProgress");
-    if (savedProgress) {
-      setProgress(JSON.parse(savedProgress));
-    }
-  }, []);
+    const fetchUserDailyProgress = async () => {
+      if (!userId) {
+        setError("User ID not found. Please log in.");
+        setLoading(false);
+        return;
+      }
+      try {
+        setLoading(true);
+        // Lấy tất cả progress của người dùng
+        const userProgressList = await getDailyProgressByUserId(userId);
+        
+        // Tìm tiến độ của ngày hôm nay
+        const today = new Date().toISOString().slice(0, 10);
+        const todayProgress = userProgressList.find(p => p.date === today);
 
-  // Save data to localStorage when progress changes
-  useEffect(() => {
-    localStorage.setItem("dailyProgress", JSON.stringify(progress));
-  }, [progress]);
+        if (todayProgress) {
+          // Nếu có tiến độ cho ngày hôm nay, tải nó vào form
+          setProgress({
+            progressId: todayProgress.progressId,
+            note: todayProgress.note || "",
+            no_smoking: todayProgress.no_smoking || false,
+            symptoms: todayProgress.symptoms || "",
+            date: todayProgress.date,
+          });
+        } else {
+          // Nếu không có tiến độ cho ngày hôm nay, reset form và đặt ngày hiện tại
+          setProgress({
+            progressId: null, // Đặt null để báo hiệu đây là mục mới cần tạo
+            note: "",
+            no_smoking: false,
+            symptoms: "",
+            date: today,
+          });
+        }
+      } catch (err) {
+        console.error("Error fetching daily progress:", err);
+        setError(err.message || "Failed to load daily progress.");
+        // Nếu lỗi, vẫn reset form để người dùng có thể nhập mới
+        setProgress({
+          progressId: null,
+          note: "",
+          no_smoking: false,
+          symptoms: "",
+          date: new Date().toISOString().slice(0, 10),
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserDailyProgress();
+  }, [userId]); // Chạy lại khi userId thay đổi (người dùng đăng nhập/đăng xuất)
+
+  // Lưu ý: Loại bỏ useEffect cũ để lưu vào localStorage vì giờ chúng ta dùng API
+  // useEffect(() => {
+  //   localStorage.setItem("dailyProgress", JSON.stringify(progress));
+  // }, [progress]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -48,10 +103,65 @@ const DailyProgress = () => {
     }));
   };
 
-  const handleSave = () => {
-    localStorage.setItem("dailyProgress", JSON.stringify(progress));
-    alert("Progress saved successfully!");
+  // --- Logic Lưu (Create/Update) Daily Progress ---
+  const handleSave = async () => {
+    if (!userId) {
+      alert("Please log in to save your progress.");
+      return;
+    }
+
+    const progressDataToSend = {
+      userId: userId,
+      note: progress.note,
+      no_smoking: progress.no_smoking,
+      symptoms: progress.symptoms,
+      date: progress.date,
+    };
+
+    try {
+      setLoading(true);
+      if (progress.progressId) {
+        // Nếu có progressId, tức là đang cập nhật mục hiện có
+        const updatedEntry = await updateDailyProgress(progress.progressId, progressDataToSend);
+        setProgress((prev) => ({ ...prev, ...updatedEntry })); // Cập nhật state với dữ liệu mới từ server
+        alert("Progress updated successfully!");
+      } else {
+        // Nếu không có progressId, tức là tạo mục mới
+        const newEntry = await createDailyProgress(progressDataToSend);
+        setProgress((prev) => ({ ...prev, ...newEntry })); // Cập nhật state với progressId mới từ server
+        alert("Progress saved successfully!");
+      }
+      setError(null); // Xóa lỗi nếu có
+    } catch (err) {
+      console.error("Error saving daily progress:", err);
+      setError(err.message || "Failed to save daily progress.");
+      alert(`Error: ${err.message || "Failed to save progress."}`);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
+  if (loading) {
+    return (
+      <div style={{
+        fontFamily: '"Segoe UI", sans-serif',
+        background: "linear-gradient(to bottom, #a8e063, #56ab2f)",
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "white",
+        fontSize: "1.5rem"
+      }}>
+        Loading daily progress...
+      </div>
+    );
+  }
 
   return (
     <div
@@ -116,10 +226,7 @@ const DailyProgress = () => {
               <MenuItem label="🏆 My Coach" onClick={() => navigate("/mycoach")} />
               <MenuItem label="⚙️ Settings" onClick={() => navigate("/settings")} />
               <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
-              <MenuItem label="🔓 Logout" onClick={() => {
-                localStorage.clear();
-                navigate("/login");
-              }} />
+              <MenuItem label="🔓 Logout" onClick={handleLogout} />
             </ul>
           )}
         </div>
@@ -142,6 +249,20 @@ const DailyProgress = () => {
           Your Daily Progress
         </h2>
 
+        {error && (
+          <div style={{
+            background: "#ffe0b2",
+            color: "#e65100",
+            padding: "1rem",
+            borderRadius: "0.5rem",
+            marginBottom: "1.5rem",
+            textAlign: "center",
+            fontWeight: "bold"
+          }}>
+            {error}
+          </div>
+        )}
+
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
@@ -156,8 +277,8 @@ const DailyProgress = () => {
             padding: "1.5rem",
             transition: "box-shadow 0.3s",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")}
-          onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")}>
+            onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")}
+            onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")}>
             <h3 style={{
               fontSize: "1.25rem",
               fontWeight: "bold",
@@ -186,8 +307,8 @@ const DailyProgress = () => {
             padding: "1.5rem",
             transition: "box-shadow 0.3s",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")}
-          onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")}>
+            onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")}
+            onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")}>
             <h3 style={{
               fontSize: "1.25rem",
               fontWeight: "bold",
@@ -218,8 +339,8 @@ const DailyProgress = () => {
             padding: "1.5rem",
             transition: "box-shadow 0.3s",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")}
-          onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")}>
+            onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")}
+            onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")}>
             <h3 style={{
               fontSize: "1.25rem",
               fontWeight: "bold",
@@ -247,8 +368,8 @@ const DailyProgress = () => {
             padding: "1.5rem",
             transition: "box-shadow 0.3s",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")}
-          onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")}>
+            onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")}
+            onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")}>
             <h3 style={{
               fontSize: "1.25rem",
               fontWeight: "bold",
@@ -289,7 +410,7 @@ const DailyProgress = () => {
             onMouseEnter={(e) => (e.currentTarget.style.background = "#146c43")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "#15803d")}
           >
-            Save Progress
+            {progress.progressId ? "Update Progress" : "Save Progress"}
           </button>
         </div>
       </div>

@@ -35,7 +35,7 @@ export async function updateMembershipPlan({ membershipId, membershipName, price
 			price: price,
 			duration: duration
 		};
-		const response = await axios.patch(`${baseApi}/Membership/UpdateMembershipPlan/${membershipId}`, payload, getAuthConfig());
+		const response = await axios.put(`${baseApi}/Membership/UpdateMembershipPlan/${membershipId}`, payload, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Update membership failed!";

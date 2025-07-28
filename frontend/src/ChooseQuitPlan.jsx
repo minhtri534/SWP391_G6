@@ -4,22 +4,22 @@ import { FaUserCircle, FaCrown, FaHeartbeat, FaFire, FaStar, FaRocket } from "re
 
 const quitPlans = [
   {
-    id: "light",
+    id: "1",
     level: "Light Addiction",
     description: "You smoke occasionally or less than 5 cigarettes a day. This plan focuses on identifying triggers and gradually reducing intake.",
   },
   {
-    id: "moderate",
+    id: "2",
     level: "Moderate Addiction",
     description: "You smoke regularly, around 5–10 cigarettes per day. This plan includes scheduled reduction, support tools, and motivational tracking.",
   },
   {
-    id: "strong",
+    id: "3",
     level: "Strong Addiction",
     description: "You smoke a pack a day or more. This plan introduces structured reduction phases, health monitoring, and strong behavioral therapy.",
   },
   {
-    id: "severe",
+    id: "4",
     level: "Severe Addiction",
     description: "You are highly dependent on nicotine, possibly chain-smoking. This plan provides intensive quit support, daily coaching, and relapse prevention strategies.",
   },
@@ -42,7 +42,7 @@ const ChooseQuitPlan = () => {
   }, []);
 
   const handleStartPlan = (level) => {
-    navigate(`/quitplan/${level}`);
+    navigate(`/quitplan?planId=${level}`);
   };
 
   return (
