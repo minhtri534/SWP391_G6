@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getCoaches, getCoachPackagesByCoachId } from "./api/BookCoach";
+import { bookCoaches, getCoaches, getCoachPackagesByCoachId } from "./api/BookCoach";
 import {
   FaUserCircle,
   FaCheckCircle,
@@ -10,8 +10,10 @@ import {
   FaUpload,
   FaShoppingCart,
 } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const BookingCoach = () => {
+  const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName") || "Member";
   const [menuOpen, setMenuOpen] = useState(false);
   const [coachPackages, setCoachPackages] = useState([]);
@@ -73,6 +75,18 @@ const BookingCoach = () => {
       alert(`Uploaded: ${file.name}`);
     }
   };
+
+  const handleBookingCoach = async (userId, packageId, start_Date) => {
+    try {
+      console.log(userId, packageId, start_Date)
+      const data = await bookCoaches(userId, packageId, start_Date);
+      toast.success("Book coach success")
+      navigate("/memberhome")
+    } catch (error) {
+      console.error(error)
+      toast.error("Failed")
+    }
+  }
 
   return (
     <div
@@ -349,7 +363,7 @@ const BookingCoach = () => {
                 Cancel
               </button>
               <button
-                onClick={closePaymentPopup}
+                onClick={() => {handleBookingCoach(userId, selectedPackage.packageId, new Date().toISOString())}}
                 style={{
                   padding: "0.5rem 1rem",
                   background: "#4CAF50",

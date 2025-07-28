@@ -23,12 +23,12 @@ export async function getCoachPackagesByCoachId(coachId) {
 	}
 }
 
-export async function bookCoaches({ userId, packageId, start_Date }) {
+export async function bookCoaches(userId, packageId, start_Date ) {
 	try {
 		const payload = {
-			userId: userId,
-			packageId: packageId,
-			start_Date: start_Date
+			UserId: userId,
+			PackageId: packageId,
+			Start_Date: start_Date
 		};
 		const response = await axios.post(`${baseApi}/api/Booking`, payload, getAuthConfig());
 		return response.data;

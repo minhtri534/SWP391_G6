@@ -66,11 +66,12 @@ namespace backend.Controllers
                 .Where(a => a.UserId == request.UserId)
                 .FirstOrDefaultAsync();
 
-
+            /*
             if (role.RoleId != 2)
             {
                 return BadRequest($"Only members can book coach");
             }
+            */
 
             var package = await _context.CoachPackages
                 .FindAsync(request.PackageId);
