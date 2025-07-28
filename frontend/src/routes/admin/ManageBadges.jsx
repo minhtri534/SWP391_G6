@@ -181,7 +181,7 @@ function ManageBadges() {
 								setBadges((prev) => prev.filter((b) => b.badgeId !== selectedBadge.badgeId));
 							} catch (error) {
 								console.error(error);
-								toast.error(error?.response?.data?.message || error.message || "Failed to remove account.");
+								toast.error(error?.response?.data?.message || error.message || "Failed to remove badge.");
 							} finally {
 								setIsConfirmDeleteOpen(false);
 								setSelectedBadge(null);

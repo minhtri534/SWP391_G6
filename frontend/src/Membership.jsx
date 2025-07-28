@@ -1,147 +1,232 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FaUserCircle, FaCrown, FaTag, FaMoneyBillWave, FaShoppingCart } from "react-icons/fa";
+import { getMembershipPlans } from "./api/Membership";
 
-function Membership() {
-	const navigate = useNavigate();
+const Membership = () => {
+  const userName = localStorage.getItem("userName") || "User";
+  const userRole = localStorage.getItem("role") || "0";
+  const isAdmin = userRole === "1";
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [memberships, setMemberships] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const menuRef = useRef();
+  const navigate = useNavigate();
 
-	const handleUpgrade = (plan) => {
-		navigate("/payment", { state: { membershipId: plan } });
-	};
+  useEffect(() => {
+    fetchMembershipPlans();
+  }, []);
 
-	return (
-		<div
-			style={{
-				fontFamily: "Poppins, sans-serif",
-				background: "linear-gradient(to bottom, #a8f5a2, #ddfcb2)",
-				minHeight: "100vh",
-				paddingBottom: "40px",
-			}}
-		>
-			{/* Logo */}
-			<header
-				style={{
-					padding: "20px 40px",
-					display: "flex",
-					alignItems: "center",
-				}}
-			>
-				<Link to="/home" style={{ textDecoration: "none" }}>
-					<h1 style={{ margin: 0 }}>
-						<span style={{ color: "orange" }}>Quit</span>
-						<span style={{ color: "green" }}>Smoking.com</span>
-					</h1>
-				</Link>
-			</header>
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-			<section style={{ textAlign: "center", padding: "20px" }}>
-				<h2 style={{ fontSize: "36px", fontWeight: "bold", marginBottom: "10px", color: "#2e7d32" }}>
-					Choose Your Membership Plan
-				</h2>
-				<p style={{ fontSize: "16px", color: "#333", marginBottom: "40px" }}>
-					Find the right plan to help you quit smoking and stay on track.
-				</p>
+  const fetchMembershipPlans = async () => {
+    try {
+      setLoading(true);
+      const data = await getMembershipPlans();
+      setMemberships(data);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-				<div
-					style={{
-						display: "flex",
-						justifyContent: "center",
-						flexWrap: "wrap",
-						gap: "30px",
-						padding: "0 20px",
-					}}
-				>
-					{/* Basic Plan */}
-					<PlanCard
-						title="Basic"
-						price="$9.99"
-						features={["Limited Tracking", "Community Access"]}
-						color="#81c784"
-						buttonColor="#388e3c"
-						onUpgrade={() => handleUpgrade(1)}
-					/>
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
 
-					{/* Standard Plan */}
-					<PlanCard
-						title="Standard"
-						price="$19.99/mo"
-						features={["Full Tracking", "Personal Coach", "Daily Tips"]}
-						color="#64b5f6"
-						buttonColor="#1976d2"
-						onUpgrade={() => handleUpgrade(2)}
-					/>
+  const handleBuy = (membershipId) => {
+    navigate(`/payment?membershipId=${membershipId}`);
+  };
 
-					{/* Premium Plan */}
-					<PlanCard
-						title="Premium"
-						price="$219.99/mo"
-						features={["All Features", "24/7 Support", "1-on-1 Counseling", "Progress Reports"]}
-						color="#ffb74d"
-						buttonColor="#f57c00"
-						onUpgrade={() => handleUpgrade(3)}
-					/>
-				</div>
-			</section>
-		</div>
-	);
-}
+  return (
+    <div
+      style={{
+        fontFamily: '"Segoe UI", sans-serif',
+        background: "linear-gradient(to bottom, #a8e063, #56ab2f)",
+        minHeight: "100vh",
+      }}
+    >
+      {/* Header */}
+      <header
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "15px 30px",
+          background: "white",
+          borderBottom: "2px solid #ccc",
+        }}
+      >
+        <Link to="/home" style={{ textDecoration: "none" }}>
+          <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>
+            <span style={{ color: "#f57c00" }}>Quit</span>
+            <span style={{ color: "#69c770" }}>Smoking.com</span>
+          </h1>
+        </Link>
+        <div style={{ position: "relative" }} ref={menuRef}>
+          <div
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              cursor: "pointer",
+              background: "white",
+              padding: "8px 12px",
+              borderRadius: "20px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+              fontWeight: "500",
+            }}
+          >
+            <FaUserCircle size={22} color="#4CAF50" />
+            <span>{userName}</span>
+          </div>
+          {menuOpen && (
+            <ul
+              style={{
+                position: "absolute",
+                top: "110%",
+                right: 0,
+                background: "white",
+                listStyle: "none",
+                padding: "10px 0",
+                boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
+                borderRadius: "8px",
+                zIndex: 999,
+                width: "180px",
+              }}
+            >
+              <MenuItem label="👤 Edit Profile" onClick={() => navigate("/edit-profile")} />
+              <MenuItem label="🏆 My Coach" onClick={() => navigate("/mycoach")} />
+              <MenuItem label="⚙️ Settings" onClick={() => navigate("/settings")} />
+              <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
+              <MenuItem label="🔓 Logout" onClick={handleLogout} />
+            </ul>
+          )}
+        </div>
+      </header>
 
-function PlanCard({ title, price, features, color, buttonColor, onUpgrade }) {
-	return (
-		<div
-			style={{
-				backgroundColor: "white",
-				borderRadius: "16px",
-				boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-				padding: "30px 20px",
-				maxWidth: "280px",
-				flex: "1",
-				borderTop: `8px solid ${color}`,
-				display: "flex",
-				flexDirection: "column",
-				alignItems: "center",
-				justifyContent: "space-between",
-				height: "100%",
-			}}
-		>
-			<div style={{ textAlign: "center" }}>
-				<h3 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "10px" }}>{title}</h3>
-				<p style={{ fontSize: "20px", marginBottom: "20px", color: "#333" }}>{price}</p>
-			</div>
+      {/* Main */}
+      <div style={{ padding: "32px" }}>
+        <div style={{ marginBottom: "20px", textAlign: "center" }}>
+          <h2 style={{
+            fontSize: "2rem",
+            fontWeight: "bold",
+            color: "#ffffff",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+          }}>
+            <FaCrown style={{ color: "#ffffff" }} />
+            Membership Packages
+          </h2>
+        </div>
 
-			<ul
-				style={{
-					listStyle: "none",
-					padding: 0,
-					marginBottom: "20px",
-					textAlign: "left",
-					minHeight: "120px",
-				}}
-			>
-				{features.map((feature, index) => (
-					<li key={index} style={{ marginBottom: "10px" }}>
-						✅ {feature}
-					</li>
-				))}
-			</ul>
+        {loading && <p style={{ textAlign: "center", color: "#ffffff" }}>Loading...</p>}
+        {error && <p style={{ textAlign: "center", color: "#ff0000" }}>{error}</p>}
 
-			<button
-				style={{
-					backgroundColor: buttonColor,
-					color: "white",
-					padding: "10px 20px",
-					border: "none",
-					borderRadius: "10px",
-					fontSize: "16px",
-					fontWeight: "bold",
-					cursor: "pointer",
-					marginTop: "auto",
-				}}
-				onClick={onUpgrade}
-			>
-				Upgrade
-			</button>
-		</div>
-	);
+        {!loading && !error && (
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "1.5rem",
+          }}>
+            {memberships.map((m) => (
+              <div
+                key={m.membershipId}
+                style={{
+                  background: "white",
+                  borderRadius: "0.75rem",
+                  boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                  padding: "1.5rem",
+                  transition: "box-shadow 0.3s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")}
+                onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")}
+              >
+                <h3 style={{
+                  fontSize: "1.25rem",
+                  fontWeight: "bold",
+                  color: "#15803d",
+                  marginBottom: "1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}>
+                  <FaTag />
+                  {m.membershipName}
+                </h3>
+                <p style={{ color: "#4b5563", marginBottom: "0.5rem" }}>
+                  <strong>Duration:</strong> {m.duration}
+                </p>
+                <p style={{
+                  color: "#4b5563",
+                  marginBottom: "1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem"
+                }}>
+                  <FaMoneyBillWave />
+                  <strong>Price:</strong> ${m.price}
+                </p>
+                <div style={{ display: "flex", gap: "0.5rem" }}>
+                  <button
+                    onClick={() => handleBuy(m.membershipId)}
+                    style={{
+                      flex: 1,
+                      padding: "0.5rem",
+                      background: "#4CAF50",
+                      color: "white",
+                      borderRadius: "0.375rem",
+                      border: "none",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "0.25rem",
+                    }}
+                  >
+                    <FaShoppingCart /> Buy
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+function MenuItem({ label, onClick }) {
+  return (
+    <li
+      onClick={onClick}
+      style={{
+        padding: "10px 16px",
+        fontSize: "14px",
+        color: "#333",
+        cursor: "pointer",
+        transition: "background 0.2s",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "#f4f4f4")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+    >
+      {label}
+    </li>
+  );
 }
 
 export default Membership;

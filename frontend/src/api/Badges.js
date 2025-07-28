@@ -13,6 +13,16 @@ export async function getBadges() {
 	}
 }
 
+export async function getUserBadge(userId) {
+	try {
+		const response = await axios.get(`${baseApi}/api/Badge/${userId}`, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Get user badges failed!!!";
+		throw new Error(msg);
+	}
+}
+
 export async function addBadge({ badgeName, description, conditionType, value }) {
 	try {
 		const payload = {
@@ -37,7 +47,7 @@ export async function updateBadge({ badgeId, badgeName, description, conditionTy
 			condition_Type: conditionType,
 			value: value,
 		};
-		const response = await axios.patch(`${baseApi}/api/BadgeManagement/${badgeId}`, payload, getAuthConfig());
+		const response = await axios.put(`${baseApi}/api/BadgeManagement/${badgeId}`, payload, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Update badge failed!!!";

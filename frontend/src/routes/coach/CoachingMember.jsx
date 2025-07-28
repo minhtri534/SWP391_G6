@@ -1,72 +1,73 @@
 import React, { useEffect, useState } from "react";
 import CoachSidebar from "../../components/CoachSidebar";
 import CoachTopbar from "../../components/CoachTopbar";
-import { Pencil, Trash2 } from "lucide-react";
+import { ClipboardList, List, Pencil, Trash2 } from "lucide-react";
 import PlanModal from "../../components/PlanModal";
-import { deletePlan } from "../../api/Plan";
-import { getUsers } from "../../api/Users";
+import { deletePlan, getMemberPlan } from "../../api/Plan";
+import { getCoachMember } from "../../api/Users";
 import { toast } from "react-toastify";
 import DeleteConfirmation from "../../components/DeleteConfirmation";
 import Pagination from "../../components/Pagination";
+import ViewPlan from "../../components/ViewPlan";
+import SmokingCondition from "../../components/SmokingCondition";
+import MemberAchievements from "../../components/MemberAchievements";
+import DailyReport from "../../components/DailyReport";
+import { getCoachId } from "../../api/Coach";
 
 function CoachingMember() {
-	//Fake data
-	const [users, setUsers] = useState([
-		{
-			userId: 1,
-			userName: "Jane Doe",
-			gender: "Female",
-			quitPlan: {
-				planId: 101,
-				coachId: 10,
-				statusId: 2,
-				reason: "Wants to improve health and be a good example for family.",
-				startDate: "2025-07-10",
-				goalDate: "2025-09-01",
-				milestones: [],
-			},
-		},
-		{
-			userId: 2,
-			userName: "John Doe",
-			gender: "Male",
-			quitPlan: null, // has no quit plan yet
-		},
-		{
-			userId: 3,
-			userName: "Joe Mami",
-			gender: "Male",
-			quitPlan: {
-				planId: 102,
-				coachId: 10,
-				statusId: 1,
-				reason: "Doctor recommendation after a health scare.",
-				startDate: "2025-06-15",
-				goalDate: "2025-08-01",
-				milestones: [
-					{ milestoneId: 1, title: "test", description: "test", targetDate: "19/07/2025", badgeId: 1 },
-					{ milestoneId: 2, title: "test2", description: "test", targetDate: "19/07/2025", badgeId: 2 },
-				],
-			},
-		},
-	]);
+	const userId = localStorage.getItem("userId");
+	const [coachId, setCoachId] = useState(null);
+	const [members, setMembers] = useState([]);
 
-	const fetchUsers = async () => {
+	// Get coachId
+	useEffect(() => {
+		if (userId) {
+			const fetchCoachId = async () => {
+				try {
+					const data = await getCoachId(userId);
+					// console.log(data);
+					setCoachId(data.coachId);
+				} catch (error) {
+					console.error(error);
+					toast.error(error?.response?.data?.message || error.message || "Failed to get coachId");
+				}
+			};
+
+			fetchCoachId();
+		}
+	}, [userId]);
+
+	// Get member list
+	useEffect(() => {
+		if (coachId) {
+			fetchMembers(coachId);
+		}
+	}, [coachId]);
+
+	const fetchMembers = async (cid = coachId) => {
 		try {
-			const data = await getUsers();
-			//some filtering if needed
-			//...
-			setUsers(data);
+			const data = await getCoachMember(cid);
+			const filtered = data.filter((user) => user.roleId !== 3);
+
+			const membersWithPlans = await Promise.all(
+				filtered.map(async (member) => {
+					try {
+						const plan = await getMemberPlan(member.userId);
+						return { ...member, quitPlan: Array.isArray(plan) ? plan[0] : plan || null };
+					} catch (err) {
+						if (err.message.includes("404") || err.message.includes("Get member plan failed")) return { ...member, quitPlan: null };
+						console.error(`Error fetching plan for ${member.userId}:`, err);
+						return { ...member, quitPlan: null };
+					}
+				})
+			);
+
+			setMembers(membersWithPlans);
 		} catch (error) {
 			console.error(error);
 			toast.error(error?.response?.data?.message || error.message || "Failed to load members.");
 		}
 	};
-
-	// Get member list
-	useEffect(() => {
-		fetchUsers();
-	}, []);
 
 	// For filter and sort
 	const [searchName, setSearchName] = useState("");
@@ -74,7 +75,7 @@ function CoachingMember() {
 	const [filterHasPlan, setFilterHasPlan] = useState("");
 	const [sortOption, setSortOption] = useState("");
 
-	const filteredList = users.filter((member) => {
+	const filteredList = members.filter((member) => {
 		return (
 			member.userName.toLowerCase().includes(searchName.toLowerCase()) &&
 			(filterGender ? member.gender === filterGender : true) &&
@@ -105,15 +106,30 @@ function CoachingMember() {
 	const pageUser = sortedList.slice(startIndex, startIndex + pageSize);
 
 	// For popup modal
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false); //Create or Update modal
+	const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false); //Confirm delete modal
+	const [isConditionModalOpen, setIsConditionModalOpen] = useState(false); //Member Smoking Condition modal
+	const [isViewPlanOpen, setIsViewPlanOpen] = useState(false); //View member plan modal
+	const [isViewAchievements, setIsViewAchievements] = useState(false); //View member's achievements
+	const [isViewDaily, setIsViewDaily] = useState(false); //View member's daily report
 	const [selectedMember, setSelectedMember] = useState(null);
 	const [selectedDeletePlan, setSelectedDeletePlan] = useState(null);
+	const [selectedPlan, setSelectedPlan] = useState(null);
 
 	//Reset pagination to 1st page
 	useEffect(() => {
 		setCurrentPage(1);
 	}, [searchName, filterGender, filterHasPlan, sortOption]);
+
+	//Format date
+	const formatDate = (isoDateString) => {
+		if (!isoDateString) return "";
+		const date = new Date(isoDateString);
+		const day = String(date.getDate()).padStart(2, "0");
+		const month = String(date.getMonth() + 1).padStart(2, "0");
+		const year = date.getFullYear();
+		return `${day}/${month}/${year}`;
+	};
 
 	return (
 		<div className="flex">
@@ -125,6 +141,7 @@ function CoachingMember() {
 					style={{
 						background: "linear-gradient(to bottom, #98fcb1, #d0f3a3)",
 					}}>
+					{console.log("Member list: ", members)}
 					{/* Filter and sort */}
 					<div className="bg-green-50 p-4 rounded-lg shadow flex flex-wrap gap-4">
 						<input type="text" placeholder="Search name..." className="border rounded px-3 py-2 w-48" value={searchName} onChange={(e) => setSearchName(e.target.value)} />
@@ -155,13 +172,16 @@ function CoachingMember() {
 									<th className="text-left px-6 py-3">#</th>
 									<th className="text-left px-6 py-3">Name</th>
 									<th className="text-left px-6 py-3">Gender</th>
+									<th className="text-left px-6 py-3">Smoking Condition</th>
 									<th className="text-left px-6 py-3">Plan Time</th>
 									<th className="text-left px-6 py-3">Progress</th>
+
+									<th className="text-left px-6 py-3">Daily Report</th>
 									<th className="text-right px-6 py-3">Action</th>
 								</tr>
 							</thead>
 							<tbody>
-								{users.length === 0 ? (
+								{members.length === 0 ? (
 									<tr>
 										<td colSpan="6" className="text-center text-lg px-6 py-4 text-red-500">
 											No users retrieved. Check your network or database.
@@ -177,12 +197,30 @@ function CoachingMember() {
 									pageUser.map((member) => (
 										<tr key={member.userId} className="border-t hover:bg-gray-50">
 											<td className="px-6 py-3">{member.userId}</td>
-											<td className="px-6 py-3">{member.userName}</td>
+											<td
+												className="px-6 py-3 hover:underline hover:cursor-pointer"
+												onClick={() => {
+													setIsViewAchievements(true);
+													setSelectedMember(member);
+												}}>
+												{member.userName}
+											</td>
 											<td className="px-6 py-3">{member.gender}</td>
+											<td className="px-6 py-3">
+												<button
+													onClick={() => {
+														setIsConditionModalOpen(true);
+														setSelectedMember(member);
+													}}
+													className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
+													<ClipboardList className="w-4 h-4" />
+													Smoking condition
+												</button>
+											</td>
 											<td className="px-6 py-3">
 												{member.quitPlan ? (
 													<span>
-														{member.quitPlan.startDate} to {member.quitPlan.goalDate}
+														{formatDate(member.quitPlan.startDate)} to {formatDate(member.quitPlan.goalDate)}
 													</span>
 												) : (
 													<span className="text-red-400">No plan</span>
@@ -190,21 +228,44 @@ function CoachingMember() {
 											</td>
 											<td className="px-6 py-3">
 												{member.quitPlan && (
-													<button className="flex items-center gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 hover:cursor-pointer transition">View progress</button>
+													<button
+														onClick={() => {
+															setIsViewPlanOpen(true);
+															setSelectedPlan(member.quitPlan);
+														}}
+														className="flex items-center gap-1 px-3 py-1 border rounded text-blue-600 border-blue-600 hover:bg-blue-50 hover:cursor-pointer transition">
+														View progress
+													</button>
+												)}
+											</td>
+
+											<td className="px-6 py-3">
+												{member.quitPlan && (
+													<button
+														onClick={() => {
+															setIsViewDaily(true);
+															setSelectedMember(member);
+														}}
+														className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
+														<List className="w-4 h-4" />
+														Report
+													</button>
 												)}
 											</td>
 											<td className="px-6 py-3">
 												<div className="flex justify-end gap-2">
 													{!member.quitPlan && (
-														<button
-															onClick={() => {
-																setIsModalOpen(true);
-																setSelectedMember(member);
-															}}
-															className="flex items-center gap-1 px-3 py-1 border rounded text-green-600 border-green-600 hover:bg-green-50 hover:cursor-pointer transition">
-															<Pencil className="w-4 h-4" />
-															Create Plan
-														</button>
+														<>
+															<button
+																onClick={() => {
+																	setIsModalOpen(true);
+																	setSelectedMember(member);
+																}}
+																className="flex items-center gap-1 px-3 py-1 border rounded text-green-600 border-green-600 hover:bg-green-50 hover:cursor-pointer transition">
+																<Pencil className="w-4 h-4" />
+																Create Plan
+															</button>
+														</>
 													)}
 													{member.quitPlan && (
 														<>
@@ -240,38 +301,83 @@ function CoachingMember() {
 					{/* Pagination */}
 					{filteredList.length > 0 && <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => setCurrentPage(page)} />}
 
-					{/* Plan popup modal */}
-					<PlanModal
-						isOpen={isModalOpen}
-						onClose={() => {
-							setIsModalOpen(false);
-							setSelectedMember(null);
-						}}
-						initialValues={selectedMember?.quitPlan || null}
-					/>
+					{/* Create or Update plan popup modal */}
+					{isModalOpen && selectedMember && (
+						<PlanModal
+							isOpen={isModalOpen}
+							onClose={() => {
+								setIsModalOpen(false);
+								setSelectedMember(null);
+							}}
+							initialValues={selectedMember || null}
+							coachId={coachId}
+							onPlanChange={fetchMembers}
+						/>
+					)}
+
+					{/* View member achievements */}
+					{isViewAchievements && selectedMember && (
+						<MemberAchievements
+							isOpen={isViewAchievements}
+							member={selectedMember}
+							onClose={() => {
+								setIsViewAchievements(false);
+								setSelectedMember(null);
+							}}
+						/>
+					)}
+
+					{/* View member daily report */}
+					{isViewDaily && selectedMember && (
+						<DailyReport
+							isOpen={isViewDaily}
+							member={selectedMember}
+							onClose={() => {
+								setIsViewDaily(false);
+								setSelectedMember(null);
+							}}
+						/>
+					)}
+
+					{/* View member plan modal */}
+					{isViewPlanOpen && selectedPlan && <ViewPlan isOpen={isViewPlanOpen} plan={selectedPlan} onClose={() => setIsViewPlanOpen(false)} />}
+
+					{/* View member smoking condition modal */}
+					{isConditionModalOpen && selectedMember && (
+						<SmokingCondition
+							isOpen={isConditionModalOpen}
+							onClose={() => {
+								setIsConditionModalOpen(false);
+								setSelectedMember(null);
+							}}
+							member={selectedMember}
+						/>
+					)}
 
 					{/* Delete Confirmation popup modal */}
-					<DeleteConfirmation
-						isOpen={isConfirmDeleteOpen}
-						onCancel={() => {
-							setSelectedDeletePlan(null), setIsConfirmDeleteOpen(false);
-						}}
-						message={selectedDeletePlan ? `Do you want to remove plan for ${selectedDeletePlan.userName}?` : ""}
-						onConfirm={async () => {
-							try {
-								await deletePlan(selectedDeletePlan.planId, selectedDeletePlan.userId);
-								toast.success("Plan remove successfully!!!");
-								//Update member list
-								setUsers((prev) => prev.map((u) => (u.userId === selectedDeletePlan.userId ? { ...u, quitPlan: null } : u)));
-							} catch (error) {
-								console.error(error);
-								toast.error(error?.response?.data?.message || error.message || "Failed to delete plan.");
-							} finally {
-								setIsConfirmDeleteOpen(false);
-								setSelectedDeletePlan(null);
-							}
-						}}
-					/>
+					{isConfirmDeleteOpen && (
+						<DeleteConfirmation
+							isOpen={isConfirmDeleteOpen}
+							onCancel={() => {
+								setSelectedDeletePlan(null), setIsConfirmDeleteOpen(false);
+							}}
+							message={selectedDeletePlan ? `Do you want to remove plan for ${selectedDeletePlan.userName}?` : ""}
+							onConfirm={async () => {
+								try {
+									await deletePlan(selectedDeletePlan.planId, selectedDeletePlan.userId);
+									toast.success("Plan remove successfully!!!");
+									//Update member list
+									setMembers((prev) => prev.map((u) => (u.userId === selectedDeletePlan.userId ? { ...u, quitPlan: null } : u)));
+								} catch (error) {
+									console.error(error);
+									toast.error(error?.response?.data?.message || error.message || "Failed to delete plan.");
+								} finally {
+									setIsConfirmDeleteOpen(false);
+									setSelectedDeletePlan(null);
+								}
+							}}
+						/>
+					)}
 				</div>
 			</div>
 		</div>

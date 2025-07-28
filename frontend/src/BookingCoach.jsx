@@ -1,154 +1,391 @@
-import React from "react";
-import { FaUserCircle } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getCoaches, getCoachPackagesByCoachId } from "./api/BookCoach";
+import {
+  FaUserCircle,
+  FaCheckCircle,
+  FaTag,
+  FaClock,
+  FaDollarSign,
+  FaUpload,
+  FaShoppingCart,
+} from "react-icons/fa";
 
-function BookingCoach() {
-  const userName = "Minh Tri";
+const BookingCoach = () => {
+  const userName = localStorage.getItem("userName") || "Member";
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [coachPackages, setCoachPackages] = useState([]);
+  const [selectedPackage, setSelectedPackage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const menuRef = useRef();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCoachPackages = async () => {
+      try {
+        setLoading(true);
+        const coaches = await getCoaches();
+        const packages = await Promise.all(
+          coaches.map((coach) => getCoachPackagesByCoachId(coach.coachId))
+        );
+        const flattenedPackages = packages.flat().map(pkg => ({
+          ...pkg,
+          duration: `${pkg.duration_Months} month(s)`, // Convert duration to readable format
+          price: `$${pkg.price}`, // Add $ symbol to price
+        }));
+        setCoachPackages(flattenedPackages);
+      } catch (err) {
+        setError(err.message || "Error fetching coach packages");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCoachPackages();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
+  const openPaymentPopup = (packageItem) => {
+    setSelectedPackage(packageItem);
+  };
+
+  const closePaymentPopup = () => {
+    setSelectedPackage(null);
+  };
+
+  const handleReceiptUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      alert(`Uploaded: ${file.name}`);
+    }
+  };
 
   return (
     <div
       style={{
-        fontFamily: "'Poppins', sans-serif",
-        background: "linear-gradient(to bottom right, #a8e063, #56ab2f)",
+        fontFamily: '"Segoe UI", sans-serif',
+        background: "linear-gradient(to bottom, #a8e063, #56ab2f)",
         minHeight: "100vh",
+        paddingTop: "100px",
+        paddingInline: "2rem",
       }}
     >
       {/* Header */}
       <header
         style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          background: "white",
+          padding: "15px 30px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "15px 30px",
-          background: "white",
-          borderBottom: "2px solid #ccc",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          zIndex: 100,
         }}
       >
-        <div
-          style={{ fontSize: "20px", fontWeight: "bold", cursor: "pointer" }}
-          onClick={() => navigate("/home")}
-        >
-          <span style={{ color: "#f57c00" }}>Quit</span>
-          <span style={{ color: "#69c770" }}>Smoking.com</span>
-        </div>
-
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "500" }}>
-          <FaUserCircle size={24} />
-          <span>{userName}</span>
+        <Link to="/memberhome" style={{ textDecoration: "none" }}>
+          <h1 style={{ margin: 0, fontSize: "24px", fontWeight: "bold" }}>
+            <span style={{ color: "#f57c00" }}>Quit</span>
+            <span style={{ color: "#4caf50" }}>Smoking.com</span>
+          </h1>
+        </Link>
+        <div style={{ position: "relative" }} ref={menuRef}>
+          <div
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              cursor: "pointer",
+              background: "white",
+              padding: "8px 12px",
+              borderRadius: "20px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+              fontWeight: "500",
+            }}
+          >
+            <FaUserCircle size={22} color="#4CAF50" />
+            <span>{userName}</span>
+          </div>
+          {menuOpen && (
+            <ul
+              style={{
+                position: "absolute",
+                top: "110%",
+                right: 0,
+                background: "white",
+                listStyle: "none",
+                padding: "10px 0",
+                boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
+                borderRadius: "8px",
+                zIndex: 999,
+                width: "180px",
+              }}
+            >
+              <MenuItem
+                label="👤 Edit Profile"
+                onClick={() => navigate("/edit-profile")}
+              />
+              <MenuItem
+                label="🏆 My Coach"
+                onClick={() => navigate("/mycoach")}
+              />
+              <MenuItem
+                label="⚙️ Settings"
+                onClick={() => navigate("/settings")}
+              />
+              <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
+              <MenuItem label="🔓 Logout" onClick={handleLogout} />
+            </ul>
+          )}
         </div>
       </header>
 
-      {/* Booking Form Section */}
-      <div
+      {/* Title */}
+      <h2
         style={{
+          fontSize: "32px",
+          marginBottom: "2rem",
+          fontWeight: "bold",
+          textAlign: "center",
+          color: "#fff",
           display: "flex",
+          alignItems: "center",
           justifyContent: "center",
-          alignItems: "flex-start",
-          padding: "50px 20px",
+          gap: "0.5rem",
         }}
       >
+        <FaCheckCircle /> Buy a Coach
+      </h2>
+
+      {/* Package Cards */}
+      {loading && <p style={{ textAlign: "center", color: "#fff" }}>Loading...</p>}
+      {error && <p style={{ textAlign: "center", color: "#ff0000" }}>{error}</p>}
+      {!loading && !error && coachPackages.length === 0 && (
+        <p style={{ textAlign: "center", color: "#fff" }}>No coach packages available.</p>
+      )}
+      {!loading && !error && (
         <div
           style={{
-            background: "#fff",
-            padding: "40px",
-            borderRadius: "12px",
-            width: "100%",
-            maxWidth: "600px",
-            boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "1.5rem",
           }}
         >
-          <h2
+          {coachPackages.map((pkg) => (
+            <div
+              key={pkg.id}
+              style={{
+                background: "white",
+                borderRadius: "0.75rem",
+                boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                padding: "1.5rem",
+                transition: "box-shadow 0.3s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")
+              }
+            >
+              <h3
+                style={{
+                  fontSize: "1.25rem",
+                  fontWeight: "bold",
+                  color: "#15803d",
+                  marginBottom: "1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <FaTag />
+                {pkg.name}
+              </h3>
+              <p
+                style={{
+                  color: "#4b5563",
+                  marginBottom: "0.5rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <FaClock />
+                <strong>Duration:</strong> {pkg.duration}
+              </p>
+              <p
+                style={{
+                  color: "#4b5563",
+                  marginBottom: "0.5rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <FaDollarSign />
+                <strong>Price:</strong> {pkg.price}
+              </p>
+              <p style={{ color: "#4b5563", marginBottom: "1rem" }}>
+                <strong>Description:</strong> {pkg.description || "No description available"}
+              </p>
+              <button
+                onClick={() => openPaymentPopup(pkg)}
+                style={{
+                  padding: "0.5rem 1rem",
+                  background: "#4CAF50",
+                  color: "white",
+                  borderRadius: "0.375rem",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.25rem",
+                }}
+              >
+                <FaShoppingCart /> Buy Now
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Payment Popup */}
+      {selectedPackage && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "rgba(0,0,0,0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
             style={{
-              textAlign: "center",
-              color: "#2e7d32",
-              marginBottom: "30px",
-              fontSize: "28px",
-              fontWeight: "700",
+              background: "white",
+              padding: "2rem",
+              borderRadius: "0.5rem",
+              width: "90%",
+              maxWidth: "500px",
             }}
           >
-            Book a Coaching Session
-          </h2>
-
-          <form>
-            {/* Full Name */}
-            <div style={formGroupStyle}>
-              <label style={labelStyle}>Full Name</label>
-              <input type="text" placeholder="Your name" style={inputStyle} />
-            </div>
-
-            {/* Phone Number */}
-            <div style={formGroupStyle}>
-              <label style={labelStyle}>Phone Number</label>
-              <input type="tel" placeholder="e.g. 0987 123 456" style={inputStyle} />
-            </div>
-
-            {/* Preferred Date */}
-            <div style={formGroupStyle}>
-              <label style={labelStyle}>Preferred Date</label>
-              <input type="date" style={inputStyle} />
-            </div>
-
-            {/* Preferred Time */}
-            <div style={formGroupStyle}>
-              <label style={labelStyle}>Preferred Time</label>
-              <input type="time" style={inputStyle} />
-            </div>
-
-            {/* Coaching Goals */}
-            <div style={formGroupStyle}>
-              <label style={labelStyle}>Coaching Goals</label>
-              <textarea
-                placeholder="Describe what you hope to achieve from this session"
-                style={{ ...inputStyle, height: "100px", resize: "vertical" }}
+            <h3 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+              Payment for {selectedPackage.name}
+            </h3>
+            <p>
+              <strong>Duration:</strong> {selectedPackage.duration}
+            </p>
+            <p>
+              <strong>Price:</strong> {selectedPackage.price}
+            </p>
+            <p>
+              <strong>Transfer Link:</strong>{" "}
+              <a
+                href="https://example.com/transfer"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Click here to transfer
+              </a>
+            </p>
+            <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+              <label>
+                <strong>Upload Receipt:</strong>
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleReceiptUpload}
+                style={{
+                  width: "100%",
+                  padding: "0.5rem",
+                  borderRadius: "0.375rem",
+                  border: "1px solid #d1d5db",
+                }}
               />
             </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              style={buttonStyle}
-              onMouseOver={(e) => (e.target.style.background = "#1b5e20")}
-              onMouseOut={(e) => (e.target.style.background = "#2e7d32")}
+            <div
+              style={{
+                display: "flex",
+                gap: "1rem",
+                justifyContent: "flex-end",
+              }}
             >
-              Confirm Booking
-            </button>
-          </form>
+              <button
+                onClick={closePaymentPopup}
+                style={{
+                  padding: "0.5rem 1rem",
+                  background: "#f44336",
+                  color: "white",
+                  borderRadius: "0.375rem",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={closePaymentPopup}
+                style={{
+                  padding: "0.5rem 1rem",
+                  background: "#4CAF50",
+                  color: "white",
+                  borderRadius: "0.375rem",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
+};
+
+function MenuItem({ label, onClick }) {
+  return (
+    <li
+      onClick={onClick}
+      style={{
+        padding: "10px 16px",
+        fontSize: "14px",
+        color: "#333",
+        cursor: "pointer",
+        transition: "background 0.2s",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "#f4f4f4")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+    >
+      {label}
+    </li>
+  );
 }
-
-const formGroupStyle = { marginBottom: "20px" };
-
-const labelStyle = {
-  display: "block",
-  marginBottom: "6px",
-  fontWeight: "600",
-  color: "#333",
-};
-
-const inputStyle = {
-  width: "100%",
-  padding: "10px",
-  borderRadius: "6px",
-  border: "1px solid #ccc",
-  fontSize: "14px",
-  fontFamily: "'Poppins', sans-serif",
-};
-
-const buttonStyle = {
-  width: "100%",
-  padding: "12px",
-  background: "#2e7d32",
-  color: "white",
-  fontSize: "16px",
-  border: "none",
-  borderRadius: "6px",
-  cursor: "pointer",
-  fontWeight: "bold",
-  transition: "background 0.3s ease",
-};
 
 export default BookingCoach;

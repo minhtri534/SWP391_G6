@@ -1,20 +1,125 @@
-import React from "react";
-import { FaUserCircle } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  FaCalendarAlt,
+  FaSmoking,
+  FaClock,
+  FaDollarSign,
+  FaPen,
+  FaSave,
+  FaUserCircle,
+  FaInfoCircle,
+} from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  getSmokingStatus,
+  createSmokingStatus,
+  updateSmokingStatus,
+} from "./api/SmokingStatus";
 
-function SmokingSelfReport() {
-  const userName = "Minh Tri";
+const SmokingSelfReport = () => {
+  const [report, setReport] = useState({
+    time_period: "",
+    amount_per_day: "",
+    frequency: "",
+    price_per_pack: "",
+    description: "",
+  });
+  const [hasData, setHasData] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const menuRef = useRef();
   const navigate = useNavigate();
+
+  const userName = localStorage.getItem("userName") || "User";
+  const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    const fetchReport = async () => {
+      try {
+        setLoading(true);
+        const report = await getSmokingStatus(userId);
+        if (report) {
+          setReport({
+            time_period: report.timePeriod || "",
+            amount_per_day: report.amountPerDay || "",
+            frequency: report.frequency || "",
+            price_per_pack: report.pricePerPack || "",
+            description: report.description || "",
+          });
+          setHasData(true);
+        } else {
+          setHasData(false); // Không có dữ liệu, cho phép tạo mới
+        }
+      } catch (err) {
+        //setError(err.message || "Error fetching smoking status");
+
+        setHasData(false); // Nếu lỗi, vẫn cho phép tạo mới
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReport();
+  }, [userId]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setReport((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      const payload = {
+        userId: userId,
+        timePeriod: report.time_period,
+        amountPerDay: report.amount_per_day,
+        frequency: report.frequency,
+        pricePerPack: report.price_per_pack,
+        description: report.description,
+      };
+
+      if (hasData) {
+        await updateSmokingStatus(payload);
+      } else {
+        await createSmokingStatus(payload);
+        setHasData(true);
+      }
+
+      alert("Saved successfully!");
+      setIsEditing(false);
+    } catch (err) {
+      setError(err.message || "Failed to save smoking status");
+      alert("Failed to save: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
       style={{
-        fontFamily: "'Poppins', sans-serif",
-        background: "linear-gradient(to bottom right, #a8e063, #56ab2f)",
+        fontFamily: '"Segoe UI", sans-serif',
+        background: "linear-gradient(to bottom, #a8e063, #56ab2f)",
         minHeight: "100vh",
       }}
     >
-      {/* Header giống LoggedInHome */}
       <header
         style={{
           display: "flex",
@@ -25,128 +130,149 @@ function SmokingSelfReport() {
           borderBottom: "2px solid #ccc",
         }}
       >
-        <div
-          style={{ fontSize: "20px", fontWeight: "bold", cursor: "pointer" }}
-          onClick={() => navigate("/home")}
-        >
-          <span style={{ color: "#f57c00" }}>Quit</span>
-          <span style={{ color: "#69c770" }}>Smoking.com</span>
-        </div>
-
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "500" }}>
-          <FaUserCircle size={24} />
-          <span>{userName}</span>
+        <Link to="/memberhome" style={{ textDecoration: "none" }}>
+          <h1 style={{ margin: 0, fontSize: "20px", fontWeight: "bold" }}>
+            <span style={{ color: "#f57c00" }}>Quit</span>
+            <span style={{ color: "#69c770" }}>Smoking.com</span>
+          </h1>
+        </Link>
+        <div style={{ position: "relative" }} ref={menuRef}>
+          <div
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              cursor: "pointer",
+              background: "white",
+              padding: "8px 12px",
+              borderRadius: "20px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+              fontWeight: "500",
+            }}
+          >
+            <FaUserCircle size={22} color="#4CAF50" />
+            <span>{userName}</span>
+          </div>
+          {menuOpen && (
+            <ul
+              style={{
+                position: "absolute",
+                top: "110%",
+                right: 0,
+                background: "white",
+                listStyle: "none",
+                padding: "10px 0",
+                boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
+                borderRadius: "8px",
+                zIndex: 999,
+                width: "180px",
+              }}
+            >
+              <MenuItem label="👤 Edit Profile" onClick={() => navigate("/edit-profile")} />
+              <MenuItem label="🏆  My Coach" onClick={() => navigate("/mycoach")} />
+              <MenuItem label="⚙️ Settings" onClick={() => navigate("/settings")} />
+              <hr style={{ margin: "6px 0", borderColor: "#eee" }} />
+              <MenuItem label="🔓 Logout" onClick={handleLogout} />
+            </ul>
+          )}
         </div>
       </header>
 
-      {/* Form Container */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          padding: "50px 20px",
-        }}
-      >
-        <div
-          style={{
-            background: "#fff",
-            padding: "40px",
-            borderRadius: "12px",
-            width: "100%",
-            maxWidth: "600px",
-            boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
-          }}
-        >
-          <h2
-            style={{
-              textAlign: "center",
-              color: "#2e7d32",
-              marginBottom: "30px",
-              fontSize: "28px",
-              fontWeight: "700",
-            }}
-          >
-            Smoking Self-Report
-          </h2>
+      <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md mt-12">
+        <h2 className="text-3xl font-bold text-green-700 mb-6 flex items-center gap-2">
+          <FaSmoking />
+          Smoking Self Report
+        </h2>
 
-          <form>
-            <FormGroup label="Full Name (Optional)" placeholder="Enter your name (if any)" />
-            <FormGroup label="Age" placeholder="Enter your age" type="number" />
-            <FormGroup label="Gender" placeholder="e.g. Male / Female / Other" />
-            <FormGroup label="Are you currently smoking?" placeholder="Yes / No" />
-            <FormGroup label="What do you smoke?" placeholder="e.g. Cigarettes, Vape, etc." />
-            <FormGroup label="How many per day?" placeholder="e.g. 5-10" type="number" />
-            <FormGroup label="At what age did you start smoking?" placeholder="e.g. 18" type="number" />
-            <FormGroup label="When do you smoke the most?" placeholder="e.g. After meals, when stressed..." />
-            <FormGroup label="Why do you want to quit smoking?" isTextArea />
-            <FormGroup label="What support would help you quit?" isTextArea />
+        {loading && <p style={{ textAlign: "center" }}>Loading...</p>}
+        {error && <p style={{ textAlign: "center", color: "#ff0000" }}>{error}</p>}
+        {!loading && !error && (
+          <>
+            {isEditing ? (
+              <div className="space-y-4">
+                <InputField label="Time Period" icon={<FaClock />} name="time_period" value={report.time_period} onChange={handleChange} />
+                <InputField label="Amount per Day" icon={<FaSmoking />} name="amount_per_day" value={report.amount_per_day} onChange={handleChange} />
+                <InputField label="Frequency" icon={<FaCalendarAlt />} name="frequency" value={report.frequency} onChange={handleChange} />
+                <InputField label="Price per Pack" icon={<FaDollarSign />} name="price_per_pack" value={report.price_per_pack} onChange={handleChange} />
+                <div>
+                  <label className="font-semibold flex items-center gap-2 mb-1">
+                    <FaPen />
+                    Description:
+                  </label>
+                  <textarea name="description" rows="4" value={report.description} onChange={handleChange} className="w-full p-2 border rounded" />
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4 text-gray-800 text-lg">
+                <ReportView label="⏱ Time Period" value={report.time_period} />
+                <ReportView label="🚬 Amount per Day" value={report.amount_per_day} />
+                <ReportView label="📅 Frequency" value={report.frequency} />
+                <ReportView label="💵 Price per Pack" value={report.price_per_pack} />
+                <ReportView label="📝 Description" value={report.description} />
+              </div>
+            )}
 
-            <button
-              type="submit"
-              style={{
-                width: "100%",
-                padding: "12px",
-                background: "#2e7d32",
-                color: "white",
-                fontSize: "16px",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-                fontWeight: "bold",
-                marginTop: "10px",
-              }}
-            >
-              Submit Report
-            </button>
-          </form>
-        </div>
+            <div className="mt-6 flex justify-end gap-4">
+              {!isEditing ? (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+                >
+                  <FaPen />
+                  Edit
+                </button>
+              ) : (
+                <button
+                  onClick={handleSave}
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+                  disabled={loading}
+                >
+                  <FaSave />
+                  Save
+                </button>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
-}
+};
 
-function FormGroup({ label, placeholder = "", type = "text", isTextArea = false }) {
-  return (
-    <div style={{ marginBottom: "20px" }}>
-      <label
-        style={{
-          display: "block",
-          marginBottom: "6px",
-          fontWeight: "600",
-          color: "#333",
-        }}
-      >
-        {label}
-      </label>
-      {isTextArea ? (
-        <textarea
-          placeholder={placeholder || "Type your response here..."}
-          style={{
-            width: "100%",
-            padding: "10px",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
-            fontSize: "14px",
-            resize: "vertical",
-            minHeight: "100px",
-          }}
-        />
-      ) : (
-        <input
-          type={type}
-          placeholder={placeholder}
-          style={{
-            width: "100%",
-            padding: "10px",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
-            fontSize: "14px",
-          }}
-        />
-      )}
-    </div>
-  );
-}
+const InputField = ({ label, icon, name, value, onChange }) => (
+  <div>
+    <label className="font-semibold flex items-center gap-2 mb-1">
+      {icon}
+      {label}:
+    </label>
+    <input type="text" name={name} value={value} onChange={onChange} className="w-full p-2 border rounded" />
+  </div>
+);
+
+const ReportView = ({ label, value }) => (
+  <div className="flex items-center gap-3">
+    <FaInfoCircle className="text-green-600" />
+    <span className="font-semibold">{label}:</span>
+    <span>{value || "Not provided"}</span>
+  </div>
+);
+
+const MenuItem = ({ label, onClick }) => (
+  <li
+    onClick={onClick}
+    style={{
+      padding: "10px 16px",
+      fontSize: "14px",
+      color: "#333",
+      cursor: "pointer",
+      transition: "background 0.2s",
+    }}
+    onMouseEnter={(e) => (e.currentTarget.style.background = "#f4f4f4")}
+    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+  >
+    {label}
+  </li>
+);
 
 export default SmokingSelfReport;

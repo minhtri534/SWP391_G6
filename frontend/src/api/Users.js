@@ -5,7 +5,7 @@ const baseApi = "http://localhost:5196";
 
 export async function getUsers() {
 	try {
-		const response = await axios.get(`${baseApi}/AccountManageAdmin/ViewAllAccount`, getAuthConfig());
+		const response = await axios.get(`${baseApi}/AccountManageAdmin/ViewAllUsers`, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Get user failed!!!";
@@ -65,7 +65,7 @@ export async function deleteUser(userId) {
 
 export async function lockUser(userId) {
 	try {
-		const response = await axios.put(`${baseApi}/AccountManageAdmin/LockAccount/${userId}`, getAuthConfig());
+		const response = await axios.put(`${baseApi}/AccountManageAdmin/LockAccount/${userId}`, null, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Lock user failed";
@@ -75,10 +75,20 @@ export async function lockUser(userId) {
 
 export async function unlockUser(userId) {
 	try {
-		const response = await axios.put(`${baseApi}/AccountManageAdmin/UnlockAccount/${userId}`, getAuthConfig());
+		const response = await axios.put(`${baseApi}/AccountManageAdmin/UnlockAccount/${userId}`, null, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Unlock user failed";
+		throw new Error(msg);
+	}
+}
+
+export async function getCoachMember(coachId) {
+	try {
+		const response = await axios.get(`${baseApi}/api/Coach/Member/${coachId}`, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Get member list failed";
 		throw new Error(msg);
 	}
 }

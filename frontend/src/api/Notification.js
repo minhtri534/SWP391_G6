@@ -1,0 +1,65 @@
+import axios from "axios";
+import { getAuthConfig } from "./Auth";
+
+const baseApi = "http://localhost:5196";
+
+export async function getNotification() {
+	try {
+		const response = await axios.get(`${baseApi}/api/NotificationManagement`, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Get notifications list failed!!!";
+		throw new Error(msg);
+	}
+}
+
+export async function getUserNotification(userId) {
+	try {
+		const response = await axios.get(`${baseApi}/api/Notification/${userId}`, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		console.error("getUserNotification error:", error);
+		// Optional: log or customize message before re-throwing
+		throw error;
+		// const msg = error.response?.data?.message || "Get user notifications failed!!!";
+		// throw new Error(msg);
+	}
+}
+
+export async function addNotification({userId, relatedLogId, relatedMilestoneId, message, sendDate, type}) {
+	try {
+		const payload = {
+			userId:userId, relatedLogId:relatedLogId, relatedMilestoneId:relatedMilestoneId, message:message, sendDate: sendDate, type:type,
+		};
+		const response = await axios.post(`${baseApi}/api/Notification`, payload, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Add notification failed!!!";
+		throw new Error(msg);
+	}
+}
+
+export async function updateNotification({ notificationId, type, message }) {
+	try {
+		const payload = {
+			notificationId: notificationId,
+			type: type,
+			message: message,
+		};
+		const response = await axios.put(`${baseApi}/api/NotificationManagement`, payload, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Update notification failed!!!";
+		throw new Error(msg);
+	}
+}
+
+export async function deleteNotification(notificationId) {
+	try {
+		const response = await axios.delete(`${baseApi}/api/NotificationManagement/${notificationId}`,null, getAuthConfig());
+		return response.data;
+	} catch (error) {
+		const msg = error.response?.data?.message || "Remove notifications failed!!!";
+		throw new Error(msg);
+	}
+}

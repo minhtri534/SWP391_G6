@@ -3,8 +3,8 @@
 
 body {
   margin: 0;
-  font-family: sans-serif;
-  background: linear-gradient(to bottom, #98fcb1, #d0f3a3);
+  padding: 0;
+  background: "linear-gradient(to bottom, #a8e063, #56ab2f)";
   /* ví dụ màu nền */
-  min-height: 100vh;
+  min-height: 0vh;
 }

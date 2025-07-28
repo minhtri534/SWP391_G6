@@ -3,8 +3,152 @@
   "WorkspaceRootPath": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\accountmanage(admin)cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\accountmanage(admin)cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\crudmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\crudmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\planmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\planmilestone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\accountmanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\accountmanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\updateprofilerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\updateprofilerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\services\\feedbackservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:services\\feedbackservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\smokingstatuscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\smokingstatuscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\dailyprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\dailyprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\dailyprogressrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\dailyprogressrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\dailyprogress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\dailyprogress.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\feedback.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\feedback.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\membership.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\membership.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\coachinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\coachinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\smokingstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\smokingstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\paymentmembership.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\paymentmembership.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\membershipbuyrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\membershipbuyrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\transactionmoney.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\transactionmoney.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\coachplanbadge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\coachplanbadge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\badge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\badge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\userbadge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\userbadge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\usercoachpackage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\usercoachpackage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\planmilestonerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\planmilestonerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\smokingstatusrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\smokingstatusrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\quitplancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\quitplancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\quiltplandto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\quiltplandto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\bookingpaymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\bookingpaymentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\createquitplanrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\createquitplanrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\trackprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\trackprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\entities\\quitplan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:entities\\quitplan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\loginresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -15,168 +159,530 @@
       "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\registrationresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\registrationresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\badgecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\badgecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\registrationrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\registrationrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\models\\registration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:models\\registration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Visual Studio\\Project\\backend\\Models\\Users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\backend.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:backend.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|d:\\visual studio\\project\\swp391_g6\\backend\\controllers\\badgemanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6A7A994E-CF21-4D25-A7C0-F6A38B072461}|backend.csproj|solutionrelative:controllers\\badgemanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
     {
-      "Orientation": 0,
+      "Orientation": 1,
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "DockedHeight": 200,
+          "SelectedChildIndex": 10,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "LoginResponse.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\LoginResponse.cs",
-              "RelativeDocumentMoniker": "Models\\LoginResponse.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\LoginResponse.cs",
-              "RelativeToolTip": "Models\\LoginResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T06:32:48.661Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "LoginRequest.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\LoginRequest.cs",
-              "RelativeDocumentMoniker": "Models\\LoginRequest.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\LoginRequest.cs",
-              "RelativeToolTip": "Models\\LoginRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T06:32:24.594Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "Controllers\\AuthController.cs",
-              "ViewState": "AgIAAEIAAAAAAAAAAAAmwD0AAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T06:18:09.327Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "Registration.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\Registration.cs",
-              "RelativeDocumentMoniker": "Models\\Registration.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\Registration.cs",
-              "RelativeToolTip": "Models\\Registration.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T06:13:48.038Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "RegistrationResponse.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\RegistrationResponse.cs",
-              "RelativeDocumentMoniker": "Models\\RegistrationResponse.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\RegistrationResponse.cs",
-              "RelativeToolTip": "Models\\RegistrationResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T06:13:45.664Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "RegistrationRequest.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\RegistrationRequest.cs",
-              "RelativeDocumentMoniker": "Models\\RegistrationRequest.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\RegistrationRequest.cs",
-              "RelativeToolTip": "Models\\RegistrationRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA6AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T06:11:48.025Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AppDBContext.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Data\\AppDBContext.cs",
-              "RelativeDocumentMoniker": "Data\\AppDBContext.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Data\\AppDBContext.cs",
-              "RelativeToolTip": "Data\\AppDBContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T05:37:32.202Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAwCQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABMAAAAAAAAAAAAgwBsAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T05:36:10.75Z",
+              "WhenOpened": "2025-07-27T23:33:59.552Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Feedback.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Feedback.cs",
+              "RelativeDocumentMoniker": "Entities\\Feedback.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Feedback.cs",
+              "RelativeToolTip": "Entities\\Feedback.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAewCEAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:20:21.477Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Membership.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Membership.cs",
+              "RelativeDocumentMoniker": "Entities\\Membership.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Membership.cs",
+              "RelativeToolTip": "Entities\\Membership.cs",
+              "ViewState": "AgIAAAgAAADAZWZmZuYTwBcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T10:44:29.265Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Comment.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Comment.cs",
+              "RelativeDocumentMoniker": "Entities\\Comment.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Comment.cs",
+              "RelativeToolTip": "Entities\\Comment.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAA6wA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T10:42:40.961Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "CoachInfo.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachInfo.cs",
+              "RelativeDocumentMoniker": "Entities\\CoachInfo.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachInfo.cs",
+              "RelativeToolTip": "Entities\\CoachInfo.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAowAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T09:14:49.131Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "FeedbackService.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Services\\FeedbackService.cs",
+              "RelativeDocumentMoniker": "Services\\FeedbackService.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Services\\FeedbackService.cs",
+              "RelativeToolTip": "Services\\FeedbackService.cs",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAUwD8AAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T12:28:12.636Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
-              "Title": "Users.cs",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\backend\\Models\\Users.cs",
-              "RelativeDocumentMoniker": "..\\..\\backend\\Models\\Users.cs",
-              "ToolTip": "D:\\Visual Studio\\Project\\backend\\Models\\Users.cs",
-              "RelativeToolTip": "..\\..\\backend\\Models\\Users.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAqAAAAAAAAAA==",
+              "Title": "DailyProgressController.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\DailyProgressController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DailyProgressController.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\DailyProgressController.cs",
+              "RelativeToolTip": "Controllers\\DailyProgressController.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAzwCAAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T17:44:32.5Z"
+              "WhenOpened": "2025-07-27T14:41:58.754Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PlanMilestone.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PlanMilestone.cs",
+              "RelativeDocumentMoniker": "Entities\\PlanMilestone.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PlanMilestone.cs",
+              "RelativeToolTip": "Entities\\PlanMilestone.cs",
+              "ViewState": "AgIAAAgAAAAAOjMzMzP5vw0AAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T06:05:28.474Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CRUDMilestone.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\CRUDMilestone.cs",
+              "RelativeDocumentMoniker": "Controllers\\CRUDMilestone.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\CRUDMilestone.cs",
+              "RelativeToolTip": "Controllers\\CRUDMilestone.cs",
+              "ViewState": "AgIAAA4AAAAAhGZmZmYEwBsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T05:57:48.852Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AccountManage(Admin)cs.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManage(Admin)cs.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountManage(Admin)cs.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManage(Admin)cs.cs",
+              "RelativeToolTip": "Controllers\\AccountManage(Admin)cs.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAgwEQAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T16:06:36.806Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AccountManagement.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManagement.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountManagement.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AccountManagement.cs",
+              "RelativeToolTip": "Controllers\\AccountManagement.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwD0AAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-27T23:45:37.219Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UpdateProfileRequest.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\UpdateProfileRequest.cs",
+              "RelativeDocumentMoniker": "Models\\UpdateProfileRequest.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\UpdateProfileRequest.cs",
+              "RelativeToolTip": "Models\\UpdateProfileRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-27T23:46:39.686Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "SmokingStatusController.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\SmokingStatusController.cs",
+              "RelativeDocumentMoniker": "Controllers\\SmokingStatusController.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\SmokingStatusController.cs",
+              "RelativeToolTip": "Controllers\\SmokingStatusController.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAswC4AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T16:54:55.606Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DailyProgress.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\DailyProgress.cs",
+              "RelativeDocumentMoniker": "Entities\\DailyProgress.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\DailyProgress.cs",
+              "RelativeToolTip": "Entities\\DailyProgress.cs",
+              "ViewState": "AgIAAAcAAACgZmZmZgY9wBkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T10:42:46.127Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 9,
-              "Title": "backend.csproj",
-              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\backend.csproj",
-              "RelativeDocumentMoniker": "backend.csproj",
-              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\backend.csproj",
-              "RelativeToolTip": "backend.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-06-19T17:33:44.593Z"
+              "Title": "DailyProgressRequest.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\DailyProgressRequest.cs",
+              "RelativeDocumentMoniker": "Models\\DailyProgressRequest.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\DailyProgressRequest.cs",
+              "RelativeToolTip": "Models\\DailyProgressRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-27T14:38:12.02Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Controllers\\AuthController.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAswFIAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T16:08:16.157Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "PaymentMemberShip.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PaymentMemberShip.cs",
+              "RelativeDocumentMoniker": "Entities\\PaymentMemberShip.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\PaymentMemberShip.cs",
+              "RelativeToolTip": "Entities\\PaymentMemberShip.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:17:20.771Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "SmokingStatus.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\SmokingStatus.cs",
+              "RelativeDocumentMoniker": "Entities\\SmokingStatus.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\SmokingStatus.cs",
+              "RelativeToolTip": "Entities\\SmokingStatus.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAA3wCEAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T09:10:01.412Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "MembershipBuyRequest.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\MembershipBuyRequest.cs",
+              "RelativeDocumentMoniker": "Models\\MembershipBuyRequest.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\MembershipBuyRequest.cs",
+              "RelativeToolTip": "Models\\MembershipBuyRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T12:18:39.968Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "AppDBContext.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Data\\AppDBContext.cs",
+              "RelativeDocumentMoniker": "Data\\AppDBContext.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Data\\AppDBContext.cs",
+              "RelativeToolTip": "Data\\AppDBContext.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAswDkAAABmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:30:28.421Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "TransactionMoney.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\TransactionMoney.cs",
+              "RelativeDocumentMoniker": "Entities\\TransactionMoney.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\TransactionMoney.cs",
+              "RelativeToolTip": "Entities\\TransactionMoney.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBkAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T11:25:36.737Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Notification.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Notification.cs",
+              "RelativeDocumentMoniker": "Entities\\Notification.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Notification.cs",
+              "RelativeToolTip": "Entities\\Notification.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T11:24:32.332Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "CoachPlanBadge.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachPlanBadge.cs",
+              "RelativeDocumentMoniker": "Entities\\CoachPlanBadge.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\CoachPlanBadge.cs",
+              "RelativeToolTip": "Entities\\CoachPlanBadge.cs",
+              "ViewState": "AgIAAAYAAACOmZmZmZknwBQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T09:20:27.306Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Badge.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Badge.cs",
+              "RelativeDocumentMoniker": "Entities\\Badge.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Badge.cs",
+              "RelativeToolTip": "Entities\\Badge.cs",
+              "ViewState": "AgIAAAYAAAAAb2ZmZmb0vxMAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T09:14:36.047Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Role.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Role.cs",
+              "RelativeDocumentMoniker": "Entities\\Role.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\Role.cs",
+              "RelativeToolTip": "Entities\\Role.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T09:10:19.412Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "UserBadge.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserBadge.cs",
+              "RelativeDocumentMoniker": "Entities\\UserBadge.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserBadge.cs",
+              "RelativeToolTip": "Entities\\UserBadge.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T09:10:25.723Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "UserCoachPackage.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserCoachPackage.cs",
+              "RelativeDocumentMoniker": "Entities\\UserCoachPackage.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\UserCoachPackage.cs",
+              "RelativeToolTip": "Entities\\UserCoachPackage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T09:10:28.513Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "BookingPaymentController.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\BookingPaymentController.cs",
+              "RelativeDocumentMoniker": "Controllers\\BookingPaymentController.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\BookingPaymentController.cs",
+              "RelativeToolTip": "Controllers\\BookingPaymentController.cs",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:24:48.177Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "SmokingStatusRequest.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\SmokingStatusRequest.cs",
+              "RelativeDocumentMoniker": "Models\\SmokingStatusRequest.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\SmokingStatusRequest.cs",
+              "RelativeToolTip": "Models\\SmokingStatusRequest.cs",
+              "ViewState": "AgIAAAUAAAAAAQAAAAAAwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:25:42.598Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "QuiltPlanDTO.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\QuiltPlanDTO.cs",
+              "RelativeDocumentMoniker": "Models\\QuiltPlanDTO.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\QuiltPlanDTO.cs",
+              "RelativeToolTip": "Models\\QuiltPlanDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:26:13.325Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "QuitPlanController.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\QuitPlanController.cs",
+              "RelativeDocumentMoniker": "Controllers\\QuitPlanController.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\QuitPlanController.cs",
+              "RelativeToolTip": "Controllers\\QuitPlanController.cs",
+              "ViewState": "AgIAABIAAAAQZWZmZmY4wAUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:29:16.829Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "PlanMilestoneRequest.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\PlanMilestoneRequest.cs",
+              "RelativeDocumentMoniker": "Models\\PlanMilestoneRequest.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\PlanMilestoneRequest.cs",
+              "RelativeToolTip": "Models\\PlanMilestoneRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T05:56:01.194Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "ChatController.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\ChatController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ChatController.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\ChatController.cs",
+              "RelativeToolTip": "Controllers\\ChatController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:30:41.14Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "TrackProgressController.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\TrackProgressController.cs",
+              "RelativeDocumentMoniker": "Controllers\\TrackProgressController.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\TrackProgressController.cs",
+              "RelativeToolTip": "Controllers\\TrackProgressController.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:21:38.806Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "CreateQuitPlanRequest.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\CreateQuitPlanRequest.cs",
+              "RelativeDocumentMoniker": "Models\\CreateQuitPlanRequest.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\CreateQuitPlanRequest.cs",
+              "RelativeToolTip": "Models\\CreateQuitPlanRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:36:46.298Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "QuitPlan.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\QuitPlan.cs",
+              "RelativeDocumentMoniker": "Entities\\QuitPlan.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Entities\\QuitPlan.cs",
+              "RelativeToolTip": "Entities\\QuitPlan.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-19T02:19:51.775Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "ReportController.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\ReportController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ReportController.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\ReportController.cs",
+              "RelativeToolTip": "Controllers\\ReportController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABUAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T16:55:07.494Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "LoginResponse.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\LoginResponse.cs",
+              "RelativeDocumentMoniker": "Models\\LoginResponse.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\LoginResponse.cs",
+              "RelativeToolTip": "Models\\LoginResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T16:21:25.438Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "BadgeManagementController.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\BadgeManagementController.cs",
+              "RelativeDocumentMoniker": "Controllers\\BadgeManagementController.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\BadgeManagementController.cs",
+              "RelativeToolTip": "Controllers\\BadgeManagementController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T16:08:26.702Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "BadgeController.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\BadgeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\BadgeController.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\BadgeController.cs",
+              "RelativeToolTip": "Controllers\\BadgeController.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T16:08:22.271Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "LoginRequest.cs",
+              "DocumentMoniker": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\LoginRequest.cs",
+              "RelativeDocumentMoniker": "Models\\LoginRequest.cs",
+              "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Models\\LoginRequest.cs",
+              "RelativeToolTip": "Models\\LoginRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-18T16:21:24.701Z"
             }
           ]
         }

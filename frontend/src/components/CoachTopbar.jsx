@@ -1,13 +1,115 @@
 import { Bell, CircleUserRound } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import NotificationDropdown from "./NotificationDropdown";
+import UserDropdown from "./UserDropdown";
+import { getUserNotification } from "../api/Notification";
+import { toast } from "react-toastify";
+import MessageDropdown from "./MessageDropdown";
+import { getCoachId } from "../api/Coach";
+import { getCoachMember } from "../api/Users";
+import { getChats } from "../api/Chat";
+// import { getTokenData } from "../api/Auth";
 
 function CoachTopbar({ title }) {
+	const userId = localStorage.getItem("userId");
+	const [coachId, setCoachId] = useState(null);
+
+	const [messages, setMessages] = useState([]);
+	const [notifications, setNotifications] = useState([
+		// { id: 1, content: "You have a new message from a member.", date: "2025-07-17" },
+		// { id: 2, content: "A new report was submitted.", date: "2025-07-16" },
+	]);
+	const userName = localStorage.getItem("userName") || "Admin";
+
+	// Get coachId
+	useEffect(() => {
+		if (userId) {
+			const fetchCoachId = async () => {
+				try {
+					const data = await getCoachId(userId);
+					// console.log(data);
+					setCoachId(data.coachId);
+				} catch (error) {
+					console.error(error);
+					toast.error(error?.response?.data?.message || error.message || "Failed to get coachId");
+				}
+			};
+
+			fetchCoachId();
+		}
+	}, [userId]);
+
+	// Get chat log
+	useEffect(() => {
+		if (coachId) {
+			fetchMemberMsg(coachId);
+		}
+	}, [coachId]);
+
+	const fetchMemberMsg = async (cid = coachId) => {
+		try {
+			const members = await getCoachMember(cid);
+			const filtered = members.filter((user) => user.roleId !== 3);
+
+			const allMessages = await Promise.all(
+				filtered.map(async (member) => {
+					try {
+						const chats = await getChats(member.userId, cid);
+
+						// 🔽 Sort messages from latest to oldest
+						const sortedChats = chats.sort((a, b) => new Date(a.chat_Date) - new Date(b.chat_Date));
+
+						return {
+							memberId: member.userId,
+							memberName: member.userName,
+							messages: sortedChats,
+						};
+					} catch (error) {
+						console.error("Failed to get chats for", member.userName, error);
+						return {
+							memberId: member.userId,
+							memberName: member.userName,
+							messages: [],
+						};
+					}
+				})
+			);
+
+			setMessages(allMessages);
+		} catch (error) {
+			console.error(error);
+			toast.error(error?.response?.data?.message || error.message || "Failed to load messages.");
+		}
+	};
+
+	// Get notification list
+	useEffect(() => {
+		const fetchNotification = async (userId) => {
+			try {
+				const data = await getUserNotification(userId);
+				setNotifications(data);
+			} catch (error) {
+				// console.error(error);
+				const status = error?.response?.status;
+				// Only show toast if it's not a 404
+				if (status !== 404) {
+					toast.error(error?.response?.data?.message || error.message || "Failed to load notifications.");
+				}
+			}
+		};
+		fetchNotification(userId);
+	}, []);
+
 	return (
 		<div className="flex justify-between items-center p-4 bg-green-300">
+			{/* {console.log("All message: ", messages)} */}
 			<h1 className="text-2xl font-semibold">{title}</h1>
 			<div className="flex items-center gap-4">
-				<Bell className="w-6 h-6" />
-				<CircleUserRound className="w-8 h-8" />
+				<MessageDropdown messages={messages} coachId={coachId} />
+				{/* <Bell className="w-6 h-6" /> */}
+				<NotificationDropdown notifications={notifications} />
+				{/* <CircleUserRound className="w-8 h-8" /> */}
+				<UserDropdown userName={userName} />
 			</div>
 		</div>
 	);
