@@ -29,14 +29,14 @@ namespace backend.Controllers
         {
             // 1. Kiểm tra username đã tồn tại chưa
             var existingUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.UserName == user.UserName);
+                .FirstOrDefaultAsync(u => u.PhoneNum == user.PhoneNum);
 
             if (existingUser != null)
             {
                 return BadRequest(new
                 {
                     success = false,
-                    message = "Username already exists."
+                    message = "Phone number already exists."
                 });
             }
 
@@ -50,7 +50,7 @@ namespace backend.Controllers
                 Gender = user.Gender,
                 Status = "Active",
                 RoleId = 1,
-                JoinDate = DateTime.Now
+                JoinDate = DateTime.UtcNow
 
             };
 
@@ -65,7 +65,7 @@ namespace backend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = _context.Users.FirstOrDefault(u => u.UserName == request.Username);
+            var user = _context.Users.FirstOrDefault(u => u.PhoneNum == request.PhoneNum);
 
             if (user == null || user.Password != request.Password)
                 return Unauthorized("Login failed");
@@ -73,26 +73,27 @@ namespace backend.Controllers
             return Ok(new
             {
                 success = true,
-                message = "User registered successfully.",
+                message = "User login successfully.",
                 user = new
                 {
                     user.UserId,
                     user.UserName,
                     user.RoleId
                 },
-                token = GenerateJwtToken(user.UserName, user.RoleId, user.UserId)
+
+                token = GenerateJwtToken(user.PhoneNum, user.RoleId)
             });
         }
 
-        private string GenerateJwtToken(string username, int role, int userId)
+        private string GenerateJwtToken(string phonenumber, int role)
         {
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, username),
-                new Claim(ClaimTypes.Role, role.ToString()),
-                new Claim("UserId", userId.ToString()), // 👈 THÊM DÒNG NÀY
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+            new Claim(JwtRegisteredClaimNames.Sub, phonenumber),
+            new Claim(ClaimTypes.Role, role.ToString()),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("very_important_smoking_encryption_key"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

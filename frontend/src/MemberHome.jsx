@@ -13,7 +13,7 @@ import { getNotifications } from "./api/Notification2";
 
 function MemberHome() {
   const navigate = useNavigate();
-  const userName = localStorage.getItem("userName") || "User";
+  const username = localStorage.getItem("username") || "User";
   const userId = localStorage.getItem("userId");
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -200,7 +200,7 @@ function MemberHome() {
               }}
             >
               <FaUserCircle size={22} color="#4CAF50" />
-              <span>{userName}</span>
+              <span>{username}</span>
             </div>
             {menuOpen && (
               <ul
