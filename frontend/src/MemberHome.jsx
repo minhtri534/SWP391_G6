@@ -13,7 +13,7 @@ import { getNotifications } from "./api/Notification2";
 
 function MemberHome() {
   const navigate = useNavigate();
-  const username = localStorage.getItem("username") || "User";
+  const username = localStorage.getItem("userName");
   const userId = localStorage.getItem("userId");
 
   const [menuOpen, setMenuOpen] = useState(false);

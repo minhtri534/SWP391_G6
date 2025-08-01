@@ -73,10 +73,9 @@ function Login() {
       });
 
       const token = response.data.token;
-      // chú ý sửa lấy username đúng từ response
-      const usernameFromServer = response.data.user?.UserName || form.phonenumber;
-      const role = response.data.user?.RoleId || 2;
-      const userId = response.data.user?.UserId;
+      const usernameFromServer = response.data.user?.userName ;
+      const role = response.data.user?.roleId || 2;
+      const userId = response.data.user?.userId;
 
       setUser({
         userId,

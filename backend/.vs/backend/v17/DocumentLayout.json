@@ -228,7 +228,7 @@
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
               "ToolTip": "D:\\Visual Studio\\Project\\SWP391_G6\\backend\\Controllers\\AuthController.cs",
               "RelativeToolTip": "Controllers\\AuthController.cs",
-              "ViewState": "AgIAAD4AAAAIzczMzEwnwFMAAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAAD4AAACEZmZmZqY6wFMAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-18T16:08:16.157Z",
               "EditorCaption": ""
@@ -243,8 +243,7 @@
               "RelativeToolTip": "Repositories\\IPostRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T01:53:28.701Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-28T01:53:28.701Z"
             },
             {
               "$type": "Document",
@@ -280,8 +279,7 @@
               "RelativeToolTip": "Models\\LoginRequest.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-18T16:21:24.701Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-18T16:21:24.701Z"
             },
             {
               "$type": "Document",
@@ -293,8 +291,7 @@
               "RelativeToolTip": "Controllers\\AccountManagement.cs",
               "ViewState": "AgIAAD4AAAAA9v///78swD0AAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-27T23:45:37.219Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-27T23:45:37.219Z"
             },
             {
               "$type": "Document",
