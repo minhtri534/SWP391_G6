@@ -41,12 +41,19 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreatePostDto dto)
         {
-            var result = await _service.CanUserPostAsync(dto.UserId);
+            // Lấy UserId từ token
+            var userIdStr = User.FindFirst("UserId")?.Value;
+            if (string.IsNullOrEmpty(userIdStr) || !int.TryParse(userIdStr, out int userId))
+                return Unauthorized("UserId not found in token.");
+
+            // Gửi userId vào service
+            var result = await _service.CanUserPostAsync(userId);
             if (!result.Allowed) return result.ErrorResult;
 
-            var post = await _service.CreatePostAsync(dto);
+            var post = await _service.CreatePostAsync(dto, userId); 
             return CreatedAtAction(nameof(GetById), new { id = post.PostId }, post);
         }
+
 
         [Authorize(Roles = "2,3,4")]
         [HttpPut("{id}")]

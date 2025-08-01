@@ -51,16 +51,15 @@ namespace backend.Services
 #pragma warning restore CS8604 // Possible null reference argument.
         }
 
-        public async Task<PostDto> CreatePostAsync(CreatePostDto dto)
+        public async Task<PostDto> CreatePostAsync(CreatePostDto dto, int userId)
         {
-
-            var user = await _context.Users.FindAsync(dto.UserId);
+            var user = await _context.Users.FindAsync(userId);
             if (user == null)
                 throw new Exception("User not found.");
 
             var post = new Post
             {
-                UserId = dto.UserId,
+                UserId = userId,
                 Title = dto.Title,
                 Content = dto.Content,
                 Create_Date = DateTime.UtcNow.Date,
@@ -80,6 +79,7 @@ namespace backend.Services
                 IsApproved = result.IsApproved 
             };
         }
+
 
         public async Task UpdatePostAsync(int id, UpdatePostDto dto)
         {

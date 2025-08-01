@@ -80,25 +80,25 @@ namespace backend.Controllers
                     user.UserName,
                     user.RoleId
                 },
-                token = GenerateJwtToken(user.UserName, user.RoleId)
+                token = GenerateJwtToken(user.UserName, user.RoleId, user.UserId)
             });
         }
 
-        private string GenerateJwtToken(string username, int role)
+        private string GenerateJwtToken(string username, int role, int userId)
         {
             var claims = new[]
             {
-            new Claim(JwtRegisteredClaimNames.Sub, username),
-            new Claim(ClaimTypes.Role, role.ToString()),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+                new Claim(JwtRegisteredClaimNames.Sub, username),
+                new Claim(ClaimTypes.Role, role.ToString()),
+                new Claim("UserId", userId.ToString()), // 👈 THÊM DÒNG NÀY
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("very_important_smoking_encryption_key"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: "http://localhost:5196",
-                //audience: "http://localhost:5174",
                 audience: "http://localhost:5196/Swagger",
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
@@ -106,6 +106,7 @@ namespace backend.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
 
     }
 }
