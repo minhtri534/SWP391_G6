@@ -1,4 +1,4 @@
-import { Award, CircleDollarSign, CircleUser, LayoutDashboard, LogOut, MessageSquareText, User } from "lucide-react";
+import { Award, CircleDollarSign, CircleUser, LayoutDashboard, LogOut, MessageSquareText, SquarePen, User } from "lucide-react";
 import React from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
@@ -10,7 +10,8 @@ function AdminSidebar() {
 		{ name: "Accounts", icon: <CircleUser />, path: "/Admin/ManageAccounts" },
 		{ name: "Badges", icon: <Award />, path: "/Admin/ManageBadges" },
 		{ name: "Report & Feedback", icon: <MessageSquareText />, path: "/Admin/ManageReport" },
-	//	{ name: "Income", icon: <CircleDollarSign />, path: "/admin/ManageIncome" },
+		{ name: "Posts Manage", icon: <SquarePen />, path: "/Admin/ManagePost" },
+		// { name: "Income", icon: <CircleDollarSign />, path: "/admin/ManageIncome" },
 		// { name: "Promote", path: "/admin/promote" },
 	];
 

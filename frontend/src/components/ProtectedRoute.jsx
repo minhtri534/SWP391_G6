@@ -17,7 +17,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
 		const userRole = parseInt(payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
 		if (!allowedRoles.includes(userRole)) {
-			return <Navigate to="/" />;
+			return <Navigate to="/memberhome" />;
 		}
 
 		return children;
