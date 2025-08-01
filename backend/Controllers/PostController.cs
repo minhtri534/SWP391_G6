@@ -24,7 +24,7 @@ namespace backend.Controllers
             var posts = await _service.GetAllPostsAsync();
             if (posts == null)
             {
-                return NotFound("Post not found");                          
+                return NotFound("Post not found");
             }
             return Ok(posts);
         }
@@ -37,18 +37,25 @@ namespace backend.Controllers
             return Ok(post);
         }
 
-        [Authorize(Roles = "2,3,4")] 
+        [Authorize(Roles = "2,3,4")]
         [HttpPost]
         public async Task<IActionResult> Create(CreatePostDto dto)
         {
-            var result = await _service.CanUserPostAsync(dto.UserId);
+            // Lấy UserId từ token
+            var userIdStr = User.FindFirst("UserId")?.Value;
+            if (string.IsNullOrEmpty(userIdStr) || !int.TryParse(userIdStr, out int userId))
+                return Unauthorized("UserId not found in token.");
+
+            // Gửi userId vào service
+            var result = await _service.CanUserPostAsync(userId);
             if (!result.Allowed) return result.ErrorResult;
 
-            var post = await _service.CreatePostAsync(dto);
+            var post = await _service.CreatePostAsync(dto, userId); 
             return CreatedAtAction(nameof(GetById), new { id = post.PostId }, post);
         }
 
-        [Authorize(Roles = "2,3,4")] 
+
+        [Authorize(Roles = "2,3,4")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdatePostDto dto)
         {
@@ -59,7 +66,7 @@ namespace backend.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "2,3,4")] 
+        [Authorize(Roles = "2,3,4")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -69,5 +76,26 @@ namespace backend.Controllers
             await _service.DeletePostAsync(id);
             return NoContent();
         }
+
+        [Authorize(Roles = "4")]
+        [HttpPut("{id}/approve")]
+        public async Task<IActionResult> Approve(int id)
+        {
+            var post = await _service.GetPostEntityByIdAsync(id);
+            if (post is null) return NotFound("Post not found");
+
+            post.IsApproved = true;
+            await _service.ApprovePostAsync(post);
+            return Ok("Post approved");
+        }
+        
+        [Authorize(Roles = "4")]
+        [HttpGet("unapproved")]
+        public async Task<IActionResult> GetUnapprovedPosts()
+        {
+            var posts = await _service.GetAllUnapprovedPostsAsync();
+            return Ok(posts);
+        }
+
     }
 }

@@ -80,6 +80,7 @@ namespace backend.Controllers
                     user.UserName,
                     user.RoleId
                 },
+
                 token = GenerateJwtToken(user.PhoneNum, user.RoleId)
             });
         }
@@ -93,12 +94,12 @@ namespace backend.Controllers
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("very_important_smoking_encryption_key"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: "http://localhost:5196",
-                //audience: "http://localhost:5174",
                 audience: "http://localhost:5196/Swagger",
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
@@ -106,6 +107,7 @@ namespace backend.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
 
     }
 }

@@ -37,6 +37,7 @@ import CoachFeedback from "./routes/coach/CoachFeedback";
 import CoachNotification from "./routes/coach/CoachNotification";
 import { getTokenData } from "./api/Auth";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ManagePosts from "./routes/admin/ManagePosts";
 
 function App() {
 	const AlreadyLoggedIn = ({ children }) => {
@@ -143,6 +144,14 @@ function App() {
 						element={
 							<ProtectedRoute allowedRoles={[4]}>
 								<ManageIncome />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/Admin/ManagePost"
+						element={
+							<ProtectedRoute allowedRoles={[4]}>
+								<ManagePosts />
 							</ProtectedRoute>
 						}
 					/>
