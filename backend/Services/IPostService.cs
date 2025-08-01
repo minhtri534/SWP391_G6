@@ -1,4 +1,6 @@
 using backend.Models;
+using backend.Entities;
+
 
 namespace backend.Services
 {
@@ -11,5 +13,8 @@ namespace backend.Services
         Task DeletePostAsync(int id);
         Task<ServiceAccessResult> CanUserPostAsync(int userId);
         Task<ServiceAccessResult> CanUserModifyPostAsync(int postId);
+        Task<IEnumerable<PostDto>> GetAllUnapprovedPostsAsync();
+        Task<Post?> GetPostEntityByIdAsync(int id);
+        Task ApprovePostAsync(Post? post);
     }
 }
