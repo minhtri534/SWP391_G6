@@ -1,9 +1,12 @@
 import { X } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { approvePost, deletePost } from "../api/Post";
+import DeleteConfirmation from "./DeleteConfirmation";
 
 function PreviewPost({ isOpen, onClose, item, isApproved }) {
+	const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
 	//Format date
 	const formatDate = (isoDateString) => {
 		if (!isoDateString) return "";
@@ -19,18 +22,6 @@ function PreviewPost({ isOpen, onClose, item, isApproved }) {
 		try {
 			await approvePost(item.postId);
 			toast.success("Post approved!!!");
-			handleClose();
-		} catch (error) {
-			console.error(error);
-			toast.error(error.message);
-		}
-	};
-
-	// Delete unapproved post
-	const handleDelete = async () => {
-		try {
-			await deletePost(item.postId);
-			toast.success("Delete post success!!!");
 			handleClose();
 		} catch (error) {
 			console.error(error);
@@ -67,13 +58,33 @@ function PreviewPost({ isOpen, onClose, item, isApproved }) {
 							Approve
 						</button>
 					)}
-					<button onClick={handleDelete} className="px-4 py-2 border rounded  bg-red-100 text-red-600 hover:bg-red-200">
+					<button onClick={() => setIsConfirmOpen(true)} className="px-4 py-2 border rounded  bg-red-100 text-red-600 hover:bg-red-200">
 						Delete
 					</button>
 					<button onClick={handleClose} className="px-4 py-2 border rounded hover:bg-gray-100">
 						Close
 					</button>
 				</div>
+				{/* Delete confirmation */}
+				{isConfirmOpen && (
+					<DeleteConfirmation
+						isOpen={isConfirmOpen}
+						onCancel={() => setIsConfirmOpen(false)}
+						message={`Do you want to remove this post?`}
+						onConfirm={async () => {
+							try {
+								await deletePost(item.postId);
+								toast.success("Delete post success!!!");
+								handleClose();
+							} catch (error) {
+								console.error(error);
+								toast.error(error?.response?.data?.message || error.message || "Failed to delete post.");
+							} finally {
+								setIsConfirmOpen(false);
+							}
+						}}
+					/>
+				)}
 			</div>
 		</div>
 	);
