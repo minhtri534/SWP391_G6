@@ -11,7 +11,7 @@ namespace backend.Models
 
         [RegularExpression("^(Male|Female|Other)$", ErrorMessage = "Gender must be 'Male' or 'Female' or 'Other'.")]
         public string Gender { get; set; }
-        public string PhoneNum { get; set; }
+        public string UserName { get; set; }
 
     }
 }

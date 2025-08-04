@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { getProfile, updateProfile, deleteAccount } from "./api/Profile"; // Đảm bảo đường dẫn đúng
+import { FaLock } from "react-icons/fa";
+
 
 const EditProfile = () => {
   const navigate = useNavigate();
@@ -37,6 +39,7 @@ const EditProfile = () => {
     const fetchProfile = async () => {
       try {
         const profile = await getProfile(userId);
+        console.log("Fetched profile gender:", profile.gender);
         // Lưu toàn bộ đối tượng profile nhận được từ API
         setFullProfileData(profile);
         // Điền dữ liệu vào form chỉ với các trường cần chỉnh sửa
@@ -85,6 +88,11 @@ const EditProfile = () => {
 
       await updateProfile(userId, payload);
       alert("Profile updated successfully!");
+      const username = localStorage.setItem("userName",payload.userName);
+      const age = localStorage.setItem("age",payload.age);
+      const gender = localStorage.setItem("gender",payload.gender);
+      
+      window.location.reload();
     } catch (err) {
       alert("Failed to update profile: " + err.message);
       console.error("Update profile error:", err); // Debug: In lỗi chi tiết từ catch
@@ -177,9 +185,29 @@ const EditProfile = () => {
         <h2 className="text-3xl font-bold text-center text-green-700 mb-6">Edit Profile</h2>
         <form onSubmit={handleSave} className="space-y-5">
           <InputField label="Name" name="userName" value={formData.userName} onChange={handleChange} />
-          <InputField label="Phone Number" name="phoneNum" value={formData.phoneNum} onChange={handleChange} />
+          <InputField label="Phone Number" name="phoneNum" value={formData.phoneNum} readOnly />
           <InputField label="Age" name="age" value={formData.age} onChange={handleChange} />
-          <InputField label="Gender" name="gender" value={formData.gender} onChange={handleChange} />
+<label htmlFor="gender">Gender</label>
+<select
+  label="Gender"
+  name="gender"
+  value={formData.gender}
+  onChange={handleChange}
+  style={{
+    width: "95%",
+    padding: "12px",
+    marginBottom: "20px",
+    borderRadius: "6px",
+    border: "1px solid #ccc",
+    fontSize: "14px",
+    fontFamily: "'Poppins', sans-serif",
+  }}
+>
+  
+  <option value="Male">Male</option>
+  <option value="Female">Female</option>
+  <option value="Other">Other</option>
+</select>
 
           <button
             type="submit"
@@ -193,7 +221,7 @@ const EditProfile = () => {
             className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition text-sm font-semibold mt-4"
           >
             Delete Account
-          L</button>
+          </button>
         </form>
       </div>
     </div>
