@@ -97,10 +97,10 @@ function CoachNotification() {
 											<td className="px-6 py-3">{notification.type}</td>
 											<td className="px-6 py-3">
 												<div className="flex justify-end gap-2">
-													<button className="flex items-center gap-1 px-3 py-1 border rounded text-green-600 border-green-600 hover:bg-green-50 hover:cursor-pointer transition" onClick={() => {}}>
+													{/* <button className="flex items-center gap-1 px-3 py-1 border rounded text-green-600 border-green-600 hover:bg-green-50 hover:cursor-pointer transition" onClick={() => {}}>
 														<MessageCircleMore className="w-4 h-4" />
 														Send to members
-													</button>
+													</button> */}
 													<button
 														onClick={() => {
 															setIsModalOpen(true);

@@ -1,11 +1,54 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { toast } from "react-toastify";
 import { addNotification, updateNotification } from "../api/Notification";
+import { getCoachId } from "../api/Coach";
+import { getCoachMember } from "../api/Users";
 
 function NotificationModal({ isOpen, onClose, initialValues, onSuccess }) {
+	const userId = localStorage.getItem("userId");
+	const [coachId, setCoachId] = useState(null);
+	const [members, setMembers] = useState([]);
+
+	// Get coachId
+	useEffect(() => {
+		if (userId) {
+			const fetchCoachId = async () => {
+				try {
+					const data = await getCoachId(userId);
+					// console.log(data);
+					setCoachId(data.coachId);
+				} catch (error) {
+					console.error(error);
+					toast.error(error?.response?.data?.message || error.message || "Failed to get coachId");
+				}
+			};
+
+			fetchCoachId();
+		}
+	}, [userId]);
+
+	// Get members
+	useEffect(() => {
+		if (coachId) {
+			fetchMembers(coachId);
+		}
+	}, [coachId]);
+
+	const fetchMembers = async (cid = coachId) => {
+		try {
+			const data = await getCoachMember(cid);
+			const filtered = data.filter((user) => user.roleId !== 3);
+
+			setMembers(filtered);
+		} catch (error) {
+			console.error(error);
+			toast.error(error?.response?.data?.message || error.message || "Failed to load members.");
+		}
+	};
+
 	// Validation schema
 	const validation = Yup.object({
 		message: Yup.string().required("Notification message is required"),
@@ -18,7 +61,7 @@ function NotificationModal({ isOpen, onClose, initialValues, onSuccess }) {
 	const formik = useFormik({
 		enableReinitialize: true,
 		initialValues: initialValues || {
-			userId: 2,
+			userId: "",
 			relatedLogId: 1,
 			relatedMilestoneId: 1,
 			message: "",
@@ -71,7 +114,7 @@ function NotificationModal({ isOpen, onClose, initialValues, onSuccess }) {
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/50">
 			<div className="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
-				{console.log(initialValues)}
+				{console.log(members)}
 
 				{/* Form header */}
 				<button onClick={handleClose} className="absolute top-2 right-2 text-gray-500 hover:text-red-500 hover:bg-red-100">
@@ -81,6 +124,18 @@ function NotificationModal({ isOpen, onClose, initialValues, onSuccess }) {
 
 				<form key={initialValues ? initialValues.notificationId : "new"} onSubmit={formik.handleSubmit} className="space-y-4">
 					<div className="grid gap-4">
+						<div>
+							<label className="block text-sm font-medium text-gray-700">To member</label>
+							<select name="userId" value={formik.values.userId} onChange={formik.handleChange} onBlur={formik.handleBlur} className="w-full border p-2 rounded focus:ring-2 focus:ring-green-300">
+								<option value={""}>---Select Member---</option>
+								{members.map((member) => (
+									<option key={member.userId} value={member.userId}>
+										{member.userName}
+									</option>
+								))}
+							</select>
+							{formik.touched.userId && formik.errors.userId && <div className="text-red-500 text-sm mt-1">{formik.errors.userId}</div>}
+						</div>
 						<div>
 							<label className="block text-sm font-medium text-gray-700">Message</label>
 							<input
