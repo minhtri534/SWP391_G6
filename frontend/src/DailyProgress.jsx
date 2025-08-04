@@ -1,32 +1,40 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaUserCircle, FaStickyNote, FaSmileBeam, FaHeartbeat, FaCalendarAlt } from "react-icons/fa";
+import { FaUserCircle, FaStickyNote, FaSmileBeam, FaHeartbeat, FaCalendarAlt, FaBars, FaWindowClose } from "react-icons/fa";
 
-// Import các hàm API từ DailyProgress.js
-import {
-  getDailyProgressByUserId,
-  createDailyProgress,
-  updateDailyProgress,
-} from "./api/DailyProgress"; // Đảm bảo đường dẫn này đúng
+// Import các hàm API
 import { getDailyProgress } from "./api/Progress";
+import { createDailyProgress, updateDailyProgress } from "./api/DailyProgress";
 
 const DailyProgress = () => {
   const userName = localStorage.getItem("userName") || "User";
-  const userId = localStorage.getItem("userId"); // Lấy userId từ localStorage
+  const userId = localStorage.getItem("userId");
   const [menuOpen, setMenuOpen] = useState(false);
   const [progress, setProgress] = useState({
-    progressId: null, // Thêm trường progressId để theo dõi mục tiến độ hiện tại
+    progressId: null,
     note: "",
     no_smoking: false,
     symptoms: "",
-    date: new Date().toISOString().slice(0, 10), // Default to current date
+    date: new Date().toISOString().slice(0, 10),
   });
+  const [allProgress, setAllProgress] = useState([]);
+  const [selectedProgress, setSelectedProgress] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const menuRef = useRef();
   const navigate = useNavigate();
 
-  // --- Logic tải Daily Progress hiện tại của người dùng ---
+  // Format date for display
+  const formatDate = (isoDateString) => {
+    if (!isoDateString) return "";
+    const date = new Date(isoDateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  // --- Logic tải Daily Progress của người dùng ---
   useEffect(() => {
     const fetchUserDailyProgress = async () => {
       if (!userId) {
@@ -36,52 +44,25 @@ const DailyProgress = () => {
       }
       try {
         setLoading(true);
-        // Lấy tất cả progress của người dùng
-        // const userProgressList = await getDailyProgressByUserId(userId);
+        // Lấy progress của ngày hiện tại cho form
         const today = new Date().toISOString().slice(0, 10);
-        const todayProgress = (await getDailyProgress(userId, today))[0];
-        console.log(todayProgress)
-        
-        // Tìm tiến độ của ngày hôm nay
-        
-        //const todayProgress = userProgressList.find(p => p.date == today);
+        const todayProgress = (await getDailyProgress(userId, today))[0] || null;
+        setProgress(todayProgress || { progressId: null, note: "", no_smoking: false, symptoms: "", date: today });
 
-        if (todayProgress) {
-          // Nếu có tiến độ cho ngày hôm nay, tải nó vào form
-          setProgress(todayProgress );
-        } else {
-          // Nếu không có tiến độ cho ngày hôm nay, reset form và đặt ngày hiện tại
-          setProgress({
-            progressId: null, // Đặt null để báo hiệu đây là mục mới cần tạo
-            note: "",
-            no_smoking: false,
-            symptoms: "",
-            date: today,
-          });
-        }
+        // Lưu ý: Hiện tại allProgress không được tải vì getDailyProgress chỉ lấy 1 ngày.
+        // Bạn cần cung cấp endpoint hoặc logic để lấy toàn bộ lịch sử (ví dụ: getAllDailyProgressByUserId).
+        // Dưới đây là placeholder, cần thay thế bằng API thực tế.
+        setAllProgress([]); // Tạm thời để trống, chờ API đầy đủ
       } catch (err) {
         console.error("Error fetching daily progress:", err);
         setError(err.message || "Failed to load daily progress.");
-        // Nếu lỗi, vẫn reset form để người dùng có thể nhập mới
-        setProgress({
-          progressId: null,
-          note: "",
-          no_smoking: false,
-          symptoms: "",
-          date: new Date().toISOString().slice(0, 10),
-        });
+        setProgress({ progressId: null, note: "", no_smoking: false, symptoms: "", date: new Date().toISOString().slice(0, 10) });
       } finally {
         setLoading(false);
       }
     };
-
     fetchUserDailyProgress();
-  }, [userId]); // Chạy lại khi userId thay đổi (người dùng đăng nhập/đăng xuất)
-
-  // Lưu ý: Loại bỏ useEffect cũ để lưu vào localStorage vì giờ chúng ta dùng API
-  // useEffect(() => {
-  //   localStorage.setItem("dailyProgress", JSON.stringify(progress));
-  // }, [progress]);
+  }, [userId]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -119,17 +100,17 @@ const DailyProgress = () => {
     try {
       setLoading(true);
       if (progress.progressId) {
-        // Nếu có progressId, tức là đang cập nhật mục hiện có
         const updatedEntry = await updateDailyProgress(progress.progressId, progressDataToSend);
-        setProgress((prev) => ({ ...prev, ...updatedEntry })); // Cập nhật state với dữ liệu mới từ server
+        setProgress((prev) => ({ ...prev, ...updatedEntry }));
+        // Cập nhật allProgress (nếu có logic lấy lịch sử)
         alert("Progress updated successfully!");
       } else {
-        // Nếu không có progressId, tức là tạo mục mới
         const newEntry = await createDailyProgress(progressDataToSend);
-        setProgress((prev) => ({ ...prev, ...newEntry })); // Cập nhật state với progressId mới từ server
+        setProgress((prev) => ({ ...prev, ...newEntry }));
+        setAllProgress((prev) => [newEntry, ...prev]); // Thêm vào danh sách (cần API để sync)
         alert("Progress saved successfully!");
       }
-      setError(null); // Xóa lỗi nếu có
+      setError(null);
     } catch (err) {
       console.error("Error saving daily progress:", err);
       setError(err.message || "Failed to save daily progress.");
@@ -261,12 +242,53 @@ const DailyProgress = () => {
           </div>
         )}
 
+        {/* Danh sách các ngày đã ghi */}
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          {allProgress.length > 0 ? (
+            allProgress.map((p, index) => (
+              <div
+                key={p.progressId || index}
+                style={{
+                  background: "white",
+                  borderRadius: "0.75rem",
+                  boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                  padding: "1.5rem",
+                  marginBottom: "1.5rem",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  transition: "box-shadow 0.3s",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 7px 10px rgba(0,0,0,0.2)")}
+                onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)")}
+              >
+                <span style={{ fontSize: "1.2rem", color: "#15803d" }}>{formatDate(p.date)}</span>
+                <button
+                  onClick={() => setSelectedProgress(p)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: "1.5rem",
+                    color: "#15803d",
+                  }}
+                >
+                  <FaBars />
+                </button>
+              </div>
+            ))
+          ) : (
+            <div style={{ textAlign: "center", color: "white" }}>No previous progress recorded.</div>
+          )}
+        </div>
+
+        {/* Form nhập liệu cho ngày hiện tại */}
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
           gap: "1.5rem",
           maxWidth: "1200px",
-          margin: "0 auto",
+          margin: "2rem auto 0",
         }}>
           <div style={{
             background: "white",
@@ -411,6 +433,27 @@ const DailyProgress = () => {
             {progress.progressId ? "Update Progress" : "Save Progress"}
           </button>
         </div>
+
+        {/* Popup chi tiết daily progress */}
+        {selectedProgress && (
+          <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-[90%] max-w-md relative">
+              <button
+                onClick={() => setSelectedProgress(null)}
+                className="absolute top-3 right-3 text-red-500 hover:text-red-700"
+              >
+                <FaWindowClose size={24} />
+              </button>
+              <h3 className="text-xl font-bold mb-4 text-green-700">Daily Progress - {formatDate(selectedProgress.date)}</h3>
+              <ul className="list-decimal list-inside text-gray-800 space-y-2">
+                <li><strong>Note:</strong> {selectedProgress.note || "No note"}</li>
+                <li><strong>No Smoking:</strong> {selectedProgress.no_smoking ? "Yes" : "No"}</li>
+                <li><strong>Symptoms:</strong> {selectedProgress.symptoms || "None"}</li>
+                <li><strong>Date:</strong> {formatDate(selectedProgress.date)}</li>
+              </ul>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
