@@ -19,7 +19,7 @@ import {
 import { getProfile } from "./api/Profile";
 import {
   createComment,
-  getComments, // Giả sử getComments có thể lấy tất cả comments hoặc theo postId
+  getComments,
   updateComment,
   deleteComment,
 } from "./api/Comment";
@@ -90,7 +90,6 @@ const Forums = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      // DEBUG: Kiểm tra userId từ localStorage
       console.log("Current userId from localStorage:", userId);
 
       if (!userId || !localStorage.getItem("userToken")) {
@@ -101,7 +100,7 @@ const Forums = () => {
       try {
         setLoading(true);
         const data = await getPosts();
-        const allCommentsData = await getComments(); // Fetch ALL comments once
+        const allCommentsData = await getComments();
 
         const categorizedPosts = { support: [], tips: [], general: [] };
         const initialCommentInputs = {};
@@ -110,7 +109,6 @@ const Forums = () => {
           const userName = await fetchUserName(post.userId);
           post.userName = userName;
 
-          // Filter comments relevant to the current post from all comments data
           const postComments = allCommentsData.filter(comment => comment.postId === post.postId);
           post.comments = await Promise.all(postComments.map(async (comment) => ({
             ...comment,
@@ -121,7 +119,7 @@ const Forums = () => {
           else if (post.title.toLowerCase().includes("tips")) categorizedPosts.tips.push(post);
           else categorizedPosts.general.push(post);
 
-          initialCommentInputs[post.postId] = ""; // Initialize comment input for each post
+          initialCommentInputs[post.postId] = "";
         }
         setPosts(categorizedPosts);
         setCommentInputs(initialCommentInputs);
@@ -183,12 +181,12 @@ const Forums = () => {
       } else {
         const newPost = await createPost(postData);
         newPost.userName = await fetchUserName(userId);
-        newPost.comments = []; // Initialize comments for new post
+        newPost.comments = [];
         setPosts((prev) => ({
           ...prev,
           [type]: [...prev[type], newPost],
         }));
-        setCommentInputs(prev => ({ // Initialize comment input for the new post
+        setCommentInputs(prev => ({
           ...prev,
           [newPost.postId]: "",
         }));
@@ -249,7 +247,6 @@ const Forums = () => {
 
       const finalCommentsForPost = await Promise.all(commentsWithNamesPromises);
 
-
       setPosts((prev) => {
         const updatedPosts = { ...prev };
         let postFound = false;
@@ -275,7 +272,6 @@ const Forums = () => {
       console.error("Error submitting comment:", err);
     }
   };
-
 
   const handleEditComment = (comment) => {
     setEditingCommentId(comment.commentId);
@@ -351,9 +347,7 @@ const Forums = () => {
         <div style={{ fontSize: "12px", color: "#888", marginLeft: "10px" }}>
           {c.created_date || "N/A"}
         </div>
-        {/* DEBUG: Kiểm tra userId hiện tại và userId của comment */}
         {console.log(`Comment ID: ${c.commentId}, Current User ID: ${userId}, Comment User ID: ${c.userId}`)}
-        {/* Điều kiện hiển thị nút Edit/Delete Comment */}
         {userId && c.userId === userId && (
           <div style={{ display: "flex", gap: "8px", marginTop: "0.25rem" }}>
             {editingCommentId === c.commentId ? (
@@ -527,7 +521,7 @@ const Forums = () => {
           maxWidth: "1200px",
           margin: "0 auto",
         }}>
-          {["support", "tips", "general"].map((type) => (
+          {["general"].map((type) => (
             <ErrorBoundary key={type}>
               <ForumCard
                 type={type}
@@ -542,7 +536,7 @@ const Forums = () => {
                 onEdit={handleEditPost}
                 onDelete={handleDeletePost}
                 userName={userName}
-                userId={userId} // Truyền userId xuống ForumCard
+                userId={userId}
                 editing={editingPostType === type}
                 loading={loading}
                 error={error}
@@ -570,7 +564,7 @@ function ForumCard({
   onReport,
   onEdit,
   onDelete,
-  userId, // Nhận userId từ Forums component
+  userId,
   editing,
   loading,
   error,
@@ -688,9 +682,7 @@ function ForumCard({
                     Send
                   </button>
                 </div>
-                {/* DEBUG: Kiểm tra userId hiện tại và userId của bài post */}
                 {console.log(`Post ID: ${post.postId}, Current User ID: ${userId}, Post User ID: ${post.userId}`)}
-                {/* Điều kiện hiển thị nút Edit/Delete Post */}
                 {userId && post.userId === userId && (
                   <div style={{ display: "flex", gap: "8px", marginTop: "0.5rem" }}>
                     <button
