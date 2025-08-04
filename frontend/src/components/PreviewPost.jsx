@@ -1,7 +1,43 @@
 import { X } from "lucide-react";
 import React from "react";
+import { toast } from "react-toastify";
+import { approvePost, deletePost } from "../api/Post";
 
-function PreviewPost({ isOpen, onClose, item }) {
+function PreviewPost({ isOpen, onClose, item, isApproved }) {
+	//Format date
+	const formatDate = (isoDateString) => {
+		if (!isoDateString) return "";
+		const date = new Date(isoDateString);
+		const day = String(date.getDate()).padStart(2, "0");
+		const month = String(date.getMonth() + 1).padStart(2, "0");
+		const year = date.getFullYear();
+		return `${day}/${month}/${year}`;
+	};
+
+	// Approve post function
+	const handleApprove = async () => {
+		try {
+			await approvePost(item.postId);
+			toast.success("Post approved!!!");
+			handleClose();
+		} catch (error) {
+			console.error(error);
+			toast.error(error.message);
+		}
+	};
+
+	// Delete unapproved post
+	const handleDelete = async () => {
+		try {
+			await deletePost(item.postId);
+			toast.success("Delete post success!!!");
+			handleClose();
+		} catch (error) {
+			console.error(error);
+			toast.error(error.message);
+		}
+	};
+
 	const handleClose = () => {
 		onClose();
 	};
@@ -15,16 +51,27 @@ function PreviewPost({ isOpen, onClose, item }) {
 					<X className="w-5 h-5" />
 				</button>
 				<h2 className="text-xl font-semibold mb-4">Preview</h2>
-				<div className="text-gray-700 mb-6">This is the post need approval</div>
+				{console.log(item)}
+				<div className="flex items-start gap-3 mb-4">
+					<div className="w-10 h-10 rounded-full bg-gray-300" />
+					<div className="flex flex-col">
+						<span className="font-semibold text-sm">{item.userName}</span>
+						<span className="text-xs text-gray-500">{formatDate(item.create_Date)}</span>
+					</div>
+				</div>
+				<div className="text-lg font-semibold mb-2">{item.title}</div>
+				<div className="text-gray-800 whitespace-pre-line">{item.content}</div>
 				<div className="flex justify-end gap-2 mt-4">
+					{!isApproved && (
+						<button onClick={handleApprove} className="px-4 py-2 border rounded  bg-green-100 text-green-600 hover:bg-green-200">
+							Approve
+						</button>
+					)}
+					<button onClick={handleDelete} className="px-4 py-2 border rounded  bg-red-100 text-red-600 hover:bg-red-200">
+						Delete
+					</button>
 					<button onClick={handleClose} className="px-4 py-2 border rounded hover:bg-gray-100">
 						Close
-					</button>
-					<button onClick={handleClose} className="px-4 py-2 border rounded  bg-green-100 text-green-600 hover:bg-green-200">
-						Approve
-					</button>
-					<button onClick={handleClose} className="px-4 py-2 border rounded  bg-red-100 text-red-600 hover:bg-red-200">
-						Delete
 					</button>
 				</div>
 			</div>

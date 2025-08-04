@@ -81,14 +81,15 @@ namespace backend.Controllers
                     user.RoleId
                 },
 
-                token = GenerateJwtToken(user.PhoneNum, user.RoleId)
+                token = GenerateJwtToken(user.UserId, user.PhoneNum, user.RoleId)
             });
         }
 
-        private string GenerateJwtToken(string phonenumber, int role)
+        private string GenerateJwtToken(int userId, string phonenumber, int role)
         {
             var claims = new[]
             {
+            new Claim("UserId", userId.ToString()),
             new Claim(JwtRegisteredClaimNames.Sub, phonenumber),
             new Claim(ClaimTypes.Role, role.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
