@@ -22,7 +22,7 @@ export async function createChat({ chatId, userId, coachId, content, type, statu
 			content,
 			type,
 			status,
-			chat_date,
+			Chat_Date: chat_date,
 			sender,
 		};
 		const response = await axios.post(`${baseApi}/api/Chat`, payload, getAuthConfig());

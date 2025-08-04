@@ -48,5 +48,32 @@ namespace backend.Controllers
 
             return Ok(results);
         }
+        [HttpGet("CoachInfoByUser/{userId}")]
+        public async Task<IActionResult> GetCoachInfoByUserId(int userId)
+        {
+           
+            var coachInfo = await _context.UserCoachPackages
+                .Where(ucp => ucp.UserId == userId)
+                .Join(_context.CoachInfos,
+                      ucp => ucp.PackageId,
+                      ci => ci.CoachId,   
+                      (ucp, ci) => ci)
+                .Select(ci => new
+                {
+                    ci.CoachId,
+                    UserName = ci.User.UserName, 
+                    ci.PhoneNum,
+                    ci.Experience,
+                    ci.Specialty,
+                    ci.AvailableTime
+                })
+                .FirstOrDefaultAsync();
+
+            if (coachInfo == null)
+                return NotFound();
+
+            return Ok(coachInfo);
+        }
+
     }
 }
