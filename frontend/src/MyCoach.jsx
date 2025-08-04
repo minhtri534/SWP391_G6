@@ -27,21 +27,32 @@ const MyCoach = () => {
 	}, []);
 
 	useEffect(() => {
-		const fetchChats = async () => {
-			try {
-				setLoading(true);
-				const data = await getChats(userId, coachId);
-				// Sắp xếp tin nhắn từ cũ đến mới dựa trên chat_date
-				const sortedMessages = data.sort((a, b) => new Date(a.chat_date) - new Date(b.chat_date));
-				setMessages(sortedMessages);
-			} catch (err) {
-				//setError(err.message || "Error fetching chats");
-			} finally {
-				setLoading(false);
-			}
-		};
-		fetchChats();
-	}, [userId, coachId]);
+  const fetchChats = async () => {
+    try {
+      setLoading(true);
+      const data = await getChats(userId, coachId);
+
+      // Map lại trường chat_Date thành chat_date
+      const normalizedData = data.map(item => ({
+        ...item,
+        chat_date: item.chat_Date,
+      }));
+
+      const sortedMessages = normalizedData.sort(
+        (a, b) => new Date(a.chat_date) - new Date(b.chat_date)
+      );
+
+      setMessages(sortedMessages);
+    } catch (err) {
+      console.error(err);
+      // setError(err.message || "Error fetching chats");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchChats();
+}, [userId, coachId]);
 
 	const handleLogout = () => {
 		localStorage.clear();

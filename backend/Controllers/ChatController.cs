@@ -23,6 +23,7 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<IActionResult> SendMessage([FromBody] ChatSendRequest chat)
         {
+            var vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
             var message = new Chat();
             try
             {
@@ -32,8 +33,8 @@ namespace backend.Controllers
                     CoachId = chat.CoachId,
                     Content = chat.Content,
                     Type = chat.Type,
-                    Status = chat.Status,
-                    Chat_Date = chat.Chat_Date,
+                    Status = chat.Status,   
+                    Chat_Date = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone),
                     Sender = chat.Sender
                 };
 

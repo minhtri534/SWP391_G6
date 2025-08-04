@@ -74,18 +74,19 @@ function Login() {
 
       const token = response.data.token;
       const usernameFromServer = response.data.user?.userName ;
-      const role = response.data.user?.roleId || 2;
+      const role = response.data.user?.roleId;
       const userId = response.data.user?.userId;
 
       setUser({
         userId,
         username: usernameFromServer,
-        role: role || "member",
+        role: role,
       });
 
       localStorage.setItem("userToken", token);
       localStorage.setItem("userName", usernameFromServer);
       localStorage.setItem("userId", userId);
+      
 
       toast.success("Login successful!");
     if (role == 1) {
