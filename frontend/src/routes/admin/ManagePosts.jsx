@@ -8,15 +8,30 @@ import { toast } from "react-toastify";
 import { deletePost, getUnapprovedPost } from "../../api/Post";
 import { getPosts } from "../../api/forum";
 import Pagination from "../../components/Pagination";
+import { getUsers } from "../../api/Users";
 
 function ManagePosts() {
 	const [activeTab, setActiveTab] = useState("unapproved");
 
 	// Data
+	const [users, setUsers] = useState([]);
 	const [approvePosts, setApprovePosts] = useState([]);
 	const [unapprovedPosts, setUnapprovedPosts] = useState([]);
 
 	// Get data function
+
+	const fetchUsers = async () => {
+		try {
+			const data = await getUsers();
+			//some filtering if needed
+			//...
+			setUsers(data);
+		} catch (error) {
+			console.error(error);
+			toast.error(error?.response?.data?.message || error.message || "Failed to load members.");
+		}
+	};
+
 	const fetchUnapprovedPost = async () => {
 		try {
 			const data = await getUnapprovedPost();
@@ -42,6 +57,7 @@ function ManagePosts() {
 	};
 
 	useEffect(() => {
+		fetchUsers();
 		if (activeTab == "unapproved") {
 			fetchUnapprovedPost();
 		} else if (activeTab == "approved") {
@@ -61,10 +77,16 @@ function ManagePosts() {
 		return `${day}/${month}/${year}`;
 	};
 
+	// Get username helper
+	const getUserNameById = (userId) => {
+		const user = users.find((u) => u.userId === userId);
+		return user ? user.userName : "Unknown User";
+	};
+
 	// Pagination
 	const [currentPageUnapproved, setCurrentPageUnapproved] = useState(1);
 	const [currentPageApproved, setCurrentPageApproved] = useState(1);
-	const itemsPerPage = 5;
+	const itemsPerPage = 8;
 
 	const getPaginatedData = (data, currentPage) => {
 		const startIndex = (currentPage - 1) * itemsPerPage;
@@ -133,14 +155,15 @@ function ManagePosts() {
 												<tr key={post.postId} className="border-t hover:bg-gray-50">
 													<td className="px-6 py-3">{post.postId}</td>
 													<td className="px-6 py-3">{formatDate(post.create_Date)}</td>
-													<td className="px-6 py-3">{post.userId}</td>
+													<td className="px-6 py-3">{getUserNameById(post.userId)}</td>
 													<td className="px-6 py-3">{post.title}</td>
 													<td className="px-6 py-3">
 														<div className="flex justify-end gap-2">
 															<button
 																onClick={() => {
 																	setIsPreviewOpen(true);
-																	setSelectedItem(post);
+																	const userName = getUserNameById(post.userId);
+																	setSelectedItem({ ...post, userName });
 																}}
 																className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
 																<List className="w-4 h-4" />
@@ -199,14 +222,15 @@ function ManagePosts() {
 												<tr key={post.postId} className="border-t hover:bg-gray-50">
 													<td className="px-6 py-3">{post.postId}</td>
 													<td className="px-6 py-3">{formatDate(post.create_Date)}</td>
-													<td className="px-6 py-3">{post.userId}</td>
+													<td className="px-6 py-3">{getUserNameById(post.userId)}</td>
 													<td className="px-6 py-3">{post.title}</td>
 													<td className="px-6 py-3">
 														<div className="flex justify-end gap-2">
 															<button
 																onClick={() => {
 																	setIsPreviewOpen(true);
-																	setSelectedItem(post);
+																	const userName = getUserNameById(post.userId);
+																	setSelectedItem({ ...post, userName });
 																}}
 																className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
 																<List className="w-4 h-4" />

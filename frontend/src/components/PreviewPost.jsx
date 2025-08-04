@@ -55,7 +55,7 @@ function PreviewPost({ isOpen, onClose, item, isApproved }) {
 				<div className="flex items-start gap-3 mb-4">
 					<div className="w-10 h-10 rounded-full bg-gray-300" />
 					<div className="flex flex-col">
-						<span className="font-semibold text-sm">User #{item.userId}</span>
+						<span className="font-semibold text-sm">{item.userName}</span>
 						<span className="text-xs text-gray-500">{formatDate(item.create_Date)}</span>
 					</div>
 				</div>
