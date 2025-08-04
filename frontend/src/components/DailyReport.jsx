@@ -10,7 +10,6 @@ function DailyReport({ isOpen, onClose, member }) {
 				<button onClick={onClose} className="absolute top-2 right-2 text-gray-500 hover:text-red-500 hover:bg-red-100">
 					<X className="w-5 h-5" />
 				</button>
-
 				<h2 className="text-xl font-semibold mb-4">{member.userName}'s Daily Report:</h2>
 				{console.log(member)}
 			</div>

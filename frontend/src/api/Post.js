@@ -25,7 +25,7 @@ export async function getUnapprovedPost() {
 
 export async function approvePost(postId) {
 	try {
-		const response = await axios.put(`${baseApi}/api/posts/${postId}/approve`, getAuthConfig());
+		const response = await axios.put(`${baseApi}/api/posts/${postId}/approve`, null, getAuthConfig());
 		return response.data;
 	} catch (error) {
 		const msg = error.response?.data?.message || "Approve post failed!!!";
