@@ -49,10 +49,7 @@ const DailyProgress = () => {
         const todayProgress = (await getDailyProgress(userId, today))[0] || null;
         setProgress(todayProgress || { progressId: null, note: "", no_smoking: false, symptoms: "", date: today });
 
-        // Lưu ý: Hiện tại allProgress không được tải vì getDailyProgress chỉ lấy 1 ngày.
-        // Bạn cần cung cấp endpoint hoặc logic để lấy toàn bộ lịch sử (ví dụ: getAllDailyProgressByUserId).
-        // Dưới đây là placeholder, cần thay thế bằng API thực tế.
-        setAllProgress([]); // Tạm thời để trống, chờ API đầy đủ
+        setAllProgress(await getDailyProgress(userId));
       } catch (err) {
         console.error("Error fetching daily progress:", err);
         setError(err.message || "Failed to load daily progress.");
