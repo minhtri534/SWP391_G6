@@ -73,10 +73,13 @@ const DailyProgress = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setProgress((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    // Không cho phép thay đổi date, chỉ cập nhật các trường khác
+    if (name !== "date") {
+      setProgress((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
   };
 
   // --- Logic Lưu (Create/Update) Daily Progress ---
@@ -91,7 +94,7 @@ const DailyProgress = () => {
       note: progress.note,
       no_smoking: progress.no_smoking,
       symptoms: progress.symptoms,
-      date: progress.date,
+      date: new Date().toISOString().slice(0, 10), // Luôn lấy ngày hiện tại
     };
 
     try {
@@ -99,12 +102,14 @@ const DailyProgress = () => {
       if (progress.progressId) {
         const updatedEntry = await updateDailyProgress(progress.progressId, progressDataToSend);
         setProgress((prev) => ({ ...prev, ...updatedEntry }));
-        // Cập nhật allProgress (nếu có logic lấy lịch sử)
+        setAllProgress((prev) =>
+          prev.map(p => p.progressId === updatedEntry.progressId ? updatedEntry : p)
+        );
         alert("Progress updated successfully!");
       } else {
         const newEntry = await createDailyProgress(progressDataToSend);
         setProgress((prev) => ({ ...prev, ...newEntry }));
-        setAllProgress((prev) => [newEntry, ...prev]); // Thêm vào danh sách (cần API để sync)
+        setAllProgress((prev) => [newEntry, ...prev]);
         alert("Progress saved successfully!");
       }
       setError(null);
@@ -400,11 +405,10 @@ const DailyProgress = () => {
               Date
             </h3>
             <input
-              type="date"
-              name="date"
-              value={progress.date}
-              onChange={handleChange}
-              style={{ width: "100%", padding: "0.5rem", marginBottom: "1.5rem", borderRadius: "0.375rem", border: "1px solid #d1d5db" }}
+              type="text"
+              value={formatDate(progress.date)}
+              readOnly
+              style={{ width: "100%", padding: "0.5rem", marginBottom: "1.5rem", borderRadius: "0.375rem", border: "1px solid #d1d5db", backgroundColor: "#f0f0f0", cursor: "not-allowed" }}
             />
           </div>
         </div>
@@ -467,7 +471,7 @@ function MenuItem({ label, onClick }) {
         cursor: "pointer",
         transition: "background 0.2s",
       }}
-      onMouseEnter={(e) => (e.currentTarget.style.background = "#f4f4f4")}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "#f4f0f4")}
       onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
     >
       {label}
