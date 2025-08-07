@@ -44,7 +44,6 @@ const DailyProgress = () => {
       }
       try {
         setLoading(true);
-        // Lấy progress của ngày hiện tại cho form
         const today = new Date().toISOString().slice(0, 10);
         const todayProgress = (await getDailyProgress(userId, today))[0] || null;
         setProgress(todayProgress || { progressId: null, note: "", no_smoking: false, symptoms: "", date: today });
@@ -73,7 +72,6 @@ const DailyProgress = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    // Không cho phép thay đổi date, chỉ cập nhật các trường khác
     if (name !== "date") {
       setProgress((prev) => ({
         ...prev,
@@ -94,7 +92,7 @@ const DailyProgress = () => {
       note: progress.note,
       no_smoking: progress.no_smoking,
       symptoms: progress.symptoms,
-      date: new Date().toISOString().slice(0, 10), // Luôn lấy ngày hiện tại
+      date: new Date().toISOString().slice(0, 10),
     };
 
     try {
@@ -102,14 +100,12 @@ const DailyProgress = () => {
       if (progress.progressId) {
         const updatedEntry = await updateDailyProgress(progress.progressId, progressDataToSend);
         setProgress((prev) => ({ ...prev, ...updatedEntry }));
-        setAllProgress((prev) =>
-          prev.map(p => p.progressId === updatedEntry.progressId ? updatedEntry : p)
-        );
+        setAllProgress(await getDailyProgress(userId)); // Cập nhật lại toàn bộ lịch sử
         alert("Progress updated successfully!");
       } else {
         const newEntry = await createDailyProgress(progressDataToSend);
         setProgress((prev) => ({ ...prev, ...newEntry }));
-        setAllProgress((prev) => [newEntry, ...prev]);
+        setAllProgress(await getDailyProgress(userId)); // Cập nhật lại toàn bộ lịch sử
         alert("Progress saved successfully!");
       }
       setError(null);
@@ -126,6 +122,8 @@ const DailyProgress = () => {
     localStorage.clear();
     navigate("/login");
   };
+
+  const hasTodayProgress = allProgress.some(p => p.date === new Date().toISOString().slice(0, 10));
 
   if (loading) {
     return (
@@ -417,6 +415,7 @@ const DailyProgress = () => {
         <div style={{ textAlign: "center", marginTop: "2rem" }}>
           <button
             onClick={handleSave}
+            disabled={!progress.progressId && hasTodayProgress}
             style={{
               padding: "0.75rem 1.5rem",
               background: "#15803d",
@@ -424,14 +423,15 @@ const DailyProgress = () => {
               fontSize: "1rem",
               borderRadius: "0.375rem",
               border: "none",
-              cursor: "pointer",
+              cursor: (!progress.progressId && hasTodayProgress) ? "not-allowed" : "pointer",
               fontWeight: "bold",
               transition: "background 0.3s",
+              opacity: (!progress.progressId && hasTodayProgress) ? 0.5 : 1,
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#146c43")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#15803d")}
+            onMouseEnter={(e) => (e.currentTarget.style.background = (!progress.progressId && hasTodayProgress) ? "#15803d" : "#146c43")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = (!progress.progressId && hasTodayProgress) ? "#15803d" : "#15803d")}
           >
-            {progress.progressId ? "Update Progress" : "Save Progress"}
+            {progress.progressId || hasTodayProgress ? "Update Progress" : "Save Progress"}
           </button>
         </div>
 
