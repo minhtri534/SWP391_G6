@@ -683,7 +683,7 @@ function ForumCard({
                   </button>
                 </div>
                 {console.log(`Post ID: ${post.postId}, Current User ID: ${userId}, Post User ID: ${post.userId}`)}
-                {userId && post.userId === userId && (
+                {userId && post.userId == userId && (
                   <div style={{ display: "flex", gap: "8px", marginTop: "0.5rem" }}>
                     <button
                       onClick={() => onEdit(type, post)}
