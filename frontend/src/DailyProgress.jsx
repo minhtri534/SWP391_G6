@@ -45,10 +45,10 @@ const DailyProgress = () => {
       try {
         setLoading(true);
         const today = new Date().toISOString().slice(0, 10);
-        const todayProgress = (await getDailyProgress(userId, today))[0] || null;
+        const todayProgress = (await getDailyProgress(userId, today)[0] || null);
         setProgress(todayProgress || { progressId: null, note: "", no_smoking: false, symptoms: "", date: today });
 
-        setAllProgress(await getDailyProgress(userId));
+        setAllProgress(await getDailyProgress(userId, null));
       } catch (err) {
         console.error("Error fetching daily progress:", err);
         setError(err.message || "Failed to load daily progress.");
