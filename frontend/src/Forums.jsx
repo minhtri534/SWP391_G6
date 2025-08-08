@@ -23,6 +23,7 @@ import {
   updateComment,
   deleteComment,
 } from "./api/Comment";
+import { toast } from "react-toastify";
 
 class ErrorBoundary extends Component {
   state = { hasError: false, error: null };
@@ -166,13 +167,14 @@ const Forums = () => {
   };
 
   const handlePostSubmit = async (type) => {
-    window.location.reload();
+    
     const { postId, title, content } = postInputs[type];
     if (title.trim() === "" || content.trim() === "") return;
 
     const postData = { userId, title, content };
     try {
       if (postId) {
+        window.location.reload();
         const updatedPost = await updatePost(postId, postData);
         updatedPost.userName = await fetchUserName(userId);
         
@@ -198,6 +200,7 @@ const Forums = () => {
         [type]: { postId: null, title: "", content: "" },
       }));
       setEditingPostType(null);
+      toast.success("Post submitted. Waiting for approval");
     } catch (err) {
       setError(err.message || "Failed to save post");
     }
