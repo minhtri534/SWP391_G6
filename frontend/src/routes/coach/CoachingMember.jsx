@@ -240,17 +240,15 @@ function CoachingMember() {
 											</td>
 
 											<td className="px-6 py-3">
-												{member.quitPlan && (
-													<button
-														onClick={() => {
-															setIsViewDaily(true);
-															setSelectedMember(member);
-														}}
-														className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
-														<List className="w-4 h-4" />
-														Report
-													</button>
-												)}
+												<button
+													onClick={() => {
+														setIsViewDaily(true);
+														setSelectedMember(member);
+													}}
+													className="flex items-center gap-1 px-3 py-1 border rounded text-gray-600 border-gray-600 hover:bg-gray-50 hover:cursor-pointer transition">
+													<List className="w-4 h-4" />
+													Report
+												</button>
 											</td>
 											<td className="px-6 py-3">
 												<div className="flex justify-end gap-2">
