@@ -106,8 +106,7 @@ const Forums = () => {
         const initialCommentInputs = {};
 
         for (let post of data) {
-          const userName = await fetchUserName(post.userId);
-          post.userName = userName;
+          post.userName = await fetchUserName(post.userId);
 
           const postComments = allCommentsData.filter(comment => comment.postId === post.postId);
           post.comments = await Promise.all(postComments.map(async (comment) => ({
@@ -115,9 +114,10 @@ const Forums = () => {
             name: await fetchUserName(comment.userId),
           })));
 
-          if (post.title.toLowerCase().includes("support")) categorizedPosts.support.push(post);
+          /*if (post.title.toLowerCase().includes("support")) categorizedPosts.support.push(post);
           else if (post.title.toLowerCase().includes("tips")) categorizedPosts.tips.push(post);
-          else categorizedPosts.general.push(post);
+          else */
+          categorizedPosts.general.push(post);
 
           initialCommentInputs[post.postId] = "";
         }
@@ -166,6 +166,7 @@ const Forums = () => {
   };
 
   const handlePostSubmit = async (type) => {
+    window.location.reload();
     const { postId, title, content } = postInputs[type];
     if (title.trim() === "" || content.trim() === "") return;
 
@@ -174,6 +175,7 @@ const Forums = () => {
       if (postId) {
         const updatedPost = await updatePost(postId, postData);
         updatedPost.userName = await fetchUserName(userId);
+        
         setPosts((prev) => ({
           ...prev,
           [type]: prev[type].map((p) => (p.postId === postId ? updatedPost : p)),
@@ -207,6 +209,7 @@ const Forums = () => {
       ...prev,
       [type]: { postId: post.postId, title: post.title, content: post.content },
     }));
+    window.scrollTo(0, 0)
   };
 
   const handleDeletePost = async (type, postId) => {
@@ -683,7 +686,7 @@ function ForumCard({
                   </button>
                 </div>
                 {console.log(`Post ID: ${post.postId}, Current User ID: ${userId}, Post User ID: ${post.userId}`)}
-                {userId && post.userId === userId && (
+                {userId && post.userId == userId && 
                   <div style={{ display: "flex", gap: "8px", marginTop: "0.5rem" }}>
                     <button
                       onClick={() => onEdit(type, post)}
@@ -728,7 +731,7 @@ function ForumCard({
                       Delete
                     </button>
                   </div>
-                )}
+                }
                 <button
                   onClick={() => onReport(type, post.postId)}
                   style={{
