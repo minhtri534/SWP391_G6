@@ -2,12 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
 import { FaUserCircle, FaPenFancy, FaStar } from "react-icons/fa";
-import { createFeedback } from "./api/Feedback"
+import { createFeedback } from "./api/Feedback";
 
 const PlatformFeedback = () => {
   const [content, setContent] = useState("");
   const [rating, setRating] = useState(0);
-  const [anonymous, setAnonymous] = useState(false);
   const userName = localStorage.getItem("userName") || "User";
   const navigate = useNavigate();
   const menuRef = useRef();
@@ -34,32 +33,33 @@ const PlatformFeedback = () => {
       return;
     }
 
-    const userId = anonymous ? null : localStorage.getItem("userId");
-    console.log("Submitting feedback:", {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      toast.error("User not logged in. Please log in to submit feedback.");
+      return;
+    }
+
+    const feedbackData = {
       userId,
-      content,
-      rating,
       coachId: null,
       planId: null,
-    });
-    /*
+      content,
+      rating
+    };
+
+    console.log("Submitting feedback:", feedbackData);
+
     try {
-      var package = {
-        userId: 
-      }
-      createFeedback(package);
-
-
-      
-    } catch {
-      toast.error(error.message);
-      console.log(error);
-    }*/
-
-    toast.success("Thank you for your feedback!");
+      const response = await createFeedback(feedbackData);
+      console.log("Feedback response:", response);
+      toast.success("Thank you for your feedback!");
       setContent("");
       setRating(0);
-      setAnonymous(false);
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      const msg = error.response?.data?.message || "Create feedback failed!!!";
+      toast.error(msg);
+    }
   };
 
   return (
@@ -165,7 +165,6 @@ const PlatformFeedback = () => {
               </span>
             ))}
           </div>
-
 
           <button
             onClick={handleSubmit}
