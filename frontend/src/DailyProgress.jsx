@@ -34,7 +34,7 @@ const DailyProgress = () => {
     return `${day}/${month}/${year}`;
   };
 
-  // --- Logic tải Daily Progress của người dùng ---
+  // tải Daily Progress của người dùng 
   useEffect(() => {
     const fetchUserDailyProgress = async () => {
       if (!userId) {
@@ -48,7 +48,7 @@ const DailyProgress = () => {
         const todayProgress = (await getDailyProgress(userId, today)[0] || null);
         setProgress(todayProgress || { progressId: null, note: "", no_smoking: false, symptoms: "", date: today });
 
-        setAllProgress(await getDailyProgress(userId, null));
+        setAllProgress(await getDailyProgress(userId));
       } catch (err) {
         console.error("Error fetching daily progress:", err);
         setError(err.message || "Failed to load daily progress.");
@@ -80,7 +80,7 @@ const DailyProgress = () => {
     }
   };
 
-  // --- Logic Lưu (Create/Update) Daily Progress ---
+  //Logic Lưu (Create/Update) Daily Progress
   const handleSave = async () => {
     if (!userId) {
       alert("Please log in to save your progress.");
